@@ -1,0 +1,17 @@
+.logo-link {
+    text-decoration: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .logo-basket {
+        animation: App-logo-spin infinite 60s linear;
+    }
+}
+
+.appbar {
+    min-height: 10vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+}
