@@ -26,6 +26,7 @@
     flex-direction: column;
     align-items: center;
     /* Center content horizontally */
+    text-decoration: none;
 }
 
 .team-card:hover {

@@ -7,6 +7,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from './pages/Header';
 import Home from './pages/Home';
 import Resultat from './pages/Resultat';
+import Team from './pages/Team';
+
 
 export default function App() {
     return (
@@ -15,6 +17,10 @@ export default function App() {
                 <Route path="/" element={<Header />}>
                     <Route index element={<Home />} />
                     <Route path="resultats" element={<Resultat />} />
+                    <Route
+                        path="team/:teamId"
+                        element={<Team />}
+                    />
                 </Route>
             </Routes>
         </BrowserRouter>

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import './TeamTable.css'
+import { Link } from 'react-router-dom';
+
 interface Team {
     id: number;
     full_name: string;
@@ -44,12 +46,12 @@ function Team_table() {
     }, []);
 
     const DisplayData = teams.map((team) => (
-        <div key={team.id} className='team-card'>
+        <Link to={`/team/${team.id}`} className="team-card" key={team.id}>
             <img src={require(`../img/teams/${team.abbreviation}.png`)} alt={team.abbreviation} />
             <div className="team-details">
                 <h1 className='team-name'><strong>{team.full_name}</strong></h1>
             </div>
-        </div>
+        </Link>
     ));
 
     return (

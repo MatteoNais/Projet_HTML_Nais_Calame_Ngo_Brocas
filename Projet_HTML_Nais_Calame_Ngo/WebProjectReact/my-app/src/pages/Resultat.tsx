@@ -6,8 +6,8 @@ function Resultat() {
     return (
         <div className="body">
             <body className='App-body'>
-                <p> Page de résultat en développement ! </p>
                 <TeamTable></TeamTable>
+                <p> Page de résultat en développement ! </p>
             </body>
         </div>
     );
