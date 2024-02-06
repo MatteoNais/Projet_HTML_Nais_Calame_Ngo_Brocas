@@ -21,6 +21,7 @@ function Header() {
 
     useEffect(() => {
         if (basicUserInfo) {
+            console.log("Basic User Info:", basicUserInfo);
             dispatch(getUser(basicUserInfo.id));
         }
     }, [basicUserInfo]);
@@ -54,10 +55,10 @@ function Header() {
                                 justifyContent: 'space-between',
                                 gap: '16px', // Ajustez la largeur selon vos besoins
                             }} >
-                                <h4>Name: {userProfileInfo?.username}</h4>
-                                <h4>Email: {userProfileInfo?.email}</h4>
+                                <h4>Name: {basicUserInfo?.username}</h4>
+                                <h4>Email: {basicUserInfo?.email}</h4>
                                 <Link to='/resultats'> <Button variant="contained" sx={{ background: '#E36414' }}>Resultat</Button> </Link>
-                                <Link to='/resultats'> <Button variant="contained" sx={{ background: '#E36414' }}>Actu</Button> </Link>
+                                <Link to='/resultats'> <Button variant="contained" sx={{ background: '#E36414' }}>{basicUserInfo?.username}</Button> </Link>
                                 <Button variant="contained" sx={{ background: '#E36414' }} onClick={handleLogout} >Logout</Button>
 
                             </Box>
