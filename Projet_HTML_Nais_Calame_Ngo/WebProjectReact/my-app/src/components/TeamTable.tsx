@@ -2,16 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import './TeamTable.css'
 import { Link } from 'react-router-dom';
-
-interface Team {
-    id: number;
-    full_name: string;
-    abbreviation: string;
-    city: string;
-    conference: string;
-    division: string;
-    // Ajoutez d'autres propriétés si nécessaire
-}
+import Team from '../objects/Team';
 
 async function GetTeams(): Promise<Team[]> {
     const options = {
@@ -30,8 +21,6 @@ async function GetTeams(): Promise<Team[]> {
         return [];
     }
 }
-
-
 
 function Team_table() {
     const [teams, setTeams] = useState<Team[]>([]);

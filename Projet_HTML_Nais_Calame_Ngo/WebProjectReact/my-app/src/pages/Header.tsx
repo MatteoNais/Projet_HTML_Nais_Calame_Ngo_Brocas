@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -7,8 +7,34 @@ import Typography from '@mui/material/Typography';
 import logoImg from '../img/basket_logo.png'
 import './Header.css';
 import { Outlet, Link } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
+import { getUser, logout } from "../slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
+    const userProfileInfo = useAppSelector((state) => state.auth.userProfileData);
+
+    useEffect(() => {
+        if (basicUserInfo) {
+            dispatch(getUser(basicUserInfo.id));
+        }
+    }, [basicUserInfo]);
+
+
+    const handleLogout = async () => {
+        try {
+            await dispatch(logout()).unwrap();
+            navigate("/login");
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     return (
         <>
             <div className="app-header">
@@ -28,9 +54,12 @@ function Header() {
                                 justifyContent: 'space-between',
                                 gap: '16px', // Ajustez la largeur selon vos besoins
                             }} >
+                                <h4>Name: {userProfileInfo?.username}</h4>
+                                <h4>Email: {userProfileInfo?.email}</h4>
                                 <Link to='/resultats'> <Button variant="contained" sx={{ background: '#E36414' }}>Resultat</Button> </Link>
                                 <Link to='/resultats'> <Button variant="contained" sx={{ background: '#E36414' }}>Actu</Button> </Link>
-                                <Link to='/resultats'> <Button variant="contained" sx={{ background: '#E36414' }}>Autre</Button> </Link>
+                                <Button variant="contained" sx={{ background: '#E36414' }} onClick={handleLogout} >Logout</Button>
+
                             </Box>
 
                         </Toolbar>

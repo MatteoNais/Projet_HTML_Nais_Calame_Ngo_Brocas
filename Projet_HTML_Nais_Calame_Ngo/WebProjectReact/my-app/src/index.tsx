@@ -1,5 +1,4 @@
 
-import './index.css';
 import reportWebVitals from './reportWebVitals';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -8,12 +7,20 @@ import Header from './pages/Header';
 import Home from './pages/Home';
 import Resultat from './pages/Resultat';
 import Team from './pages/Team';
-
-
+import SignInSide from './pages/SignIn';
+import SignUpSide from './pages/SignUp';
+import store from './store';
+import { Provider } from 'react-redux';
+import DefaultLayout from "./layouts/DefaultLayout";
+import ProtectedLayout from "./layouts/ProtectedLayout";
 export default function App() {
     return (
-        <BrowserRouter>
-            <Routes>
+        <Routes>
+            <Route element={<DefaultLayout />}>
+                <Route path="/login" element={<SignInSide />} />
+                <Route path="/register" element={<SignUpSide />} />
+            </Route>
+            <Route element={<ProtectedLayout />}>
                 <Route path="/" element={<Header />}>
                     <Route index element={<Home />} />
                     <Route path="resultats" element={<Resultat />} />
@@ -22,16 +29,23 @@ export default function App() {
                         element={<Team />}
                     />
                 </Route>
-            </Routes>
-        </BrowserRouter>
+            </Route>
+        </Routes>
     );
 }
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
+
 root.render(
-    <App />
+    <React.StrictMode>
+        <Provider store={store}>
+            <BrowserRouter>
+                <App />
+            </BrowserRouter>
+        </Provider>
+    </React.StrictMode>
 );
 
 

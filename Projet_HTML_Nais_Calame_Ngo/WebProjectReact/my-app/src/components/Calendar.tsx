@@ -9,27 +9,6 @@ import Pagination from '@mui/material/Pagination';
 import Match from '../objects/Match';
 import Team from '../objects/Team';
 
-
-// interface Match {
-//     date: string;
-//     home_team_score: number;
-//     visitor_team_score: number;
-//     season: string;
-//     home_team: Team;
-//     visitor_team: Team;
-// }
-
-// interface Team {
-//     id: number;
-//     full_name: string;
-//     name: string;
-//     abbreviation: string;
-//     city: string;
-//     conference: string;
-//     division: string;
-//     // Ajoutez d'autres propriétés si nécessaire
-// }
-
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
