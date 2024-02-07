@@ -1,5 +1,6 @@
 # dependencies
 /node_modules
+/Projet_HTML_Nais_Calame_Ngo/WebProjectReact/my-app/node_modules/.cache
 /.pnp
 .pnp.js
 
