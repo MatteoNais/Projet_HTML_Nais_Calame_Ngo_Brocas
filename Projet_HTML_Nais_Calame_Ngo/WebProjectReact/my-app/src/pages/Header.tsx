@@ -21,7 +21,6 @@ function Header() {
 
     useEffect(() => {
         if (basicUserInfo) {
-            console.log("Basic User Info:", basicUserInfo);
             dispatch(getUser(basicUserInfo.id));
         }
     }, [basicUserInfo]);
