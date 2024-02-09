@@ -1,0 +1,13 @@
+tuto js express pour utiliser python script: https://www.geeksforgeeks.org/run-python-script-node-js-using-child-process-spawn-method/
+
+liste requetes possible: https://github.com/swar/nba_api/tree/master/docs/nba_api/stats/endpoints
+
+
+get playerid (name)
+get playerinfo (playerid)
+get player (stat)
+
+get teamid(name)
+get teaminfo(team id)
+
+get last5match(playerid)
