@@ -1,5 +1,5 @@
 import React from 'react';
-import './Resultat.css'
+import './StylePages.css'
 import { useParams } from 'react-router-dom';
 import Calendar from '../components/Calendar';
 

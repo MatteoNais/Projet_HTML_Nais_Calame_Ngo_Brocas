@@ -1,5 +1,5 @@
 import React from 'react';
-import './Resultat.css'
+import './StylePages.css'
 import TeamTable from '../components/TeamTable';
 
 function Resultat() {

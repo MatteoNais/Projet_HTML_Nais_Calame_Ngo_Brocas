@@ -14,9 +14,6 @@ class User {
 
     constructor(user: IUser) {
         this.user = user;
-        if (user.password) {
-        }
-
     }
 
     private hashPassword(password: string): string {

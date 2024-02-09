@@ -54,10 +54,9 @@ function Header() {
                                 justifyContent: 'space-between',
                                 gap: '16px', // Ajustez la largeur selon vos besoins
                             }} >
-                                <h4>Name: {basicUserInfo?.username}</h4>
-                                <h4>Email: {basicUserInfo?.email}</h4>
-                                <Link to='/resultats'> <Button variant="contained" sx={{ background: '#E36414' }}>Resultat</Button> </Link>
-                                <Link to='/resultats'> <Button variant="contained" sx={{ background: '#E36414' }}>{basicUserInfo?.username}</Button> </Link>
+                                <Link to='/'> <Button variant="contained" sx={{ background: '#E36414' }}> Mes ligues</Button> </Link>
+                                <Link to='/resultats'> <Button variant="contained" sx={{ background: '#E36414' }}>NBA</Button> </Link>
+                                <Link to='/'> <Button variant="contained" sx={{ background: '#E36414' }}>{basicUserInfo?.username}</Button> </Link>
                                 <Button variant="contained" sx={{ background: '#E36414' }} onClick={handleLogout} >Logout</Button>
 
                             </Box>

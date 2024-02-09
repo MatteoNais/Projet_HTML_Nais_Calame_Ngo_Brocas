@@ -13,6 +13,8 @@ import store from './store';
 import { Provider } from 'react-redux';
 import DefaultLayout from "./layouts/DefaultLayout";
 import ProtectedLayout from "./layouts/ProtectedLayout";
+import MesLigues from './pages/MesLigues';
+import AccueilLigue from './pages/AccueilLigue';
 export default function App() {
     return (
         <Routes>
@@ -22,11 +24,16 @@ export default function App() {
             </Route>
             <Route element={<ProtectedLayout />}>
                 <Route path="/" element={<Header />}>
-                    <Route index element={<Home />} />
+                    <Route index element={<MesLigues />} />
                     <Route path="resultats" element={<Resultat />} />
+                    <Route path="ligues" element={<MesLigues />} />
                     <Route
                         path="team/:teamId"
                         element={<Team />}
+                    />
+                    <Route
+                        path="ligue/:ligueId"
+                        element={<AccueilLigue />}
                     />
                 </Route>
             </Route>
