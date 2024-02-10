@@ -15,12 +15,15 @@ function Ligues() {
     const [userId, setUserId] = useState(""); // Utilisez le hook useState
     const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
     const liguesState = useAppSelector((state) => state.ligueArray);
+    
     useEffect(() => {
         if (basicUserInfo) {
             dispatch(getMyLigues(basicUserInfo.id));
             setUserId(basicUserInfo.id);
         }
+       
     }, [basicUserInfo, dispatch]);
+
     const handleCreateLigue = async () => {
         if (nom && userId) {
             try {
@@ -70,7 +73,7 @@ function Ligues() {
                             flexDirection: 'column',
                             alignItems: 'center',
                         }} > <b>Mes ligues : </b>
-                            {liguesState.ligue.length > 0 ? (
+                            {liguesState.ligue != null ? (
                                 <ul>
                                     {JSON.parse(JSON.stringify(liguesState.ligue)).map((ligueData: any, index: any) => (
                                         <li key={index} style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
