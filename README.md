@@ -13,5 +13,7 @@ Site web sur la NBA
 - Une base de donnée MariaDB
 
 
+#Astuce
 
+Si le serveur node backend est mal arreté, chercher le PID (netstat -ano | findstr :) et kill le processus
 

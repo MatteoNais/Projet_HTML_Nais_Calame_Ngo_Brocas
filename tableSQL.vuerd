@@ -3,8 +3,8 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -550.3999999999982,
-    "scrollLeft": -688.0125000000002,
+    "scrollTop": -442.4000000000022,
+    "scrollLeft": -517.6093750000006,
     "zoomLevel": 0.9,
     "show": {
       "tableComment": true,
@@ -45,11 +45,11 @@
   "table": {
     "tables": [
       {
-        "name": "utilisateur",
+        "name": "utilisateurs",
         "comment": "",
         "columns": [
           {
-            "name": "utilisateurID",
+            "name": "id",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -64,58 +64,12 @@
               "pk": true,
               "fk": false,
               "pfk": false,
-              "widthName": 77.63389587402344,
+              "widthName": 60,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
             },
             "id": "89729823-2233-4be6-9328-fa8fc98c2d26"
-          },
-          {
-            "name": "nom",
-            "comment": "",
-            "dataType": "VARCHAR(255)",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": false
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 60,
-              "widthComment": 60,
-              "widthDataType": 90.02290344238281,
-              "widthDefault": 60
-            },
-            "id": "66afae74-a6b9-45b8-99c7-a166402ca392"
-          },
-          {
-            "name": "prenom",
-            "comment": "",
-            "dataType": "VARCHAR(255)",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": false
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 60,
-              "widthComment": 60,
-              "widthDataType": 90.02290344238281,
-              "widthDefault": 60
-            },
-            "id": "1fc0f85b-eee1-447c-8f2f-627d3fac4177"
           },
           {
             "name": "username",
@@ -214,19 +168,19 @@
           "active": false,
           "left": 192.5111,
           "top": 51,
-          "zIndex": 27,
-          "widthName": 63.736907958984375,
+          "zIndex": 200,
+          "widthName": 69.96389770507812,
           "widthComment": 60
         },
         "visible": true,
         "id": "9251852c-ba3b-4dba-b75e-13d5125c72c7"
       },
       {
-        "name": "ligue",
+        "name": "ligues",
         "comment": "",
         "columns": [
           {
-            "name": "ligueID",
+            "name": "id",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -272,7 +226,7 @@
             "id": "cdded235-e43d-46a9-a400-470daf92ac1a"
           },
           {
-            "name": "dateCreation",
+            "name": "date_creation",
             "comment": "",
             "dataType": "DATETIME",
             "default": "CURRENT_TIMESTAMP",
@@ -287,19 +241,42 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 81.20890808105469,
+              "widthName": 85.00489807128906,
               "widthComment": 60,
               "widthDataType": 63.736968994140625,
               "widthDefault": 138.07090759277344
             },
             "id": "9a2f8749-76d6-4112-aee7-bc5e7cd78c49"
+          },
+          {
+            "name": "code_acces",
+            "comment": "",
+            "dataType": "VARCHAR(8)",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 70.53590393066406,
+              "widthComment": 60,
+              "widthDataType": 75.15092468261719,
+              "widthDefault": 60
+            },
+            "id": "575674b5-5722-410d-ac18-5fa71af94b3c"
           }
         ],
         "ui": {
           "active": false,
-          "left": 191.0892,
-          "top": 641.1332,
-          "zIndex": 26,
+          "left": 183.0891,
+          "top": 648.2444,
+          "zIndex": 207,
           "widthName": 60,
           "widthComment": 60
         },
@@ -311,7 +288,7 @@
         "comment": "",
         "columns": [
           {
-            "name": "equipeID",
+            "name": "id",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -332,6 +309,52 @@
               "widthDefault": 60
             },
             "id": "e0029931-37b8-48dd-b261-36b92da4cdf3"
+          },
+          {
+            "name": "ligue",
+            "comment": "",
+            "dataType": "INTEGER",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "4a988b78-34ee-41a0-ac49-00371d0e5672"
+          },
+          {
+            "name": "utilisateur",
+            "comment": "",
+            "dataType": "INTEGER",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 63.736907958984375,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "706df063-477f-4c35-9dfe-be41ff8511de"
           },
           {
             "name": "nom",
@@ -357,57 +380,34 @@
             "id": "20cedf76-8302-4581-95e9-4258d9af56d9"
           },
           {
-            "name": "ligueID",
+            "name": "date_creation",
             "comment": "",
-            "dataType": "INTEGER",
-            "default": "",
+            "dataType": "DATETIME",
+            "default": "CURRENT_TIMESTAMP",
             "option": {
               "autoIncrement": false,
               "primaryKey": false,
               "unique": false,
-              "notNull": true
+              "notNull": false
             },
             "ui": {
               "active": false,
               "pk": false,
-              "fk": true,
+              "fk": false,
               "pfk": false,
-              "widthName": 60,
+              "widthName": 85.00489807128906,
               "widthComment": 60,
-              "widthDataType": 60,
-              "widthDefault": 60
+              "widthDataType": 63.736968994140625,
+              "widthDefault": 138.07090759277344
             },
-            "id": "4a988b78-34ee-41a0-ac49-00371d0e5672"
-          },
-          {
-            "name": "utilisateurID",
-            "comment": "",
-            "dataType": "INTEGER",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": true
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": true,
-              "pfk": false,
-              "widthName": 77.63389587402344,
-              "widthComment": 60,
-              "widthDataType": 60,
-              "widthDefault": 60
-            },
-            "id": "706df063-477f-4c35-9dfe-be41ff8511de"
+            "id": "088c95a9-12bb-4a15-91cc-3c3bb55deb84"
           }
         ],
         "ui": {
           "active": false,
-          "left": 906.1333,
-          "top": 285.8001,
-          "zIndex": 24,
+          "left": 873.244,
+          "top": 280.4667,
+          "zIndex": 282,
           "widthName": 60,
           "widthComment": 60
         },
@@ -415,11 +415,11 @@
         "id": "add9b4f0-0ee0-4ccf-a794-48fd7b325672"
       },
       {
-        "name": "joueurNBA",
+        "name": "joueur_NBA",
         "comment": "",
         "columns": [
           {
-            "name": "joueurNBAID",
+            "name": "id",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -434,7 +434,7 @@
               "pk": true,
               "fk": false,
               "pfk": false,
-              "widthName": 82.52191162109375,
+              "widthName": 60,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -442,7 +442,7 @@
             "id": "f893f318-fb55-4f6a-a457-bddc065aa942"
           },
           {
-            "name": "equipeID",
+            "name": "equipeNBA_id",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -457,7 +457,7 @@
               "pk": false,
               "fk": true,
               "pfk": false,
-              "widthName": 60,
+              "widthName": 87.79989624023438,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -538,19 +538,19 @@
           "active": false,
           "left": 906.1764,
           "top": 903.4669,
-          "zIndex": 32,
-          "widthName": 68.62492370605469,
+          "zIndex": 227,
+          "widthName": 74.39691162109375,
           "widthComment": 60
         },
         "visible": true,
         "id": "dc8f3e54-7b77-4d24-96b8-f8d7dfd776dd"
       },
       {
-        "name": "historiqueScore",
+        "name": "score_equipe",
         "comment": "",
         "columns": [
           {
-            "name": "scoreID",
+            "name": "id",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -573,53 +573,7 @@
             "id": "bc1f5e24-f259-4a98-a006-f82f5181e545"
           },
           {
-            "name": "dateCreation",
-            "comment": "",
-            "dataType": "DATETIME",
-            "default": "CURRENT_TIMESTAMP",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": false
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 81.20890808105469,
-              "widthComment": 60,
-              "widthDataType": 63.736968994140625,
-              "widthDefault": 138.07090759277344
-            },
-            "id": "ef8fbf99-cdaf-4246-94da-3852ab2975aa"
-          },
-          {
-            "name": "scoreEquipe",
-            "comment": "",
-            "dataType": "INTEGER",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": false
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 76.71090698242188,
-              "widthComment": 60,
-              "widthDataType": 60,
-              "widthDefault": 60
-            },
-            "id": "30ca4e59-20c0-43b1-8ebe-b5b2d5b727fe"
-          },
-          {
-            "name": "equipeID",
+            "name": "equipe",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -640,25 +594,9 @@
               "widthDefault": 60
             },
             "id": "09459d44-b48c-45d1-9f95-cc0f78278fe4"
-          }
-        ],
-        "ui": {
-          "active": false,
-          "left": 1486.6666,
-          "top": 286.7999,
-          "zIndex": 35,
-          "widthName": 97.93986511230469,
-          "widthComment": 60
-        },
-        "visible": true,
-        "id": "0ffe6fc4-4570-4b2e-a11a-727c75365e2f"
-      },
-      {
-        "name": "scoreJoueur",
-        "comment": "",
-        "columns": [
+          },
           {
-            "name": "scoreJoueur",
+            "name": "score_quipe",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -673,15 +611,77 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 74.95590209960938,
+              "widthName": 75.25489807128906,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
             },
-            "id": "ee3e3521-d04d-41ef-8130-587e0d558055"
+            "id": "30ca4e59-20c0-43b1-8ebe-b5b2d5b727fe"
           },
           {
-            "name": "joueurNBAID",
+            "name": "date_creation",
+            "comment": "",
+            "dataType": "DATETIME",
+            "default": "CURRENT_TIMESTAMP",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 85.00489807128906,
+              "widthComment": 60,
+              "widthDataType": 63.736968994140625,
+              "widthDefault": 138.07090759277344
+            },
+            "id": "ef8fbf99-cdaf-4246-94da-3852ab2975aa"
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 1476.8887,
+          "top": 288.5777,
+          "zIndex": 276,
+          "widthName": 82.58688354492188,
+          "widthComment": 60
+        },
+        "visible": true,
+        "id": "0ffe6fc4-4570-4b2e-a11a-727c75365e2f"
+      },
+      {
+        "name": "score_joueur",
+        "comment": "",
+        "columns": [
+          {
+            "name": "id",
+            "comment": "",
+            "dataType": "INTEGER",
+            "default": "",
+            "option": {
+              "autoIncrement": true,
+              "primaryKey": true,
+              "unique": true,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "57d2f60e-fb9e-42a8-9d3b-59e0cdb8ad03"
+          },
+          {
+            "name": "joueur_NBA",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -696,7 +696,7 @@
               "pk": false,
               "fk": true,
               "pfk": false,
-              "widthName": 82.52191162109375,
+              "widthName": 74.39691162109375,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -704,7 +704,7 @@
             "id": "2df03d86-617f-4a2a-a5d7-8e7350a87092"
           },
           {
-            "name": "scoreID",
+            "name": "score_equipe",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -719,31 +719,77 @@
               "pk": false,
               "fk": true,
               "pfk": false,
-              "widthName": 60,
+              "widthName": 82.58688354492188,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
             },
             "id": "a409ace7-36ec-4c60-9e42-354031f301a9"
+          },
+          {
+            "name": "score_joueur",
+            "comment": "",
+            "dataType": "INTEGER",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 80.53288269042969,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "ee3e3521-d04d-41ef-8130-587e0d558055"
+          },
+          {
+            "name": "date_creation",
+            "comment": "",
+            "dataType": "DATETIME",
+            "default": "CURRENT_TIMESTAMP",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 85.00489807128906,
+              "widthComment": 60,
+              "widthDataType": 63.736968994140625,
+              "widthDefault": 138.07090759277344
+            },
+            "id": "10e76f08-b5ba-438c-99f4-da1ee98db166"
           }
         ],
         "ui": {
           "active": false,
-          "left": 1526.7115,
-          "top": 661.8671,
-          "zIndex": 23,
-          "widthName": 74.95590209960938,
+          "left": 1475.1556,
+          "top": 676.0895,
+          "zIndex": 271,
+          "widthName": 80.53288269042969,
           "widthComment": 60
         },
         "visible": true,
         "id": "f95d40aa-0f1e-40c4-a6c2-a0214052a823"
       },
       {
-        "name": "lienEquipeJoueur",
+        "name": "lien_equipe_joueurNBA",
         "comment": "",
         "columns": [
           {
-            "name": "joueurID",
+            "name": "joueur_NBA",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -758,7 +804,7 @@
               "pk": false,
               "fk": true,
               "pfk": false,
-              "widthName": 60,
+              "widthName": 74.39691162109375,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -766,7 +812,7 @@
             "id": "18e2b154-33bf-4fc5-89bb-b5b82d25a7db"
           },
           {
-            "name": "equipeID",
+            "name": "equipe",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -790,22 +836,22 @@
           }
         ],
         "ui": {
-          "active": false,
-          "left": 932.657,
-          "top": 627.8573,
-          "zIndex": 3,
-          "widthName": 106.19486999511719,
+          "active": true,
+          "left": 914.879,
+          "top": 628.7462,
+          "zIndex": 290,
+          "widthName": 144.28480529785156,
           "widthComment": 60
         },
         "visible": true,
         "id": "ba439113-390e-423d-929f-ed807b5837c2"
       },
       {
-        "name": "lienUtilisateurLigue",
+        "name": "lien_utilisateur_ligue",
         "comment": "",
         "columns": [
           {
-            "name": "utilisateurID",
+            "name": "utilisateur",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -820,7 +866,7 @@
               "pk": false,
               "fk": true,
               "pfk": false,
-              "widthName": 77.63389587402344,
+              "widthName": 63.736907958984375,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -828,7 +874,7 @@
             "id": "6fd3c165-4702-4651-a4ba-fc508998b749"
           },
           {
-            "name": "ligueID",
+            "name": "ligue",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -853,21 +899,21 @@
         ],
         "ui": {
           "active": false,
-          "left": 246.4669,
-          "top": 408.5998,
-          "zIndex": 29,
-          "widthName": 120.80682373046875,
+          "left": 247.3558,
+          "top": 402.3775,
+          "zIndex": 287,
+          "widthName": 127.42379760742188,
           "widthComment": 60
         },
         "visible": true,
         "id": "3da20da5-e162-415e-a4b4-f438a04495a5"
       },
       {
-        "name": "equipeNBA",
+        "name": "equipe_NBA",
         "comment": "",
         "columns": [
           {
-            "name": "equipeID",
+            "name": "id",
             "comment": "",
             "dataType": "INTEGER",
             "default": "",
@@ -963,8 +1009,8 @@
           "active": false,
           "left": 270.4125,
           "top": 913,
-          "zIndex": 31,
-          "widthName": 70.67892456054688,
+          "zIndex": 48,
+          "widthName": 76.45091247558594,
           "widthComment": 60
         },
         "visible": true,
@@ -987,8 +1033,8 @@
           "columnIds": [
             "89729823-2233-4be6-9328-fa8fc98c2d26"
           ],
-          "x": 452.37495345458984,
-          "y": 263.5,
+          "x": 450.21045607910156,
+          "y": 222.5,
           "direction": "bottom"
         },
         "end": {
@@ -996,8 +1042,8 @@
           "columnIds": [
             "6fd3c165-4702-4651-a4ba-fc508998b749"
           ],
-          "x": 452.2838479370117,
-          "y": 408.5998,
+          "x": 446.2242539794922,
+          "y": 402.3775,
           "direction": "top"
         },
         "constraintName": "fk_utilisateur_to_lienutilisateurligue",
@@ -1013,8 +1059,8 @@
           "columnIds": [
             "4695822f-e600-4ef7-a62e-c1a7dbd59966"
           ],
-          "x": 452.7405595581055,
-          "y": 641.1332,
+          "x": 446.6384545532227,
+          "y": 648.2444,
           "direction": "top"
         },
         "end": {
@@ -1022,8 +1068,8 @@
           "columnIds": [
             "04c6a177-4ec3-45d9-8131-23cf4b2a8c6a"
           ],
-          "x": 452.2838479370117,
-          "y": 518.5998,
+          "x": 446.2242539794922,
+          "y": 512.3775,
           "direction": "bottom"
         },
         "constraintName": "fk_ligue_to_lienutilisateurligue",
@@ -1039,8 +1085,8 @@
           "columnIds": [
             "4695822f-e600-4ef7-a62e-c1a7dbd59966"
           ],
-          "x": 714.3919191162109,
-          "y": 706.3832,
+          "x": 710.1878091064453,
+          "y": 723.7444,
           "direction": "right"
         },
         "end": {
@@ -1048,8 +1094,8 @@
           "columnIds": [
             "4a988b78-34ee-41a0-ac49-00371d0e5672"
           ],
-          "x": 906.1333,
-          "y": 399.0501,
+          "x": 873.244,
+          "y": 409.0917,
           "direction": "left"
         },
         "constraintName": "fk_ligue_to_equipe",
@@ -1065,7 +1111,7 @@
           "columnIds": [
             "f893f318-fb55-4f6a-a457-bddc065aa942"
           ],
-          "x": 1129.448807531738,
+          "x": 1132.0877998413084,
           "y": 903.4669,
           "direction": "top"
         },
@@ -1074,8 +1120,8 @@
           "columnIds": [
             "18e2b154-33bf-4fc5-89bb-b5b82d25a7db"
           ],
-          "x": 1129.6570000000002,
-          "y": 737.8573,
+          "x": 1119.0774558105468,
+          "y": 738.7462,
           "direction": "bottom"
         },
         "constraintName": "fk_joueur_to_lienequipejoueur",
@@ -1091,8 +1137,8 @@
           "columnIds": [
             "e0029931-37b8-48dd-b261-36b92da4cdf3"
           ],
-          "x": 1126.961699658203,
-          "y": 436.8001,
+          "x": 1136.7933545532228,
+          "y": 451.9667,
           "direction": "bottom"
         },
         "end": {
@@ -1100,8 +1146,8 @@
           "columnIds": [
             "8da881eb-b607-4764-b892-f5e88d82b856"
           ],
-          "x": 1129.6570000000002,
-          "y": 627.8573,
+          "x": 1119.0774558105468,
+          "y": 628.7462,
           "direction": "top"
         },
         "constraintName": "fk_equipe_to_lienequipejoueur",
@@ -1117,8 +1163,8 @@
           "columnIds": [
             "e0029931-37b8-48dd-b261-36b92da4cdf3"
           ],
-          "x": 1347.7900993164062,
-          "y": 361.3001,
+          "x": 1400.3427091064455,
+          "y": 366.2167,
           "direction": "right"
         },
         "end": {
@@ -1126,8 +1172,8 @@
           "columnIds": [
             "09459d44-b48c-45d1-9f95-cc0f78278fe4"
           ],
-          "x": 1486.6666,
-          "y": 362.2999,
+          "x": 1476.8887,
+          "y": 364.0777,
           "direction": "left"
         },
         "constraintName": "fk_equipe_to_historiquescore",
@@ -1143,8 +1189,8 @@
           "columnIds": [
             "89729823-2233-4be6-9328-fa8fc98c2d26"
           ],
-          "x": 712.2388069091796,
-          "y": 157.25,
+          "x": 707.9098121582031,
+          "y": 136.75,
           "direction": "right"
         },
         "end": {
@@ -1152,8 +1198,8 @@
           "columnIds": [
             "706df063-477f-4c35-9dfe-be41ff8511de"
           ],
-          "x": 906.1333,
-          "y": 323.5501,
+          "x": 873.244,
+          "y": 323.3417,
           "direction": "left"
         },
         "constraintName": "fk_utilisateur_to_equipe",
@@ -1195,7 +1241,7 @@
           "columnIds": [
             "f893f318-fb55-4f6a-a457-bddc065aa942"
           ],
-          "x": 1352.7212150634764,
+          "x": 1357.999199682617,
           "y": 989.2169,
           "direction": "right"
         },
@@ -1204,8 +1250,8 @@
           "columnIds": [
             "2df03d86-617f-4a2a-a5d7-8e7350a87092"
           ],
-          "x": 1526.7115,
-          "y": 727.1171,
+          "x": 1475.1556,
+          "y": 761.8395,
           "direction": "left"
         },
         "constraintName": "fk_joueurnba_to_scorejoueur",
@@ -1221,8 +1267,8 @@
           "columnIds": [
             "bc1f5e24-f259-4a98-a006-f82f5181e545"
           ],
-          "x": 1735.1749923339844,
-          "y": 437.7999,
+          "x": 1727.2950873291015,
+          "y": 439.5777,
           "direction": "bottom"
         },
         "end": {
@@ -1230,8 +1276,8 @@
           "columnIds": [
             "a409ace7-36ec-4c60-9e42-354031f301a9"
           ],
-          "x": 1734.9724558105468,
-          "y": 661.8671,
+          "x": 1725.5619873291016,
+          "y": 676.0895,
           "direction": "top"
         },
         "constraintName": "fk_historiquescore_to_scorejoueur",

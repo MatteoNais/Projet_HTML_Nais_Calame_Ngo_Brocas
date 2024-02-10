@@ -25,7 +25,7 @@ class User {
     async save(): Promise<number> {
         this.user.password = this.hashPassword(this.user.password);
         const [rows, fields] = await configDB.execute(
-            'INSERT INTO users (username, email, password) VALUES (?, ?, ?)',
+            'INSERT INTO utilisateurs (username, email, password) VALUES (?, ?, ?)',
             [this.user.username, this.user.email, this.user.password]
         );
         if (rows.insertId) {
@@ -38,14 +38,14 @@ class User {
     }
 
     static async findOneByEmail(email: string): Promise<User | null> {
-        const [rows] = await configDB.execute('SELECT * FROM users WHERE email = ?', [email]);
+        const [rows] = await configDB.execute('SELECT * FROM utilisateurs WHERE email = ?', [email]);
         return rows.length ? new User(rows[0]) : null;
     }
 
     static async findById(userId: string, fields: string): Promise<User | null> {
         try {
             // Construisez la requête SQL pour sélectionner l'utilisateur par ID
-            let query = `SELECT ${fields} FROM users WHERE id = ?`;
+            let query = `SELECT ${fields} FROM utilisateurs WHERE id = ?`;
 
             // Exécutez la requête avec l'ID fourni
             const [rows] = await configDB.execute(query, [userId]);
