@@ -45,10 +45,12 @@
   "table": {
     "tables": [
       {
+        "id": "9251852c-ba3b-4dba-b75e-13d5125c72c7",
         "name": "utilisateurs",
         "comment": "",
         "columns": [
           {
+            "id": "89729823-2233-4be6-9328-fa8fc98c2d26",
             "name": "id",
             "comment": "",
             "dataType": "INTEGER",
@@ -68,10 +70,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "89729823-2233-4be6-9328-fa8fc98c2d26"
+            }
           },
           {
+            "id": "f7b4a3b5-3a39-468b-b7b9-2b7e49bb9c6c",
             "name": "username",
             "comment": "",
             "dataType": "VARCHAR(255)",
@@ -91,10 +93,10 @@
               "widthComment": 60,
               "widthDataType": 90.02290344238281,
               "widthDefault": 60
-            },
-            "id": "f7b4a3b5-3a39-468b-b7b9-2b7e49bb9c6c"
+            }
           },
           {
+            "id": "e67a2330-cd57-41e0-824e-841f3733d211",
             "name": "password",
             "comment": "",
             "dataType": "VARCHAR(255)",
@@ -114,10 +116,10 @@
               "widthComment": 60,
               "widthDataType": 90.02290344238281,
               "widthDefault": 60
-            },
-            "id": "e67a2330-cd57-41e0-824e-841f3733d211"
+            }
           },
           {
+            "id": "0078a976-c239-4a99-9aaf-3bd321f07593",
             "name": "email",
             "comment": "",
             "dataType": "VARCHAR(255)",
@@ -137,10 +139,10 @@
               "widthComment": 60,
               "widthDataType": 90.02290344238281,
               "widthDefault": 60
-            },
-            "id": "0078a976-c239-4a99-9aaf-3bd321f07593"
+            }
           },
           {
+            "id": "c35e92b2-863a-450e-aba1-201879eec904",
             "name": "create_time",
             "comment": "",
             "dataType": "DATETIME",
@@ -160,26 +162,26 @@
               "widthComment": 60,
               "widthDataType": 63.736968994140625,
               "widthDefault": 138.07090759277344
-            },
-            "id": "c35e92b2-863a-450e-aba1-201879eec904"
+            }
           }
         ],
         "ui": {
           "active": false,
           "left": 192.5111,
           "top": 51,
-          "zIndex": 200,
+          "zIndex": 2,
           "widthName": 69.96389770507812,
           "widthComment": 60
         },
-        "visible": true,
-        "id": "9251852c-ba3b-4dba-b75e-13d5125c72c7"
+        "visible": true
       },
       {
+        "id": "f8e267fa-c658-4726-a82c-7ca06bcffa4f",
         "name": "ligues",
         "comment": "",
         "columns": [
           {
+            "id": "4695822f-e600-4ef7-a62e-c1a7dbd59966",
             "name": "id",
             "comment": "",
             "dataType": "INTEGER",
@@ -199,10 +201,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "4695822f-e600-4ef7-a62e-c1a7dbd59966"
+            }
           },
           {
+            "id": "cdded235-e43d-46a9-a400-470daf92ac1a",
             "name": "nom",
             "comment": "",
             "dataType": "VARCHAR(255)",
@@ -222,10 +224,10 @@
               "widthComment": 60,
               "widthDataType": 90.02290344238281,
               "widthDefault": 60
-            },
-            "id": "cdded235-e43d-46a9-a400-470daf92ac1a"
+            }
           },
           {
+            "id": "9a2f8749-76d6-4112-aee7-bc5e7cd78c49",
             "name": "date_creation",
             "comment": "",
             "dataType": "DATETIME",
@@ -245,10 +247,10 @@
               "widthComment": 60,
               "widthDataType": 63.736968994140625,
               "widthDefault": 138.07090759277344
-            },
-            "id": "9a2f8749-76d6-4112-aee7-bc5e7cd78c49"
+            }
           },
           {
+            "id": "575674b5-5722-410d-ac18-5fa71af94b3c",
             "name": "code_acces",
             "comment": "",
             "dataType": "VARCHAR(8)",
@@ -268,26 +270,26 @@
               "widthComment": 60,
               "widthDataType": 75.15092468261719,
               "widthDefault": 60
-            },
-            "id": "575674b5-5722-410d-ac18-5fa71af94b3c"
+            }
           }
         ],
         "ui": {
           "active": false,
           "left": 183.0891,
           "top": 648.2444,
-          "zIndex": 207,
+          "zIndex": 3,
           "widthName": 60,
           "widthComment": 60
         },
-        "visible": true,
-        "id": "f8e267fa-c658-4726-a82c-7ca06bcffa4f"
+        "visible": true
       },
       {
+        "id": "add9b4f0-0ee0-4ccf-a794-48fd7b325672",
         "name": "equipe",
         "comment": "",
         "columns": [
           {
+            "id": "e0029931-37b8-48dd-b261-36b92da4cdf3",
             "name": "id",
             "comment": "",
             "dataType": "INTEGER",
@@ -307,10 +309,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "e0029931-37b8-48dd-b261-36b92da4cdf3"
+            }
           },
           {
+            "id": "4a988b78-34ee-41a0-ac49-00371d0e5672",
             "name": "ligue",
             "comment": "",
             "dataType": "INTEGER",
@@ -330,10 +332,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "4a988b78-34ee-41a0-ac49-00371d0e5672"
+            }
           },
           {
+            "id": "706df063-477f-4c35-9dfe-be41ff8511de",
             "name": "utilisateur",
             "comment": "",
             "dataType": "INTEGER",
@@ -353,10 +355,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "706df063-477f-4c35-9dfe-be41ff8511de"
+            }
           },
           {
+            "id": "20cedf76-8302-4581-95e9-4258d9af56d9",
             "name": "nom",
             "comment": "",
             "dataType": "VARCHAR(255)",
@@ -376,10 +378,10 @@
               "widthComment": 60,
               "widthDataType": 90.02290344238281,
               "widthDefault": 60
-            },
-            "id": "20cedf76-8302-4581-95e9-4258d9af56d9"
+            }
           },
           {
+            "id": "088c95a9-12bb-4a15-91cc-3c3bb55deb84",
             "name": "date_creation",
             "comment": "",
             "dataType": "DATETIME",
@@ -399,26 +401,26 @@
               "widthComment": 60,
               "widthDataType": 63.736968994140625,
               "widthDefault": 138.07090759277344
-            },
-            "id": "088c95a9-12bb-4a15-91cc-3c3bb55deb84"
+            }
           }
         ],
         "ui": {
           "active": false,
           "left": 873.244,
           "top": 280.4667,
-          "zIndex": 282,
+          "zIndex": 7,
           "widthName": 60,
           "widthComment": 60
         },
-        "visible": true,
-        "id": "add9b4f0-0ee0-4ccf-a794-48fd7b325672"
+        "visible": true
       },
       {
+        "id": "dc8f3e54-7b77-4d24-96b8-f8d7dfd776dd",
         "name": "joueur_NBA",
         "comment": "",
         "columns": [
           {
+            "id": "f893f318-fb55-4f6a-a457-bddc065aa942",
             "name": "id",
             "comment": "",
             "dataType": "INTEGER",
@@ -438,10 +440,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "f893f318-fb55-4f6a-a457-bddc065aa942"
+            }
           },
           {
+            "id": "0ac21959-5e50-4f9b-8918-0e8375fc8e0f",
             "name": "equipeNBA_id",
             "comment": "",
             "dataType": "INTEGER",
@@ -461,10 +463,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "0ac21959-5e50-4f9b-8918-0e8375fc8e0f"
+            }
           },
           {
+            "id": "fee2a21c-fd57-4ee6-97ee-c64f09c749a1",
             "name": "nom",
             "comment": "",
             "dataType": "VARCHAR(255)",
@@ -484,10 +486,10 @@
               "widthComment": 60,
               "widthDataType": 90.02290344238281,
               "widthDefault": 60
-            },
-            "id": "fee2a21c-fd57-4ee6-97ee-c64f09c749a1"
+            }
           },
           {
+            "id": "abd0cbdf-0724-400a-b54b-0263b7b16961",
             "name": "prenom",
             "comment": "",
             "dataType": "VARCHAR(255)",
@@ -507,49 +509,26 @@
               "widthComment": 60,
               "widthDataType": 90.02290344238281,
               "widthDefault": 60
-            },
-            "id": "abd0cbdf-0724-400a-b54b-0263b7b16961"
-          },
-          {
-            "name": "position",
-            "comment": "",
-            "dataType": "VARCHAR(255)",
-            "default": "",
-            "option": {
-              "autoIncrement": false,
-              "primaryKey": false,
-              "unique": false,
-              "notNull": false
-            },
-            "ui": {
-              "active": false,
-              "pk": false,
-              "fk": false,
-              "pfk": false,
-              "widthName": 60,
-              "widthComment": 60,
-              "widthDataType": 90.02290344238281,
-              "widthDefault": 60
-            },
-            "id": "bb350057-fc78-4987-8e5c-bf5f50f5d992"
+            }
           }
         ],
         "ui": {
-          "active": false,
+          "active": true,
           "left": 906.1764,
           "top": 903.4669,
-          "zIndex": 227,
+          "zIndex": 10,
           "widthName": 74.39691162109375,
           "widthComment": 60
         },
-        "visible": true,
-        "id": "dc8f3e54-7b77-4d24-96b8-f8d7dfd776dd"
+        "visible": true
       },
       {
+        "id": "0ffe6fc4-4570-4b2e-a11a-727c75365e2f",
         "name": "score_equipe",
         "comment": "",
         "columns": [
           {
+            "id": "bc1f5e24-f259-4a98-a006-f82f5181e545",
             "name": "id",
             "comment": "",
             "dataType": "INTEGER",
@@ -569,10 +548,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "bc1f5e24-f259-4a98-a006-f82f5181e545"
+            }
           },
           {
+            "id": "09459d44-b48c-45d1-9f95-cc0f78278fe4",
             "name": "equipe",
             "comment": "",
             "dataType": "INTEGER",
@@ -592,10 +571,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "09459d44-b48c-45d1-9f95-cc0f78278fe4"
+            }
           },
           {
+            "id": "30ca4e59-20c0-43b1-8ebe-b5b2d5b727fe",
             "name": "score_quipe",
             "comment": "",
             "dataType": "INTEGER",
@@ -615,10 +594,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "30ca4e59-20c0-43b1-8ebe-b5b2d5b727fe"
+            }
           },
           {
+            "id": "ef8fbf99-cdaf-4246-94da-3852ab2975aa",
             "name": "date_creation",
             "comment": "",
             "dataType": "DATETIME",
@@ -638,26 +617,26 @@
               "widthComment": 60,
               "widthDataType": 63.736968994140625,
               "widthDefault": 138.07090759277344
-            },
-            "id": "ef8fbf99-cdaf-4246-94da-3852ab2975aa"
+            }
           }
         ],
         "ui": {
           "active": false,
           "left": 1476.8887,
           "top": 288.5777,
-          "zIndex": 276,
+          "zIndex": 6,
           "widthName": 82.58688354492188,
           "widthComment": 60
         },
-        "visible": true,
-        "id": "0ffe6fc4-4570-4b2e-a11a-727c75365e2f"
+        "visible": true
       },
       {
+        "id": "f95d40aa-0f1e-40c4-a6c2-a0214052a823",
         "name": "score_joueur",
         "comment": "",
         "columns": [
           {
+            "id": "57d2f60e-fb9e-42a8-9d3b-59e0cdb8ad03",
             "name": "id",
             "comment": "",
             "dataType": "INTEGER",
@@ -677,10 +656,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "57d2f60e-fb9e-42a8-9d3b-59e0cdb8ad03"
+            }
           },
           {
+            "id": "2df03d86-617f-4a2a-a5d7-8e7350a87092",
             "name": "joueur_NBA",
             "comment": "",
             "dataType": "INTEGER",
@@ -700,10 +679,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "2df03d86-617f-4a2a-a5d7-8e7350a87092"
+            }
           },
           {
+            "id": "a409ace7-36ec-4c60-9e42-354031f301a9",
             "name": "score_equipe",
             "comment": "",
             "dataType": "INTEGER",
@@ -723,10 +702,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "a409ace7-36ec-4c60-9e42-354031f301a9"
+            }
           },
           {
+            "id": "ee3e3521-d04d-41ef-8130-587e0d558055",
             "name": "score_joueur",
             "comment": "",
             "dataType": "INTEGER",
@@ -746,10 +725,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "ee3e3521-d04d-41ef-8130-587e0d558055"
+            }
           },
           {
+            "id": "10e76f08-b5ba-438c-99f4-da1ee98db166",
             "name": "date_creation",
             "comment": "",
             "dataType": "DATETIME",
@@ -769,26 +748,26 @@
               "widthComment": 60,
               "widthDataType": 63.736968994140625,
               "widthDefault": 138.07090759277344
-            },
-            "id": "10e76f08-b5ba-438c-99f4-da1ee98db166"
+            }
           }
         ],
         "ui": {
           "active": false,
           "left": 1475.1556,
           "top": 676.0895,
-          "zIndex": 271,
+          "zIndex": 5,
           "widthName": 80.53288269042969,
           "widthComment": 60
         },
-        "visible": true,
-        "id": "f95d40aa-0f1e-40c4-a6c2-a0214052a823"
+        "visible": true
       },
       {
+        "id": "ba439113-390e-423d-929f-ed807b5837c2",
         "name": "lien_equipe_joueurNBA",
         "comment": "",
         "columns": [
           {
+            "id": "18e2b154-33bf-4fc5-89bb-b5b82d25a7db",
             "name": "joueur_NBA",
             "comment": "",
             "dataType": "INTEGER",
@@ -808,10 +787,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "18e2b154-33bf-4fc5-89bb-b5b82d25a7db"
+            }
           },
           {
+            "id": "8da881eb-b607-4764-b892-f5e88d82b856",
             "name": "equipe",
             "comment": "",
             "dataType": "INTEGER",
@@ -831,26 +810,26 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "8da881eb-b607-4764-b892-f5e88d82b856"
+            }
           }
         ],
         "ui": {
-          "active": true,
+          "active": false,
           "left": 914.879,
           "top": 628.7462,
-          "zIndex": 290,
+          "zIndex": 9,
           "widthName": 144.28480529785156,
           "widthComment": 60
         },
-        "visible": true,
-        "id": "ba439113-390e-423d-929f-ed807b5837c2"
+        "visible": true
       },
       {
+        "id": "3da20da5-e162-415e-a4b4-f438a04495a5",
         "name": "lien_utilisateur_ligue",
         "comment": "",
         "columns": [
           {
+            "id": "6fd3c165-4702-4651-a4ba-fc508998b749",
             "name": "utilisateur",
             "comment": "",
             "dataType": "INTEGER",
@@ -870,10 +849,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "6fd3c165-4702-4651-a4ba-fc508998b749"
+            }
           },
           {
+            "id": "04c6a177-4ec3-45d9-8131-23cf4b2a8c6a",
             "name": "ligue",
             "comment": "",
             "dataType": "INTEGER",
@@ -893,26 +872,26 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "04c6a177-4ec3-45d9-8131-23cf4b2a8c6a"
+            }
           }
         ],
         "ui": {
           "active": false,
           "left": 247.3558,
           "top": 402.3775,
-          "zIndex": 287,
+          "zIndex": 8,
           "widthName": 127.42379760742188,
           "widthComment": 60
         },
-        "visible": true,
-        "id": "3da20da5-e162-415e-a4b4-f438a04495a5"
+        "visible": true
       },
       {
+        "id": "8d06ed3b-f256-4204-866a-7669da6714b9",
         "name": "equipe_NBA",
         "comment": "",
         "columns": [
           {
+            "id": "71e5286c-6a7e-42e7-82a1-f6ad6c3c3d53",
             "name": "id",
             "comment": "",
             "dataType": "INTEGER",
@@ -932,10 +911,10 @@
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
-            },
-            "id": "71e5286c-6a7e-42e7-82a1-f6ad6c3c3d53"
+            }
           },
           {
+            "id": "08cdde15-90c6-475f-b1bd-c8ae340372db",
             "name": "nom",
             "comment": "",
             "dataType": "VARCHAR(255)",
@@ -955,10 +934,10 @@
               "widthComment": 60,
               "widthDataType": 90.02290344238281,
               "widthDefault": 60
-            },
-            "id": "08cdde15-90c6-475f-b1bd-c8ae340372db"
+            }
           },
           {
+            "id": "ab28f185-e4d1-499a-bc69-c0bf3dedb1c3",
             "name": "abbreviation",
             "comment": "",
             "dataType": "VARCHAR(255)",
@@ -978,10 +957,10 @@
               "widthComment": 60,
               "widthDataType": 90.02290344238281,
               "widthDefault": 60
-            },
-            "id": "ab28f185-e4d1-499a-bc69-c0bf3dedb1c3"
+            }
           },
           {
+            "id": "11f1e5a4-314b-4bf8-805b-4955d3db3dfe",
             "name": "ville",
             "comment": "",
             "dataType": "VARCHAR(255)",
@@ -1001,20 +980,18 @@
               "widthComment": 60,
               "widthDataType": 90.02290344238281,
               "widthDefault": 60
-            },
-            "id": "11f1e5a4-314b-4bf8-805b-4955d3db3dfe"
+            }
           }
         ],
         "ui": {
           "active": false,
           "left": 270.4125,
           "top": 913,
-          "zIndex": 48,
+          "zIndex": 1,
           "widthName": 76.45091247558594,
           "widthComment": 60
         },
-        "visible": true,
-        "id": "8d06ed3b-f256-4204-866a-7669da6714b9"
+        "visible": true
       }
     ],
     "indexes": []
@@ -1025,6 +1002,7 @@
   "relationship": {
     "relationships": [
       {
+        "id": "9d9b6b82-9f47-4cbe-96ee-d7efac55f2f3",
         "identification": false,
         "relationshipType": "OneN",
         "startRelationshipType": "Dash",
@@ -1047,10 +1025,10 @@
           "direction": "top"
         },
         "constraintName": "fk_utilisateur_to_lienutilisateurligue",
-        "visible": true,
-        "id": "9d9b6b82-9f47-4cbe-96ee-d7efac55f2f3"
+        "visible": true
       },
       {
+        "id": "66e7904a-f9d1-426e-9cbf-4f6bc47fc44d",
         "identification": false,
         "relationshipType": "OneN",
         "startRelationshipType": "Dash",
@@ -1073,10 +1051,10 @@
           "direction": "bottom"
         },
         "constraintName": "fk_ligue_to_lienutilisateurligue",
-        "visible": true,
-        "id": "66e7904a-f9d1-426e-9cbf-4f6bc47fc44d"
+        "visible": true
       },
       {
+        "id": "af707224-a0cb-4485-a240-b1b8b0dbac66",
         "identification": false,
         "relationshipType": "OneN",
         "startRelationshipType": "Dash",
@@ -1099,10 +1077,10 @@
           "direction": "left"
         },
         "constraintName": "fk_ligue_to_equipe",
-        "visible": true,
-        "id": "af707224-a0cb-4485-a240-b1b8b0dbac66"
+        "visible": true
       },
       {
+        "id": "422c1ef6-b88d-4499-8536-8cb7b051ef86",
         "identification": false,
         "relationshipType": "OneN",
         "startRelationshipType": "Dash",
@@ -1125,10 +1103,10 @@
           "direction": "bottom"
         },
         "constraintName": "fk_joueur_to_lienequipejoueur",
-        "visible": true,
-        "id": "422c1ef6-b88d-4499-8536-8cb7b051ef86"
+        "visible": true
       },
       {
+        "id": "86a58f2d-3957-42ef-8893-76b738694d19",
         "identification": false,
         "relationshipType": "OneN",
         "startRelationshipType": "Dash",
@@ -1151,10 +1129,10 @@
           "direction": "top"
         },
         "constraintName": "fk_equipe_to_lienequipejoueur",
-        "visible": true,
-        "id": "86a58f2d-3957-42ef-8893-76b738694d19"
+        "visible": true
       },
       {
+        "id": "99859ce6-1960-43a4-8c50-493dd4ee2996",
         "identification": false,
         "relationshipType": "OneN",
         "startRelationshipType": "Dash",
@@ -1177,10 +1155,10 @@
           "direction": "left"
         },
         "constraintName": "fk_equipe_to_historiquescore",
-        "visible": true,
-        "id": "99859ce6-1960-43a4-8c50-493dd4ee2996"
+        "visible": true
       },
       {
+        "id": "da52ffdc-7fdd-4619-a356-e3a1d1996d25",
         "identification": false,
         "relationshipType": "OneN",
         "startRelationshipType": "Dash",
@@ -1203,10 +1181,10 @@
           "direction": "left"
         },
         "constraintName": "fk_utilisateur_to_equipe",
-        "visible": true,
-        "id": "da52ffdc-7fdd-4619-a356-e3a1d1996d25"
+        "visible": true
       },
       {
+        "id": "838fd4f8-19a6-4aa8-a249-d9386a8ebf4f",
         "identification": false,
         "relationshipType": "OneN",
         "startRelationshipType": "Dash",
@@ -1225,14 +1203,14 @@
             "0ac21959-5e50-4f9b-8918-0e8375fc8e0f"
           ],
           "x": 906.1764,
-          "y": 989.2169,
+          "y": 978.9669,
           "direction": "left"
         },
         "constraintName": "fk_equipenba_to_joueurnba",
-        "visible": true,
-        "id": "838fd4f8-19a6-4aa8-a249-d9386a8ebf4f"
+        "visible": true
       },
       {
+        "id": "f7e361f8-10fe-43c1-b1c0-2caf10987765",
         "identification": false,
         "relationshipType": "OneN",
         "startRelationshipType": "Dash",
@@ -1242,7 +1220,7 @@
             "f893f318-fb55-4f6a-a457-bddc065aa942"
           ],
           "x": 1357.999199682617,
-          "y": 989.2169,
+          "y": 978.9669,
           "direction": "right"
         },
         "end": {
@@ -1255,10 +1233,10 @@
           "direction": "left"
         },
         "constraintName": "fk_joueurnba_to_scorejoueur",
-        "visible": true,
-        "id": "f7e361f8-10fe-43c1-b1c0-2caf10987765"
+        "visible": true
       },
       {
+        "id": "d58842d9-fb7b-45a0-9f41-8f38cce9795c",
         "identification": false,
         "relationshipType": "OneN",
         "startRelationshipType": "Dash",
@@ -1281,8 +1259,7 @@
           "direction": "top"
         },
         "constraintName": "fk_historiquescore_to_scorejoueur",
-        "visible": true,
-        "id": "d58842d9-fb7b-45a0-9f41-8f38cce9795c"
+        "visible": true
       }
     ]
   }

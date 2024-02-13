@@ -9,6 +9,8 @@ import { errorHandler } from "./middleware/errorMiddleware";
 import { authenticate } from "./middleware/authMiddleware";
 import userRouter from "./routes/userRouter";
 import ligueRouter from "./routes/ligueRouter";
+import playerRouter from "./routes/playerRouter"
+import teamRouter from "./routes/teamRouter"
 import helmet from "helmet";
 
 dotenv.config();
@@ -48,6 +50,8 @@ app.listen(port, () => {
 app.use(authRouter);
 app.use("/users", authenticate, userRouter);
 app.use("/ligues", authenticate, ligueRouter);
+app.use("/players", playerRouter);
+app.use("/teams", teamRouter);
 app.use(errorHandler);
 
 configDB.connectUserDB();
