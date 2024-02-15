@@ -16,7 +16,6 @@ class Player {
 
     static async save(player: IPlayer): Promise<number> {
         try {
-            console.log(player)
             const [rows, fields] = await configDB.execute(
                 'INSERT INTO joueur_NBA (id, equipeNBA_id, nom, prenom) VALUES (?,?,?,?);',
                 [player.id, player.equipeNBA_id, player.nom, player.prenom]
@@ -27,20 +26,20 @@ class Player {
             console.error('Error inserting player in database', error);
             return 0;
         }
-        }
+    }
 
     static async findById(playerId: string): Promise<Player | null> {
-    try {
-        // Construisez la requête SQL pour sélectionner le joueur par ID
-        let query = `SELECT * FROM joueur_NBA WHERE id = ?`;
-        // Exécutez la requête avec l'ID fourni
-        const [rows] = await configDB.execute(query, [playerId]);
-        // Si des lignes sont renvoyées, créez un nouvel objet User avec les données de la première ligne
-        return rows.length ? new Player(rows[0]) : null;
-    } catch (error) {
-        console.error('Error finding player by ID:', error);
-        return null
-    }
+        try {
+            // Construisez la requête SQL pour sélectionner le joueur par ID
+            let query = `SELECT * FROM joueur_NBA WHERE id = ?`;
+            // Exécutez la requête avec l'ID fourni
+            const [rows] = await configDB.execute(query, [playerId]);
+            // Si des lignes sont renvoyées, créez un nouvel objet User avec les données de la première ligne
+            return rows.length ? new Player(rows[0]) : null;
+        } catch (error) {
+            console.error('Error finding player by ID:', error);
+            return null
+        }
     }
 
     static async getLast5Match(playerId: string): Promise<string | null> {
