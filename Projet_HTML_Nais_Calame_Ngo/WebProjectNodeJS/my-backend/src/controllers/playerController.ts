@@ -46,6 +46,7 @@ const importAllPlayersToBDD = async (req: Request, res: Response) => {
     for (let index = 0; index < nb_players; index++) {
         // extract data from JSON 
         var player = player_list.resultSets[0].rowSet[index]
+        
         const id = player[0]
         const equipeNBA_id = player[8]
         const nom_prenom = player[2].split(" ");
@@ -54,8 +55,7 @@ const importAllPlayersToBDD = async (req: Request, res: Response) => {
 
         player = new Player({id,equipeNBA_id,nom,prenom})
         result_list.push(player)
-
-        Player.save(player)
+        Player.save(player.player)
     }
 
     if (!player_list) {

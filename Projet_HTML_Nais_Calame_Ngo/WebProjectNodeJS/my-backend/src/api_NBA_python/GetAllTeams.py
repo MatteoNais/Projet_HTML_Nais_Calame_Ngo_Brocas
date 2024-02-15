@@ -1,11 +1,12 @@
 from nba_api.stats.endpoints import *
 from nba_api.stats.library.parameters import *
-
+from nba_api.stats.static import *
 import sys 
+import json
 
-# Get all NBA player from this season
-team = commonteamroster
-players = commonallplayers.CommonAllPlayers(season=Season.current_season, league_id=LeagueID.nba, is_only_current_season=1)
+# Get all NBA teams
+team = teams.get_teams()
+team = json.dumps(team)
 
 # return Json response on STDOUT stream
-print(team.get_json())
+print(team)

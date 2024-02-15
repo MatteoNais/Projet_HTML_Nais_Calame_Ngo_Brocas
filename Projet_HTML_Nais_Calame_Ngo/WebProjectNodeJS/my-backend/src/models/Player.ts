@@ -1,7 +1,5 @@
 import configDB from '../connections/configDB';
 
-
-
 export interface IPlayer {
     id: number;
     equipeNBA_id: number;
@@ -18,6 +16,7 @@ class Player {
 
     static async save(player: IPlayer): Promise<number> {
         try {
+            console.log(player)
             const [rows, fields] = await configDB.execute(
                 'INSERT INTO joueur_NBA (id, equipeNBA_id, nom, prenom) VALUES (?,?,?,?);',
                 [player.id, player.equipeNBA_id, player.nom, player.prenom]
