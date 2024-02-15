@@ -11,7 +11,9 @@ import userRouter from "./routes/userRouter";
 import ligueRouter from "./routes/ligueRouter";
 import playerRouter from "./routes/playerRouter"
 import teamRouter from "./routes/teamRouter"
+import equipeRouter from "./routes/equipeRouter"
 import helmet from "helmet";
+import Equipe from './models/Equipe';
 
 dotenv.config();
 
@@ -50,8 +52,9 @@ app.listen(port, () => {
 app.use(authRouter);
 app.use("/users", authenticate, userRouter);
 app.use("/ligues", authenticate, ligueRouter);
-app.use("/players", playerRouter);
-app.use("/teams", teamRouter);
+app.use("/playersNBA", playerRouter);
+app.use("/teamsNBA", teamRouter);
+app.use("/equipe", authenticate, equipeRouter);
 app.use(errorHandler);
 
 configDB.connectUserDB();
