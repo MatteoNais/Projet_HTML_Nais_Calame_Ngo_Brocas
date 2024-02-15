@@ -16,11 +16,8 @@ class Equipe {
     
     static async getEquipeById(equipe_id: string): Promise<Equipe | null> {
         try {
-            // Construisez la requête SQL pour sélectionner le joueur par ID
             let query = `SELECT * FROM equipe WHERE id = ?`;
-            // Exécutez la requête avec l'ID fourni
             const [rows] = await configDB.execute(query, [equipe_id]);
-            // Si des lignes sont renvoyées, créez un nouvel objet User avec les données de la première ligne
             return rows.length ? new Equipe(rows[0]) : null;
         } catch (error) {
             console.error('Error finding equipe by ID:', error);
@@ -30,11 +27,8 @@ class Equipe {
 
     static async getEquipesByLigue(ligueId: string) {
         try {
-            // Construisez la requête SQL pour sélectionner le joueur par ID
             let query = `SELECT * FROM equipe WHERE ligue = ?`;
-            // Exécutez la requête avec l'ID fourni
             const [rows] = await configDB.execute(query, [ligueId]);
-            // Si des lignes sont renvoyées, créez un nouvel objet User avec les données de la première ligne
             return rows.length ? new Equipe(rows[0]) : null;
         } catch (error) {
             console.error('Error finding equipe by ligueID:', error);
@@ -44,11 +38,8 @@ class Equipe {
 
     static async getEquipesByUtilisateur(userId: string) {
         try {
-            // Construisez la requête SQL pour sélectionner le joueur par ID
             let query = `SELECT * FROM equipe WHERE utilisateur = ?`;
-            // Exécutez la requête avec l'ID fourni
             const [rows] = await configDB.execute(query, [userId]);
-            // Si des lignes sont renvoyées, créez un nouvel objet User avec les données de la première ligne
             return rows.length ? new Equipe(rows[0]) : null;
         } catch (error) {
             console.error('Error finding equipe by ligueID:', error);
@@ -72,9 +63,24 @@ class Equipe {
 
     static async addJoueurNBA(equipe_id: string,id_joueur: string): Promise<string> {
         try {
-            const [rows, fields] = await configDB.execute(
-                'INSERT INTO lien_equipe_joueur (joueur_NBA, equipe) VALUES (?,?);',
-                [id_joueur, equipe_id]
+            // Check si joueur deja relé a cette equipe
+            let query = `SELECT * FROM lien_equipe_joueur WHERE equipe = ? and joueur_NBA = ?`
+            var [rows] = await configDB.execute(query, [equipe_id, id_joueur]);
+            if (rows.length > 0) {
+                return "error: there is this player in this equipe"
+            } 
+
+
+            // Check si moins de 10 joueurs
+            query = `SELECT * FROM lien_equipe_joueur WHERE equipe = ?`;
+            var [rows] = await configDB.execute(query, [equipe_id]);
+            console.log(rows.length)
+            if (rows.length > 9) {
+                return "error: there is already 10 NBA players for this equipe"
+            } 
+            
+            query = 'INSERT INTO lien_equipe_joueur (joueur_NBA, equipe) VALUES (?,?);'
+            var [rows, fields] = await configDB.execute(query, [id_joueur, equipe_id]
             );
             return "success";
             
