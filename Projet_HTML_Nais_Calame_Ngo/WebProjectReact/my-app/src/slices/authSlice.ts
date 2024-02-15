@@ -77,6 +77,16 @@ export const getUser = createAsyncThunk(
     }
 );
 
+/*export const getUserByIdLigue = createAsyncThunk(
+    "ligue/users",
+    async (id_ligue: string) => {
+        const response = await axiosInstance.get(
+            `/users/ligue/${id_ligue}`
+        );
+        return response.data;
+    }
+);*/
+
 const authSlice = createSlice({
     name: "auth",
     initialState,
