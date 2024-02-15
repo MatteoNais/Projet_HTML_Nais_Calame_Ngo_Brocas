@@ -42,6 +42,19 @@ class User {
         return rows.length ? new User(rows[0]) : null;
     }
 
+    static async findUsersByLigueId(idLigue: string): Promise<User | null> {
+        try {
+            let query = `SELECT id, username FROM utilisateurs 
+            INNER JOIN lien_utilisateur_ligue ON utilisateurs.id = lien_utilisateur_ligue.utilisateur 
+            WHERE lien_utilisateur_ligue.ligue = ?`;
+            const [rows] = await configDB.execute(query, [idLigue]);
+            return rows.length ? new User(rows) : null;
+        } catch (error) {
+            console.error('Error finding user by ID:', error);
+            return null;
+        }
+    }
+
     static async findById(userId: string, fields: string): Promise<User | null> {
         try {
             // Construisez la requête SQL pour sélectionner l'utilisateur par ID

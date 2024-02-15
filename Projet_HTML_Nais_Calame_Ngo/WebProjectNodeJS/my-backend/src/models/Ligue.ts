@@ -29,7 +29,6 @@ class Ligue {
     static async findLiguesByUserId(id: string): Promise<Ligue | null> {
         const [rows] = await configDB.execute('SELECT ligues.* FROM ligues JOIN lien_utilisateur_ligue ON ligues.id = lien_utilisateur_ligue.ligue WHERE lien_utilisateur_ligue.utilisateur = ?;', [id]);
         const ligues = rows.map((row: any) => new Ligue(row));
-
         return ligues;
     }
 
@@ -40,15 +39,15 @@ class Ligue {
             // Si la ligue n'existe pas, retournez null
             return null;
         }
-        const ligueId = ligueRows[0].id; 
-        
+        const ligueId = ligueRows[0].id;
+
         // Vérifiez si l'utilisateur est déjà inscrit dans cette ligue
         const [existingRows] = await configDB.execute('SELECT * FROM lien_utilisateur_ligue WHERE utilisateur = ? AND ligue = ?;', [id_user, ligueId]);
         if (existingRows.length > 0) {
             // Si l'utilisateur est déjà inscrit, retournez null
             return null;
         }
-        
+
         // Créer le lien entre la ligue et l'utilisateur
         const [insertRows] = await configDB.execute('INSERT INTO lien_utilisateur_ligue (ligue, utilisateur) VALUES (?,?);', [ligueId, id_user]);
         if (insertRows.affectedRows === 1) {
@@ -66,7 +65,7 @@ class Ligue {
         try {
             // Étape 1 : Générer le code_acces aléatoirement
             const [randomCodeRows] = await configDB.execute('SELECT generateRandomCode();', []);
-            
+
             // Vérifier si la génération du code_acces a réussi
             if (randomCodeRows.length > 0) {
                 // Récupérer le code_acces généré
