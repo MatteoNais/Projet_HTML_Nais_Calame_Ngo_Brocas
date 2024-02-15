@@ -54,7 +54,7 @@ app.use("/users", authenticate, userRouter);
 app.use("/ligues", authenticate, ligueRouter);
 app.use("/playersNBA", playerRouter);
 app.use("/teamsNBA", teamRouter);
-app.use("/equipe", authenticate, equipeRouter);
+app.use("/equipe", equipeRouter);
 app.use(errorHandler);
 
 configDB.connectUserDB();
