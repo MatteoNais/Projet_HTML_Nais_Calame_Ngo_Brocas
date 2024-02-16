@@ -15,6 +15,7 @@ function AccueilLigue() {
     useEffect(() => {
         axiosInstance.get(`/users/ligue/${ligueId}`) // Remplacez par l'URL de votre API
             .then(response => {
+                console.log(response.data.user);
                 setUsers(response.data.user);
             })
             .catch(error => console.error('Error:', error));
@@ -25,10 +26,8 @@ function AccueilLigue() {
     if (ligueId) {
         return (
             <div className="body">
-                <body className='App-body'>
+                <div className='App-body-ligue'>
                     <h1> Page Accueil Ligue</h1>
-                    <p> Id de la ligue : {ligueId}</p>
-
                     <Grid container component="main" spacing={2}>
                         <Grid item xs={12} md={6}>
                             <Paper elevation={2} sx={{
@@ -38,7 +37,7 @@ function AccueilLigue() {
                                 flexDirection: 'column',
                                 alignItems: 'center',
                             }}>
-                                <h2 style={{ color: 'white', backgroundColor: 'orange', width: '100%' }}>Classement</h2>
+                                <h2 style={{ color: 'white', backgroundColor: 'orange', width: '100%', textAlign: 'center' }}>Classement</h2>
                                 <TableContainer component={Paper}>
                                     <Table>
                                         <TableHead>
@@ -68,7 +67,7 @@ function AccueilLigue() {
                             </Paper>
                         </Grid>
                     </Grid>
-                </body>
+                </div>
             </div>
         );
     }

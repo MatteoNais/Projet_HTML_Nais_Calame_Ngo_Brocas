@@ -15,6 +15,7 @@ import DefaultLayout from "./layouts/DefaultLayout";
 import ProtectedLayout from "./layouts/ProtectedLayout";
 import MesLigues from './pages/MesLigues';
 import AccueilLigue from './pages/AccueilLigue';
+import HeaderLigue from './pages/HeaderLigue';
 export default function App() {
     return (
         <Routes>
@@ -31,10 +32,9 @@ export default function App() {
                         path="team/:teamId"
                         element={<Team />}
                     />
-                    <Route
-                        path="ligue/:ligueId"
-                        element={<AccueilLigue />}
-                    />
+                </Route>
+                <Route path="/ligue/:ligueId/" element={<HeaderLigue />}>
+                    <Route index element={<AccueilLigue />} />
                 </Route>
             </Route>
         </Routes>

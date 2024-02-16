@@ -15,13 +15,13 @@ function Ligues() {
     const [userId, setUserId] = useState(""); // Utilisez le hook useState
     const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
     const liguesState = useAppSelector((state) => state.ligueArray);
-    
+
     useEffect(() => {
         if (basicUserInfo) {
             dispatch(getMyLigues(basicUserInfo.id));
             setUserId(basicUserInfo.id);
         }
-       
+
     }, [basicUserInfo, dispatch]);
 
     const handleCreateLigue = async () => {
@@ -80,7 +80,7 @@ function Ligues() {
                                             <Typography variant="h4" sx={{ color: 'orange', textAlign: 'left', marginRight: 10 }}>
                                                 {ligueData.ligue.nom}
                                             </Typography>
-                                            <Link to={`/ligue/${ligueData.ligue.id}`} key={ligueData.ligue.id}>
+                                            <Link to={`/ligue/${ligueData.ligue.id}/`} key={ligueData.ligue.id}>
                                                 <Button variant="contained" disableElevation >
                                                     <b>&rarr;</b>
                                                 </Button>

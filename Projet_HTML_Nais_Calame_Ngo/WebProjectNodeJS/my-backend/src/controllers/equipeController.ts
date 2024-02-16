@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Equipe , {IEquipe } from "../models/Equipe";
+import Equipe, { IEquipe } from "../models/Equipe";
 
 const createEquipe = async (req: Request, res: Response) => {
     try {
@@ -7,12 +7,11 @@ const createEquipe = async (req: Request, res: Response) => {
         const ligue = req.body.ligue
         const utilisateur = req.body.utilisateur
         const nom = req.body.nom
-    
+
         const result = await Equipe.create(ligue, utilisateur, nom);
-    
-        res.status(200).json(result); 
+        res.status(200).json(result);
     } catch (error) {
-        res.status(400).json(error);; 
+        res.status(400).json(error);;
     }
 
 };
@@ -30,7 +29,7 @@ const getEquipeById = async (req: Request, res: Response) => {
 
 const getEquipesByLigue = async (req: Request, res: Response) => {
     const ligueId = req.params.ligue_id.toString();
-    
+
     if (ligueId === null || ligueId === undefined) {
         return res.status(400).json({ message: "Invalid equipe ID" });
     }
@@ -41,7 +40,7 @@ const getEquipesByLigue = async (req: Request, res: Response) => {
 
 const getEquipesByUtilisateur = async (req: Request, res: Response) => {
     const userId = req.params.utilisateur_id.toString();
-    
+
     if (userId === null || userId === undefined) {
         return res.status(400).json({ message: "Invalid equipe ID" });
     }
@@ -57,7 +56,7 @@ const addJoueurNBA = async (req: Request, res: Response) => {
     if (joueurID === null || joueurID === undefined) {
         return res.status(400).json({ message: "Invalid NBA player ID" });
     }
-    const result = await Equipe.addJoueurNBA(equipeId,joueurID);
+    const result = await Equipe.addJoueurNBA(equipeId, joueurID);
 
     res.status(200).json(result);
 };
@@ -69,7 +68,7 @@ const removeJoueurNBA = async (req: Request, res: Response) => {
     if (joueurID === null || joueurID === undefined) {
         return res.status(400).json({ message: "Invalid NBA player ID" });
     }
-    const result = await Equipe.removeJoueurNBA(equipeId,joueurID);
+    const result = await Equipe.removeJoueurNBA(equipeId, joueurID);
 
     res.status(200).json(result);
 };
@@ -82,7 +81,7 @@ const replaceJoueurNBA = async (req: Request, res: Response) => {
     if (NEWjoueurID === null || NEWjoueurID === undefined || OLDjoueurID === null || OLDjoueurID === undefined) {
         return res.status(400).json({ message: "Invalid NBA player ID" });
     }
-    const result = await Equipe.replaceJoueurNBA(equipeId,NEWjoueurID, OLDjoueurID);
+    const result = await Equipe.replaceJoueurNBA(equipeId, NEWjoueurID, OLDjoueurID);
 
     res.status(200).json(result);
 };
@@ -101,4 +100,4 @@ const getHistorique = async (req: Request, res: Response) => {
 
 
 
-export {getEquipeById, getEquipesByUtilisateur, addJoueurNBA, removeJoueurNBA, replaceJoueurNBA, getHistorique, createEquipe, getEquipesByLigue};
+export { getEquipeById, getEquipesByUtilisateur, addJoueurNBA, removeJoueurNBA, replaceJoueurNBA, getHistorique, createEquipe, getEquipesByLigue };
