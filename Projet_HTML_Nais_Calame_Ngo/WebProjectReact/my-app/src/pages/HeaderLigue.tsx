@@ -69,10 +69,16 @@ function HeaderLigue() {
             <Grid container className="grid-container" justifyContent="center" alignItems="center">
                 <Grid item className="grid-item">
                     <Box sx={{ display: 'flex', gap: '5vh', flexWrap: 'wrap', justifyContent: 'space-between', paddingLeft: '10vh', paddingRight: '10vh' }}>
-                        <h3> {ligueId}</h3>
-                        <Link to={`/ligue/${ligueId}/`}> <Button variant="contained" sx={{ background: '#E36414' }}>Accueil</Button> </Link>
-                        <Link to={`/`}> <Button variant="contained" sx={{ background: '#E36414' }}>Mon Equipe</Button> </Link>
-                        <Link to={`/`}> <Button variant="contained" sx={{ background: '#E36414' }}>Draft</Button> </Link>
+                        <Typography variant="h3" sx={{ color: 'white' }}>{ligueId}</Typography>
+                        <Link to={`/ligue/${ligueId}/`} style={{ textDecoration: 'none' }}>
+                            <Typography variant="h3" sx={{ color: 'white' }}>Accueil</Typography>
+                        </Link>
+                        <Link to={`/`} style={{ textDecoration: 'none' }}>
+                            <Typography variant="h3" sx={{ color: 'white' }}>Mon Equipe</Typography>
+                        </Link>
+                        <Link to={`/`} style={{ textDecoration: 'none' }}>
+                            <Typography variant="h3" sx={{ color: 'white' }}>Draft</Typography>
+                        </Link>
                     </Box>
                 </Grid>
             </Grid>
