@@ -1,82 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import './StylePages.css'
-import { useParams } from 'react-router-dom';
-import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import axiosInstance from "../api/axiosInstance";
-import User from '../objects/User';
-interface Params {
-    [ligueId: string]: string | undefined;
-}
-
+import React from 'react';
+import { Grid } from '@mui/material';
+import Classement from '../components/Classement';
+import './StylePages.css';
 function AccueilLigue() {
-    const { ligueId } = useParams<Params>();
-    const [users, setUsers] = useState<User[]>([]);
-
-    useEffect(() => {
-        axiosInstance.get(`/users/ligue/${ligueId}`) // Remplacez par l'URL de votre API
-            .then(response => {
-                console.log(response.data.user);
-                setUsers(response.data.user);
-            })
-            .catch(error => console.error('Error:', error));
-    }, []);
-
-
-
-    if (ligueId) {
-        return (
-            <div className="body">
-                <div className='App-body-ligue'>
-                    <h1> Page Accueil Ligue</h1>
-                    <Grid container component="main" spacing={2}>
-                        <Grid item xs={12} md={6}>
-                            <Paper elevation={2} sx={{
-                                my: 8,
-                                mx: 4,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                            }}>
-                                <h2 style={{ color: 'white', backgroundColor: 'orange', width: '100%', textAlign: 'center' }}>Classement</h2>
-                                <TableContainer component={Paper}>
-                                    <Table>
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>Username</TableCell>
-                                                <TableCell>Général</TableCell>
-                                                <TableCell>Semaine</TableCell>
-                                                <TableCell>Moyenne</TableCell>
-
-                                                {/* Add other table headers here */}
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            {users.map(user => (
-                                                <TableRow key={user.id}>
-                                                    <TableCell>{user.username}</TableCell>
-                                                    {/* Add other user information here */}
-                                                    <TableCell>N/A</TableCell>
-                                                    <TableCell>N/A</TableCell>
-                                                    <TableCell>N/A</TableCell>
-                                                </TableRow>
-
-                                            ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </Paper>
+    return (
+        <div className="body">
+            <div className='App-body-ligue'>
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        {/* Colonne de gauche */}
+                        <Grid item xs={12}>
+                            {/* Joueur on fire */}
+                        </Grid>
+                        <Grid item xs={12}>
+                            {/* Resultat des match NBA */}
                         </Grid>
                     </Grid>
-                </div>
+                    <Grid item xs={6}>
+                        {/* Classement des joueurs avec recap des points */}
+                        <Classement></Classement>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {/* Line that takes 15% of the space */}
+                    </Grid>
+                </Grid>
             </div>
-        );
-    }
-
-    else {
-        return (
-            <h1> pas de ligue de spécifier </h1>
-        );
-    }
+        </div>
+    );
 }
 
 export default AccueilLigue;

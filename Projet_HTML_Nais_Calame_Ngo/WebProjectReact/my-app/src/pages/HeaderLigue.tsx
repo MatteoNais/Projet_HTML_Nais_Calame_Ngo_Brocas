@@ -73,10 +73,10 @@ function HeaderLigue() {
                         <Link to={`/ligue/${ligueId}/`} style={{ textDecoration: 'none' }}>
                             <Typography variant="h3" sx={{ color: 'white' }}>Accueil</Typography>
                         </Link>
-                        <Link to={`/`} style={{ textDecoration: 'none' }}>
+                        <Link to={`/ligue/${ligueId}/${basicUserInfo?.id}`} style={{ textDecoration: 'none' }}>
                             <Typography variant="h3" sx={{ color: 'white' }}>Mon Equipe</Typography>
                         </Link>
-                        <Link to={`/`} style={{ textDecoration: 'none' }}>
+                        <Link to={`/ligue/${ligueId}/draft`} style={{ textDecoration: 'none' }}>
                             <Typography variant="h3" sx={{ color: 'white' }}>Draft</Typography>
                         </Link>
                     </Box>
