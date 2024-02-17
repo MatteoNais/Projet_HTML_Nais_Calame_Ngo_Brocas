@@ -67,6 +67,24 @@ class Player {
         }
     }
 
+    static async getPlayersInEquipeByUtilisateur(playerId: string, ligueId: string): Promise<Player | null> {
+        try {
+            let query = `SELECT joueur_NBA.id, joueur_NBA.nom, joueur_NBA.prenom
+            FROM
+                joueur_NBA
+                JOIN lien_equipe_joueur ON joueur_NBA.id = lien_equipe_joueur.joueur_NBA
+                JOIN equipe ON lien_equipe_joueur.equipe = equipe.id
+            WHERE
+                equipe.utilisateur = ? 
+                AND equipe.ligue = ?`;
+            const [rows] = await configDB.execute(query, [playerId, ligueId]);
+            return rows.length ? new Player(rows) : null;
+        } catch (error) {
+            console.error('Error finding all players:', error);
+            return null
+        }
+    }
+
     static async getLast5Match(playerId: string): Promise<string | null> {
         try {
             var spawn = require("child_process").spawn;

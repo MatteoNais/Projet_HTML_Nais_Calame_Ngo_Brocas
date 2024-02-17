@@ -13,7 +13,6 @@ const createEquipe = async (req: Request, res: Response) => {
     } catch (error) {
         res.status(400).json(error);;
     }
-
 };
 
 const getEquipeById = async (req: Request, res: Response) => {
