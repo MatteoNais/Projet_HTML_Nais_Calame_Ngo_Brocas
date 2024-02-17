@@ -16,9 +16,12 @@ function MonEquipeLigue() {
                     <Grid item xs={8} sx={{ marginLeft: 4, marginRight: 4 }}>
                         {/* Terrain avec compo equipe */}
                         <CarteJoueur joueurId={1641705}></CarteJoueur>
+
                     </Grid>
                     <Grid item xs={4} sx={{ marginLeft: 4, marginRight: 4 }}>
                         {/* remplaçant */}
+                        <CarteJoueur joueurId={2544}></CarteJoueur>
+
                     </Grid>
 
                 </Grid>

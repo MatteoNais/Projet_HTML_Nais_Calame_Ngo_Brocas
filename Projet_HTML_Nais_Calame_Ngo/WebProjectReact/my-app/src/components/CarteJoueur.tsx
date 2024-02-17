@@ -1,5 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardContent, Grid, Typography } from "@mui/material";
+import axiosInstance from "../api/axiosInstance";
+import JoueurStats from "../objects/JoueurStats";
+
+
+
 
 const CustomBadge = ({ content, children }: { content: any, children: any }) => (
     <div
@@ -14,7 +19,7 @@ const CustomBadge = ({ content, children }: { content: any, children: any }) => 
                 position: 'absolute',
                 top: 0,
                 right: 0,
-                transform: 'translate(30%, -30%)', // Déplacer le badge de moitié vers le haut et la droite
+                transform: 'translate(30%, -30%)',
                 backgroundColor: '#ff6a00', // Couleur de fond du badge
                 color: 'white', // Couleur du texte du badge
                 borderRadius: '50%', // Bord arrondi pour un aspect de badge
@@ -28,23 +33,35 @@ const CustomBadge = ({ content, children }: { content: any, children: any }) => 
 );
 
 function CarteJoueur({ joueurId }: { joueurId: number }) {
+
+    const [stats, setStats] = useState<JoueurStats>();
+    useEffect(() => {
+        axiosInstance.get(`/playersNBA/recentstats/${joueurId}`)
+            .then(response => {
+                console.log(response.data);
+                setStats(response.data);
+            })
+            .catch(error => console.error('Error:', error));
+    }, []);
+
     return (
+        // ici mettre le résultat du score du joueur, à l'intérieur du content
         <CustomBadge content={10}>
             <Card sx={{ backgroundColor: "white", border: "4px solid #ff6a00", height: "20vh", width: "30vh" }}>
                 <CardContent sx={{
-                    height: "100%", // Utilise 100% de la hauteur disponible
+                    height: "100%",
                 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={5}>
-                            <Typography variant="subtitle2" fontWeight="bold">
+                            <Typography variant="subtitle2" fontWeight="bold" >
                                 Cette semaine:
                             </Typography>
                             <ul style={{ fontSize: "1rem", padding: "0", margin: "0", listStyleType: "none" }}>
-                                <li>Stat 1</li>
-                                <li>Stat 2</li>
-                                <li>Stat 3</li>
-                                <li>Stat 4</li>
-                                <li>Stat 5</li>
+                                <li>{((stats?.PTS ?? 0) / (stats?.GP ?? 0)).toFixed(1)} pts</li>
+                                <li> {((stats?.AST ?? 0) / (stats?.GP ?? 0)).toFixed(1)} pds</li>
+                                <li> {((stats?.REB ?? 0) / (stats?.GP ?? 0)).toFixed(1)} rbs</li>
+                                <li> {((stats?.BLK ?? 0) / (stats?.GP ?? 0)).toFixed(1)} ctr</li>
+                                <li> {((stats?.STL ?? 0) / (stats?.GP ?? 0)).toFixed(1)} int</li>
                             </ul>
                         </Grid>
                         <Grid item xs={12} sm={7}>
@@ -53,10 +70,8 @@ function CarteJoueur({ joueurId }: { joueurId: number }) {
                                 alt="Image joueur"
                                 style={{ maxWidth: "100%", maxHeight: "100%", marginTop: "12%" }}
                             />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="subtitle1" fontWeight="bold" sx={{ textAlign: "center" }}>
-                                Nom du joueur
+                            <Typography variant="subtitle2" fontWeight="bold" sx={{ textAlign: "center", whiteSpace: "nowrap" }}>
+                                {stats?.prenom} {stats?.nom}
                             </Typography>
                         </Grid>
                     </Grid>

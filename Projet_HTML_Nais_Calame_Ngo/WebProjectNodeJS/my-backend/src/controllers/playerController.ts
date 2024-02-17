@@ -45,7 +45,6 @@ const getPlayers = async (req: Request, res: Response) => {
 
 const getRecentStats = async (req: Request, res: Response) => {
     const playerId = req.params.player_id.toString();
-
     if (playerId === null || playerId === undefined) {
         return res.status(400).json({ message: "Invalid player ID" });
     }
@@ -57,6 +56,19 @@ const getRecentStats = async (req: Request, res: Response) => {
     }
 
     res.status(200).json(playerstats);
+};
+
+const getPlayerFantaisyProfileById = async (req: Request, res: Response) => {
+    const playerId = req.params.player_id.toString();
+    console.log(playerId);
+    if (playerId === null || playerId === undefined) {
+        return res.status(400).json({ message: "Invalid player ID" });
+    }
+    const player = await Player.getPlayerFantaisyProfile(playerId);
+    if (!player) {
+        res.status(400);
+    }
+    res.status(200).json(player);
 };
 
 const importAllPlayersToBDD = async (req: Request, res: Response) => {
@@ -90,4 +102,4 @@ const importAllPlayersToBDD = async (req: Request, res: Response) => {
 };
 
 
-export { getPlayerbyID, getRecentStats, importAllPlayersToBDD, getPlayers, getPlayerbyIDTeam };
+export { getPlayerbyID, getRecentStats, importAllPlayersToBDD, getPlayers, getPlayerbyIDTeam, getPlayerFantaisyProfileById };

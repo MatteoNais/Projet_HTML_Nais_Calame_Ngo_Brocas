@@ -70,7 +70,7 @@ class Player {
     static async getLast5Match(playerId: string): Promise<string | null> {
         try {
             var spawn = require("child_process").spawn;
-            var process = spawn('python', ["./src/api_NBA_python/GetLastNGames.py", playerId, 5]);
+            var process = spawn('python', ["./src/api_NBA_python/GetLastNGames.py", playerId, '2024-02-10', '2024-02-17']);
 
             let data = "";
             for await (const chunk of process.stdout) {
@@ -80,8 +80,45 @@ class Player {
             for await (const chunk of process.stderr) {
                 error += chunk;
             }
+            const exitCode = await new Promise((resolve, reject) => {
+                process.on('close', resolve);
+            });
 
+            if (exitCode) {
+                throw new Error(`subprocess error exit ${exitCode}, ${error}`);
+            }
 
+            let query = `SELECT nom, prenom FROM joueur_NBA WHERE id = ?`;
+            const [rows] = await configDB.execute(query, [playerId]);
+
+            let lastConsoleLogData = JSON.parse(data);
+            data = {
+                ...lastConsoleLogData,
+                nom: rows[0].nom,
+                prenom: rows[0].prenom
+            };
+            return data;
+
+        } catch (error) {
+            console.error('Error finding user stats by ID:', error);
+            return null;
+        }
+    }
+
+    static async getPlayerFantaisyProfile(playerId: string): Promise<string | null> {
+        try {
+            console.log(playerId);
+            var spawn = require("child_process").spawn;
+            var process = spawn('python', ["./src/api_NBA_python/GetPlayerFantaisyProfile.py", playerId]);
+
+            let data = "";
+            for await (const chunk of process.stdout) {
+                data += chunk;
+            }
+            let error = "";
+            for await (const chunk of process.stderr) {
+                error += chunk;
+            }
             const exitCode = await new Promise((resolve, reject) => {
                 process.on('close', resolve);
             });
@@ -91,8 +128,8 @@ class Player {
             }
 
             return JSON.parse(data);
-
-        } catch (error) {
+        }
+        catch (error) {
             console.error('Error finding user stats by ID:', error);
             return null;
         }
@@ -119,7 +156,7 @@ class Player {
                 throw new Error(`subprocess error exit ${exitCode}, ${error}`);
             }
 
-            return data;
+            return JSON.parse(data);
         } catch (error) {
             console.error('Error requesting all players:', error);
             return JSON.parse("request failed");
