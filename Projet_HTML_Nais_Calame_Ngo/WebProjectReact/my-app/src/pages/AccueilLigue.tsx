@@ -3,10 +3,11 @@ import { Grid } from '@mui/material';
 import Classement from '../components/Classement';
 import './StylePages.css';
 function AccueilLigue() {
+
     return (
         <div className="body">
             <div className='App-body-ligue'>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{ marginTop: '2vh' }}>
                     <Grid item xs={6}>
                         {/* Colonne de gauche */}
                         <Grid item xs={12}>

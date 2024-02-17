@@ -24,7 +24,7 @@ function Classement() {
     if (ligueId) {
         return (
 
-            <Grid container component="main" spacing={2}>
+            <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Paper elevation={2} sx={{
                         my: 8,

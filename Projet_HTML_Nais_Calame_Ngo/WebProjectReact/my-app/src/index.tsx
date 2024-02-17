@@ -4,7 +4,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from './pages/Header';
-import Home from './pages/Home';
 import Resultat from './pages/Resultat';
 import Team from './pages/Team';
 import SignInSide from './pages/SignIn';

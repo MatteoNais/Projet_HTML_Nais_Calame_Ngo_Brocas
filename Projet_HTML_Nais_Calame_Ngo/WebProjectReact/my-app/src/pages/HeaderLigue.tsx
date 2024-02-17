@@ -15,7 +15,6 @@ function HeaderLigue() {
     const navigate = useNavigate();
 
     const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
-    const userProfileInfo = useAppSelector((state) => state.auth.userProfileData);
 
     useEffect(() => {
         if (basicUserInfo) {

@@ -1,13 +1,12 @@
 import React from "react";
 import './StylePages.css';
 import { Grid } from "@mui/material";
-import Classement from "../components/Classement";
 
 function DraftLigue() {
     return (
         <div className="body">
             <div className='App-body-ligue'>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{ marginTop: '2vh' }}>
                     <Grid item xs={12}>
                         {/* Ligne avec le type de draft et la recherche avancée et compteur */}
                     </Grid>

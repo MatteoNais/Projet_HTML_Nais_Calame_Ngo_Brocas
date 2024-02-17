@@ -25,7 +25,7 @@
     left: 0;
     width: 100%;
     height: 7vh;
-    background: orange;
+    background: #ff6a00;
     clip-path: polygon(4% 0, 96% 0, 94% 100%, 6% 100%);
 }
 
@@ -36,5 +36,5 @@
 }
 
 .grid-item .MuiButton-root {
-    background: #E36414;
+    background: #ff6a00;
 }
