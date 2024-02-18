@@ -9,9 +9,10 @@ import { errorHandler } from "./middleware/errorMiddleware";
 import { authenticate } from "./middleware/authMiddleware";
 import userRouter from "./routes/userRouter";
 import ligueRouter from "./routes/ligueRouter";
-import playerRouter from "./routes/playerRouter"
-import teamRouter from "./routes/teamRouter"
-import equipeRouter from "./routes/equipeRouter"
+import playerRouter from "./routes/playerRouter";
+import teamRouter from "./routes/teamRouter";
+import equipeRouter from "./routes/equipeRouter";
+import draftRouter from "./routes/draftRouter";
 import helmet from "helmet";
 import Equipe from './models/Equipe';
 
@@ -55,6 +56,7 @@ app.use("/ligues", authenticate, ligueRouter);
 app.use("/playersNBA", playerRouter);
 app.use("/teamsNBA", teamRouter);
 app.use("/equipe", equipeRouter);
+app.use("/draft", draftRouter);
 app.use(errorHandler);
 
 configDB.connectUserDB();
