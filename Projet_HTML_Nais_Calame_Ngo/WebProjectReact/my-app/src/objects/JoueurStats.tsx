@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 interface JoueurStats {
     GP: number;
     PTS: number;
@@ -8,6 +7,13 @@ interface JoueurStats {
     BLK: number;
     REB: number;
     STL: number;
+    OREB: number;
+    DREB: number;
+    TOV: number;
+    PLUS_MINUS: number;
+    FG_PCT: number;
+    PFD: number;
+    PF: number;
     nom: string;
     prenom: string;
 }

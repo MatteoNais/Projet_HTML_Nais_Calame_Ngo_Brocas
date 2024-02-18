@@ -1,0 +1,19 @@
+/* styles.css */
+.list {
+  background-color: transparent; /* Fond transparent */
+  height: 80vh; /* Hauteur de la liste égale à 100% de la hauteur de la fenêtre */
+  overflow-y: auto; /* Ajoute une barre de défilement verticale si nécessaire */
+  text-align: center;
+}
+
+.listItem {
+    color: white; /* Couleur du texte */
+    background-color: gray; /* Couleur de fond */
+    padding: 10px; /* Espacement intérieur */
+    transition: background-color 0.3s; /* Transition pour le changement de couleur de fond */
+  }
+  
+  .listItem:hover {
+    background-color: lightgray; /* Changement de couleur de fond au survol */
+  }
+  

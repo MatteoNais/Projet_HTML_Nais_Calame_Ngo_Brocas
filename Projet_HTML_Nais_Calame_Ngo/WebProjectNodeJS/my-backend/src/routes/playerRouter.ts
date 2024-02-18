@@ -1,5 +1,5 @@
 import express from "express";
-import { getPlayerbyID, getRecentStats, importAllPlayersToBDD, getPlayers, getPlayerbyIDTeam, getPlayerFantaisyProfileById } from "../controllers/playerController"
+import { getPlayerbyID, getRecentStats, importAllPlayersToBDD, getPlayers, getPlayerbyIDTeam, getPlayerFantaisyProfileById, getPlayersbyIdUserAndIdLigue } from "../controllers/playerController"
 
 const router = express.Router();
 
@@ -9,4 +9,5 @@ router.get("/recentstats/:player_id", getRecentStats);
 router.get("/", getPlayers);
 router.get("/team/:equipeNBA_id", getPlayerbyIDTeam);
 router.get("/fantaisy/:player_id", getPlayerFantaisyProfileById);
+router.get("/team/:ligue_id/:player_id", getPlayersbyIdUserAndIdLigue);
 export default router;

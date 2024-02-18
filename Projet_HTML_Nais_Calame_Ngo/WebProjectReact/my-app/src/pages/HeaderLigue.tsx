@@ -68,15 +68,15 @@ function HeaderLigue() {
             <Grid container className="grid-container" justifyContent="center" alignItems="center">
                 <Grid item className="grid-item">
                     <Box sx={{ display: 'flex', gap: '5vh', flexWrap: 'wrap', justifyContent: 'space-between', paddingLeft: '10vh', paddingRight: '10vh' }}>
-                        <Typography variant="h3" sx={{ color: 'white' }}>{ligueId}</Typography>
+                        <Typography variant="h4" sx={{ color: 'white' }}>{ligueId}</Typography>
                         <Link to={`/ligue/${ligueId}/`} style={{ textDecoration: 'none' }}>
-                            <Typography variant="h3" sx={{ color: 'white' }}>Accueil</Typography>
+                            <Typography variant="h4" sx={{ color: 'white' }}>Accueil</Typography>
                         </Link>
                         <Link to={`/ligue/${ligueId}/${basicUserInfo?.id}`} style={{ textDecoration: 'none' }}>
-                            <Typography variant="h3" sx={{ color: 'white' }}>Mon Equipe</Typography>
+                            <Typography variant="h4" sx={{ color: 'white' }}>Mon Equipe</Typography>
                         </Link>
                         <Link to={`/ligue/${ligueId}/draft`} style={{ textDecoration: 'none' }}>
-                            <Typography variant="h3" sx={{ color: 'white' }}>Draft</Typography>
+                            <Typography variant="h4" sx={{ color: 'white' }}>Draft</Typography>
                         </Link>
                     </Box>
                 </Grid>
