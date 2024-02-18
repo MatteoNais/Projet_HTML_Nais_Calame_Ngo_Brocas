@@ -40,7 +40,7 @@ export default function App() {
                 <Route path="/ligue/:ligueId/" element={<HeaderLigue />}>
                     <Route index element={<AccueilLigue />} />
                     <Route path="draft" element={<DraftLigue />} />
-                    <Route path=":userId" element={<MonEquipeLigue />} />
+                    <Route path=":userId/:draftId" element={<MonEquipeLigue />} />
                 </Route>
 
             </Route>

@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import '../pages/Header.css';
 import { AppBar, Box, Button, Grid, Toolbar, Typography } from "@mui/material";
 import { Outlet, Link, useNavigate, useParams } from 'react-router-dom';
 import logoImg from '../img/basket_logo.png'
 import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
 import { getUser, logout } from "../slices/authSlice";
-
+import axiosInstance from "../api/axiosInstance";
+import Draft from "../objects/Draft";
 interface Params {
     [ligueId: string]: string | undefined;
 }
@@ -13,7 +14,7 @@ interface Params {
 function HeaderLigue() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
-
+    const [currentDraft, setCurrentDraft] = useState<Draft>();
     const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
 
     useEffect(() => {
@@ -34,6 +35,14 @@ function HeaderLigue() {
 
     const { ligueId } = useParams<Params>();
 
+    useEffect(() => {
+        axiosInstance.get(`/draft/ligue/${ligueId}`)
+            .then(response => {
+                console.log(response.data);
+                setCurrentDraft(response.data);
+            })
+            .catch(error => console.error('Error:', error));
+    }, [ligueId]);
 
     return (
         <>
@@ -56,6 +65,7 @@ function HeaderLigue() {
                             }} >
                                 <Link to='/'> <Button variant="contained" sx={{ background: '#E36414' }}> Mes ligues</Button> </Link>
                                 <Link to='/resultats'> <Button variant="contained" sx={{ background: '#E36414' }}>NBA</Button> </Link>
+                                <Link to='/selectionjoueur'> <Button variant="contained" sx={{ background: '#E36414' }}>selection Test Pierre</Button> </Link>
                                 <Link to='/'> <Button variant="contained" sx={{ background: '#E36414' }}>{basicUserInfo?.username}</Button> </Link>
                                 <Button variant="contained" sx={{ background: '#E36414' }} onClick={handleLogout} >Logout</Button>
 
@@ -68,11 +78,11 @@ function HeaderLigue() {
             <Grid container className="grid-container" justifyContent="center" alignItems="center">
                 <Grid item className="grid-item">
                     <Box sx={{ display: 'flex', gap: '5vh', flexWrap: 'wrap', justifyContent: 'space-between', paddingLeft: '10vh', paddingRight: '10vh' }}>
-                        <Typography variant="h4" sx={{ color: 'white' }}>{ligueId}</Typography>
+                        {/* <Typography variant="h4" sx={{ color: 'white' }}>{ligueId}</Typography> */}
                         <Link to={`/ligue/${ligueId}/`} style={{ textDecoration: 'none' }}>
                             <Typography variant="h4" sx={{ color: 'white' }}>Accueil</Typography>
                         </Link>
-                        <Link to={`/ligue/${ligueId}/${basicUserInfo?.id}`} style={{ textDecoration: 'none' }}>
+                        <Link to={`/ligue/${ligueId}/${basicUserInfo?.id}/${currentDraft?.id_draft}`} style={{ textDecoration: 'none' }}>
                             <Typography variant="h4" sx={{ color: 'white' }}>Mon Equipe</Typography>
                         </Link>
                         <Link to={`/ligue/${ligueId}/draft`} style={{ textDecoration: 'none' }}>
