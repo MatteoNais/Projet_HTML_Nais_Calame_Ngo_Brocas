@@ -56,6 +56,7 @@ function Header() {
                             }} >
                                 <Link to='/'> <Button variant="contained" sx={{ background: '#E36414' }}> Mes ligues</Button> </Link>
                                 <Link to='/resultats'> <Button variant="contained" sx={{ background: '#E36414' }}>NBA</Button> </Link>
+                                <Link to='/selectionjoueur'> <Button variant="contained" sx={{ background: '#E36414' }}>selection Test Pierre</Button> </Link>
                                 <Link to='/'> <Button variant="contained" sx={{ background: '#E36414' }}>{basicUserInfo?.username}</Button> </Link>
                                 <Button variant="contained" sx={{ background: '#E36414' }} onClick={handleLogout} >Logout</Button>
 
