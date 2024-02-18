@@ -17,6 +17,8 @@ import AccueilLigue from './pages/AccueilLigue';
 import HeaderLigue from './pages/HeaderLigue';
 import DraftLigue from './pages/DraftLigue';
 import MonEquipeLigue from './pages/MonEquipe';
+import SelectionJoueur from './pages/SelectionJoueur'
+
 export default function App() {
     return (
         <Routes>
@@ -28,6 +30,7 @@ export default function App() {
                 <Route path="/" element={<Header />}>
                     <Route index element={<MesLigues />} />
                     <Route path="resultats" element={<Resultat />} />
+                    <Route path="selectionjoueur" element={<SelectionJoueur />} />
                     <Route path="ligues" element={<MesLigues />} />
                     <Route
                         path="team/:teamId"
@@ -38,8 +41,8 @@ export default function App() {
                     <Route index element={<AccueilLigue />} />
                     <Route path="draft" element={<DraftLigue />} />
                     <Route path=":userId" element={<MonEquipeLigue />} />
-
                 </Route>
+
             </Route>
         </Routes>
     );

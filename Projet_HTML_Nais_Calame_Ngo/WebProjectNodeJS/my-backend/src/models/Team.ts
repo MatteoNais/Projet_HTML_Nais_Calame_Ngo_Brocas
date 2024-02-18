@@ -42,7 +42,7 @@ class Team {
         }
     }
 
-    static async getAllTeams(): Promise<string> {
+    static async getAllTeamsNBA(): Promise<string> {
         try {
             var spawn = require("child_process").spawn;
             var process = spawn('python',["./src/api_NBA_python/GetAllTeams.py"] ); 
@@ -66,6 +66,17 @@ class Team {
         } catch (error) {
             console.error('Error requesting all Teams:', error);
             return JSON.parse("request failed");
+        }
+    }
+
+    static async getAllTeams(): Promise<Team | null> {
+        try {
+            let query = `SELECT * FROM equipe_NBA`;
+            const [rows] = await configDB.execute(query,[]);
+            return rows.length ? new Team(rows) : null;
+        } catch (error) {
+            console.error('Error finding Teams', error);
+            return null
         }
     }
 

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import Team from "../models/Team";
 
 const importAllTeamsToBDD = async (req: Request, res: Response) => {
-    const data = await Team.getAllTeams()
+    const data = await Team.getAllTeamsNBA()
     const Team_list = JSON.parse(data);
 
     var result_list = new Array();
@@ -42,4 +42,15 @@ const getTeambyID = async (req: Request, res: Response) => {
     res.status(200).json(team);
 };
 
-export { getTeambyID, importAllTeamsToBDD};
+const getAllTeams = async (req: Request, res: Response) => {
+
+    const teams = await Team.getAllTeams();
+
+    if (!teams) {
+        res.status(400);
+    }
+
+    res.status(200).json(teams);
+};
+
+export { getTeambyID, importAllTeamsToBDD, getAllTeams};
