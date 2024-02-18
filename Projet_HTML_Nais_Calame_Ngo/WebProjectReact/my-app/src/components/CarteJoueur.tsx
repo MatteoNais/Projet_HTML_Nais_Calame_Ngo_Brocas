@@ -4,7 +4,10 @@ import axiosInstance from "../api/axiosInstance";
 import JoueurStats from "../objects/JoueurStats";
 import './CarteJoueur.css'
 
-
+interface CarteJoueurProps {
+    joueurId: number;
+    onScoreChange: (score: number) => void;
+}
 
 const CustomBadge = ({ content, children }: { content: any, children: any }) => {
     let number: string;
@@ -40,7 +43,7 @@ const CustomBadge = ({ content, children }: { content: any, children: any }) => 
 };
 
 
-function CarteJoueur({ joueurId }: { joueurId: number }) {
+function CarteJoueur({ joueurId, onScoreChange }: CarteJoueurProps) {
 
     const [stats, setStats] = useState<JoueurStats>();
     useEffect(() => {
@@ -50,11 +53,15 @@ function CarteJoueur({ joueurId }: { joueurId: number }) {
                 setStats(response.data);
             })
             .catch(error => console.error('Error:', error));
-    }, []);
-
+    }, [joueurId]);
+    ; // Déclarer score en dehors du bloc useEffect
     const score: number = Math.round(((((stats?.PTS ?? 0) * 1.2) + ((stats?.AST ?? 0) * 1.6) + ((stats?.OREB ?? 0) * 1.2)
         + ((stats?.DREB ?? 0) * 1.1) + ((stats?.BLK ?? 0) * 2) + ((stats?.STL ?? 0) * 2) + ((stats?.FG_PCT ?? 0) * 5.6)
         + ((stats?.PFD ?? 0) * 0.4) - ((stats?.TOV ?? 0) * 1.1) - ((stats?.PF ?? 0) * 0.6) + ((stats?.PLUS_MINUS ?? 0) * 0.5)) / (stats?.GP ?? 0)));
+
+    useEffect(() => {
+        onScoreChange(score);
+    }, [stats, onScoreChange]);
 
 
     return (
@@ -95,3 +102,4 @@ function CarteJoueur({ joueurId }: { joueurId: number }) {
 }
 
 export default CarteJoueur;
+
