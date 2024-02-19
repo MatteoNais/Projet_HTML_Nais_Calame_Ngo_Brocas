@@ -19,11 +19,13 @@ const getPlayerbyID = async (req: Request, res: Response) => {
 
 const getPlayerbyIDTeam = async (req: Request, res: Response) => {
     const teamId = req.params.equipeNBA_id.toString();
+
     if (teamId === null || teamId === undefined) {
         return res.status(400).json({ message: "Invalid team ID" });
     }
+
     const player = await Player.findByIdTeam(teamId);
-    console.log(player);
+
     if (!player) {
 
         res.status(400);
@@ -35,6 +37,7 @@ const getPlayerbyIDTeam = async (req: Request, res: Response) => {
 const getPlayers = async (req: Request, res: Response) => {
 
     const player = await Player.getAllPlayers();
+
     if (!player) {
 
         res.status(400);
@@ -46,19 +49,23 @@ const getPlayers = async (req: Request, res: Response) => {
 const getPlayersbyIdUserAndIdLigue = async (req: Request, res: Response) => {
     const playerId = req.params.player_id.toString();
     const ligueId = req.params.ligue_id.toString();
+
     if (playerId === null || playerId === undefined) {
         return res.status(400).json({ message: "Invalid player ID" });
     }
     if (ligueId === null || ligueId === undefined) {
         return res.status(400).json({ message: "Invalid ligue ID" });
     }
+
     const player = await Player.getPlayersInEquipeByUtilisateur(playerId, ligueId);
+
     if (!player) {
 
         res.status(400);
     }
     res.status(200).json(player);
 };
+
 const getRecentStats = async (req: Request, res: Response) => {
     const playerId = req.params.player_id.toString();
     if (playerId === null || playerId === undefined) {
@@ -74,21 +81,39 @@ const getRecentStats = async (req: Request, res: Response) => {
     res.status(200).json(playerstats);
 };
 
-const getPlayerFantaisyProfileById = async (req: Request, res: Response) => {
+const getPlayerInfo = async (req: Request, res: Response) => {
     const playerId = req.params.player_id.toString();
-    console.log(playerId);
+
     if (playerId === null || playerId === undefined) {
         return res.status(400).json({ message: "Invalid player ID" });
     }
+
+    const infos = await Player.getPlayerInfo(playerId);
+
+    if (!infos) {
+        res.status(400);
+    }
+
+    res.status(200).json(infos);
+};
+
+const getPlayerFantaisyProfileById = async (req: Request, res: Response) => {
+    const playerId = req.params.player_id.toString();
+
+    if (playerId === null || playerId === undefined) {
+        return res.status(400).json({ message: "Invalid player ID" });
+    }
+
     const player = await Player.getPlayerFantaisyProfile(playerId);
+
     if (!player) {
         res.status(400);
     }
+
     res.status(200).json(player);
 };
 
 const importAllPlayersToBDD = async (req: Request, res: Response) => {
-
 
     var data = await Player.getAllPlayersAPI();
     const player_list = JSON.parse(data);
@@ -118,4 +143,4 @@ const importAllPlayersToBDD = async (req: Request, res: Response) => {
 };
 
 
-export { getPlayerbyID, getRecentStats, importAllPlayersToBDD, getPlayers, getPlayerbyIDTeam, getPlayerFantaisyProfileById, getPlayersbyIdUserAndIdLigue };
+export { getPlayerbyID, getRecentStats, importAllPlayersToBDD, getPlayerInfo, getPlayers, getPlayerbyIDTeam, getPlayerFantaisyProfileById, getPlayersbyIdUserAndIdLigue };

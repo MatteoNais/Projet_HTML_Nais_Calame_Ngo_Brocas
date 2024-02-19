@@ -4,8 +4,8 @@ from nba_api.stats.static import *
 import sys 
 import json
 
-# Get all NBA player from this season
-player = commonplayerinfo.CommonPlayerInfo(player_id=sys.argv[1])
+# Get team info
+info = teaminfocommon.TeamInfoCommon(team_id=sys.argv[1])
 
 # return Json response on STDOUT stream
-print(player.get_json())
+print(info.get_json())

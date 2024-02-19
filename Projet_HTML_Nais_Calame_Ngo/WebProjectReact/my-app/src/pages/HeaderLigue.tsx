@@ -55,8 +55,7 @@ function HeaderLigue() {
                                 gap: '16px', // Ajustez la largeur selon vos besoins
                             }} >
                                 <Link to='/'> <Button variant="contained" sx={{ background: '#E36414' }}> Mes ligues</Button> </Link>
-                                <Link to='/resultats'> <Button variant="contained" sx={{ background: '#E36414' }}>NBA</Button> </Link>
-                                <Link to='/'> <Button variant="contained" sx={{ background: '#E36414' }}>{basicUserInfo?.username}</Button> </Link>
+                                <Link to='/informations'> <Button variant="contained" sx={{ background: '#E36414' }}>Wiki NBA</Button> </Link>
                                 <Button variant="contained" sx={{ background: '#E36414' }} onClick={handleLogout} >Logout</Button>
 
                             </Box>

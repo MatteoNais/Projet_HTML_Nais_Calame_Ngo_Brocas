@@ -44,7 +44,7 @@ const getTeambyID = async (req: Request, res: Response) => {
 
 const getAllTeams = async (req: Request, res: Response) => {
 
-    const teams = await Team.getAllTeams();
+    const teams = await Team.getAllTeams(); 
 
     if (!teams) {
         res.status(400);
@@ -53,4 +53,16 @@ const getAllTeams = async (req: Request, res: Response) => {
     res.status(200).json(teams);
 };
 
-export { getTeambyID, importAllTeamsToBDD, getAllTeams};
+const getTeamInfo = async (req: Request, res: Response) => {
+    const teamId = req.params.team_id.toString();
+
+    const infos = await Team.getTeamInfo(teamId);
+
+    if (!infos) {
+        res.status(400);
+    }
+
+    res.status(200).json(infos);
+};
+
+export { getTeambyID, importAllTeamsToBDD, getAllTeams, getTeamInfo};
