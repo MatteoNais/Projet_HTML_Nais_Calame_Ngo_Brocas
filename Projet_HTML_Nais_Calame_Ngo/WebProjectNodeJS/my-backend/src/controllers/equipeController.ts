@@ -37,6 +37,18 @@ const getEquipesByLigue = async (req: Request, res: Response) => {
     res.status(200).json(equipe);
 };
 
+const getEquipeByLigueAndUser = async (req: Request, res: Response) => {
+    const ligueId = req.params.ligue_id.toString();
+    const userId = req.params.user_id.toString();
+
+    if (ligueId === null || ligueId === undefined || userId === null || userId === undefined) {
+        return res.status(400).json({ message: "Invalid equipe ID or user ID" });
+    }
+    const equipe = await Equipe.getEquipeByLigueAndUser(ligueId, userId);
+
+    res.status(200).json(equipe);
+};
+
 const getEquipesByUtilisateur = async (req: Request, res: Response) => {
     const userId = req.params.utilisateur_id.toString();
 
@@ -99,4 +111,4 @@ const getHistorique = async (req: Request, res: Response) => {
 
 
 
-export { getEquipeById, getEquipesByUtilisateur, addJoueurNBA, removeJoueurNBA, replaceJoueurNBA, getHistorique, createEquipe, getEquipesByLigue };
+export { getEquipeById, getEquipesByUtilisateur, getEquipeByLigueAndUser, addJoueurNBA, removeJoueurNBA, replaceJoueurNBA, getHistorique, createEquipe, getEquipesByLigue };

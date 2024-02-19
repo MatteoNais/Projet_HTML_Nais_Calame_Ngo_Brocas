@@ -47,6 +47,17 @@ class Equipe {
         }
     }
 
+    static async getEquipeByLigueAndUser(ligueId : string, userId: string) : Promise<Equipe | null> {
+        try {
+            let query = `SELECT * FROM equipe WHERE ligue = ? AND utilisateur = ?`;
+            const [rows] = await configDB.execute(query, [ligueId, userId]);
+            return rows.length ? new Equipe(rows[0]) : null;
+        } catch (error) {
+            console.error('Error finding equipe by ligueID and userId:', error);
+            return null
+        }
+    }
+
     static async create(ligue: string, utilisateur: string, nom: string): Promise<string> {
         try {
             const [rows, fields] = await configDB.execute(

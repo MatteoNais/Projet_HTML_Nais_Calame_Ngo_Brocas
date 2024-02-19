@@ -1,5 +1,5 @@
 import express from "express";
-import  {getEquipeById, addJoueurNBA, getEquipesByLigue, removeJoueurNBA, replaceJoueurNBA, getHistorique, getEquipesByUtilisateur, createEquipe} from "../controllers/equipeController";
+import  {getEquipeById, addJoueurNBA, getEquipesByLigue, getEquipeByLigueAndUser, removeJoueurNBA, replaceJoueurNBA, getHistorique, getEquipesByUtilisateur, createEquipe} from "../controllers/equipeController";
 
 const router = express.Router();
 
@@ -11,5 +11,6 @@ router.get("/historique/:equipe_id", getHistorique)
 router.post("/addJoueurNBA/:equipe_id/:id", addJoueurNBA);
 router.post("/removeJoueurNBA/:equipe_id/:id", removeJoueurNBA)
 router.post("/replaceJoueurNBA/:equipe_id/:new_id/:old_id", replaceJoueurNBA)
+router.get("/byLigueAndUser/:ligue_id/:user_id", getEquipeByLigueAndUser);
 
 export default router;
