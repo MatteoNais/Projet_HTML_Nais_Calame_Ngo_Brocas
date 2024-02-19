@@ -72,5 +72,17 @@ class Draft {
         const drafts = rows.map((row: any) => new Draft(row));
         return drafts;
     }
+
+    static async findCurrentDraft(idLigue: string): Promise<string | null> {
+        try {
+            const [rows] = await configDB.execute('SELECT * FROM lien_draft_ligue WHERE id_ligue = ? ORDER BY id_relation DESC LIMIT 1;', [idLigue]);
+            console.log(rows[0]);
+            return rows[0];
+        }
+        catch (error) {
+            console.error('Error finding draft by ligueID:', error);
+            return null
+        }
+    }
 }
 export default Draft;

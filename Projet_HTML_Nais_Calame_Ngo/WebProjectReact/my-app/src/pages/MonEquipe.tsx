@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import './StylePages.css';
-import { Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import CarteJoueur from "../components/CarteJoueur";
 import { useParams } from "react-router-dom";
 import Joueur from "../objects/Joueur";
@@ -58,10 +58,16 @@ function MonEquipeLigue() {
                                 <CarteJoueur key={joueur.id} joueurId={joueur.id} onScoreChange={(score) => handleScoreChange(joueur.id, score)}></CarteJoueur>
                             ))}
                         </div>
-
                     </Grid>
                     <Grid item xs={4} sx={{ textAlign: 'center' }}>
-                        <Typography variant="h4" sx={{ color: 'white' }}>Total des points : {totalPoints}</Typography>
+                        <Typography variant="h4" sx={{ color: 'white' }}>Total :  {totalPoints} points</Typography>
+                        <Box display="flex" alignItems="center" justifyContent="center" sx={{ gap: '10px', marginTop: 3 }}>
+                            <Button variant="contained" disableElevation> &larr; </Button>
+                            <Typography variant="h5" sx={{ color: 'white' }}>dateDebutDraft </Typography>
+                            <Typography variant="h5" sx={{ color: 'white' }}> - </Typography>
+                            <Typography variant="h5" sx={{ color: 'white' }}> dateFinDraft</Typography>
+                            <Button variant="contained" disableElevation> &rarr;</Button>
+                        </Box>
                         {/* remplaçant */}
                         {/* <CarteJoueur joueurId={2544}></CarteJoueur> */}
                     </Grid>

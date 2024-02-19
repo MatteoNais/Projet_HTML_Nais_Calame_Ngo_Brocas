@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import Classement from '../components/Classement';
 import './StylePages.css';
 function AccueilLigue() {
@@ -20,9 +20,15 @@ function AccueilLigue() {
                     <Grid item xs={6}>
                         {/* Classement des joueurs avec recap des points */}
                         <Classement></Classement>
+                        <Box style={{ textAlign: 'center' }}>
+                            <Button variant="contained" color="warning" style={{ width: 'fit-content' }}>
+                                <Typography variant="h5" sx={{ color: 'white' }}>Démarrer la draft</Typography>
+                            </Button>
+                        </Box>
                     </Grid>
                     <Grid item xs={12}>
                         {/* Line that takes 15% of the space */}
+
                     </Grid>
                 </Grid>
             </div>
