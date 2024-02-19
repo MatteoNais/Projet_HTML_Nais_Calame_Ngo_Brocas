@@ -7,7 +7,7 @@ class configDB {
             this.connection = await mysql.createConnection({
                 host: process.env.MARIADB_HOST || 'brocas.ovh',
                 user: process.env.MARIADB_USER || 'root',
-                port: 3308,
+                port: 7800,
                 password: process.env.MARIADB_PASSWORD || 'ROOTSAGI5A',
                 database: process.env.MARIADB_DATABASE || 'WEB_BDD',
             });
