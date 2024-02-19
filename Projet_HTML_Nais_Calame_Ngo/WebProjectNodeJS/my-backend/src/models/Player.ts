@@ -21,7 +21,6 @@ class Player {
                 [player.id, player.equipeNBA_id, player.nom, player.prenom]
             );
             return 1;
-
         } catch (error) {
             console.error('Error inserting player in database', error);
             return 0;
@@ -31,11 +30,8 @@ class Player {
 
     static async findById(playerId: string): Promise<Player | null> {
         try {
-            // Construisez la requête SQL pour sélectionner le joueur par ID
             let query = `SELECT * FROM joueur_NBA WHERE id = ?`;
-            // Exécutez la requête avec l'ID fourni
             const [rows] = await configDB.execute(query, [playerId]);
-            // Si des lignes sont renvoyées, créez un nouvel objet User avec les données de la première ligne
             return rows.length ? new Player(rows[0]) : null;
         } catch (error) {
             console.error('Error finding player by ID:', error);
@@ -48,7 +44,6 @@ class Player {
             let query = `SELECT * FROM joueur_NBA`;
             const [rows] = await configDB.execute(query, []);
             return rows.length ? new Player(rows) : null;
-
         } catch (error) {
             console.error('Error finding all players:', error);
             return null
@@ -60,7 +55,6 @@ class Player {
             let query = `SELECT * FROM joueur_NBA WHERE equipeNBA_id = ?`;
             const [rows] = await configDB.execute(query, [teamID]);
             return rows.length ? new Player(rows) : null;
-
         } catch (error) {
             console.error('Error finding all players:', error);
             return null
@@ -153,6 +147,36 @@ class Player {
         }
     }
 
+    static async getPlayerInfo(playerId: string): Promise<string | null> {
+        try {
+            
+            var spawn = require("child_process").spawn;
+            var process = spawn('python', ["./src/api_NBA_python/GetPlayerInfo.py", playerId]);
+
+            let data = "";
+            for await (const chunk of process.stdout) {
+                data += chunk;
+            }
+            let error = "";
+            for await (const chunk of process.stderr) {
+                error += chunk;
+            }
+            const exitCode = await new Promise((resolve, reject) => {
+                process.on('close', resolve);
+            });
+
+            if (exitCode) {
+                throw new Error(`subprocess error exit ${exitCode}, ${error}`);
+            }
+
+            return JSON.parse(data);
+        }
+        catch (error) {
+            console.error('Error finding user stats by ID:', error);
+            return null;
+        }
+    }
+
     static async getAllPlayersAPI(): Promise<string> {
         try {
             var spawn = require("child_process").spawn;
@@ -173,7 +197,7 @@ class Player {
             if (exitCode) {
                 throw new Error(`subprocess error exit ${exitCode}, ${error}`);
             }
-
+            
             return JSON.parse(data);
         } catch (error) {
             console.error('Error requesting all players:', error);
