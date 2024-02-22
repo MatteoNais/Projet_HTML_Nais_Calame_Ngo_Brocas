@@ -74,6 +74,13 @@ class Draft {
         return drafts;
     }
 
+    static async findDraftByLigueIdAndDraftId(id: string, id_draft: string): Promise<Draft | null> {
+        const [rows] = await configDB.execute('SELECT * FROM lien_draft_ligue WHERE id_ligue = ? AND id_draft = ?;', [id, id_draft]);
+        const drafts = rows.map((row: any) => new Draft(row));
+        console.log("draft idligue iddraft", drafts);
+        return drafts;
+    }
+
     static async findCurrentDraft(idLigue: string): Promise<string | null> {
         try {
             const [rows] = await configDB.execute('SELECT * FROM lien_draft_ligue WHERE id_ligue = ? ORDER BY id_draft DESC LIMIT 1;', [idLigue]);

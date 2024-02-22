@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Grid, ThemeProvider, Typography, createTheme } from '@mui/material';
 import Classement from '../components/Classement';
 import './StylePages.css';
@@ -10,6 +10,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import axiosInstance from '../api/axiosInstance';
 import { useParams } from 'react-router';
+import Draft from '../objects/Draft';
 
 interface Params {
     [ligueId: string]: string | undefined;
@@ -18,12 +19,24 @@ function AccueilLigue() {
     const [value, setValue] = React.useState<Dayjs | null>(dayjs());
     const options = ['Bleu', 'Rouge', 'Vert', 'Jaune', 'Orange'];
     const { ligueId } = useParams<Params>();
+    const [currentDraft, setCurrentDraft] = useState<Draft>();
 
     const theme = createTheme({
         palette: {
             primary: { main: "#E36414" }
         }
     });
+
+    useEffect(() => {
+        axiosInstance.get(`/draft/ligue/${ligueId}`)
+            .then(response => {
+                console.log(response.data);
+                setCurrentDraft(response.data);
+                console.log(dayjs());
+
+            })
+            .catch(error => console.error('Error:', error));
+    }, [ligueId]);
 
     async function createDraft(id_ligue: string) {
         console.log(value?.format("YYYY-MM-DD HH:mm:ss"));
@@ -57,33 +70,45 @@ function AccueilLigue() {
                         {/* Classement des joueurs avec recap des points */}
                         <Classement></Classement>
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginLeft: '10px', marginRight: '10px' }}>
-                            <ThemeProvider theme={theme}>
-                                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr" >
-                                    <DateTimePicker
-                                        label="Date de la première draft"
-                                        value={value}
-                                        onChange={(newValue: Dayjs | null) => setValue(newValue)} selectedSections={undefined} onSelectedSectionsChange={undefined}
-                                        sx={{
-                                            "input": { color: "white" }, "fieldSet": { borderColor: "white" }, "&:hover .MuiOutlinedInput-notchedOutline": {
-                                                borderColor: "white", // Change this to your desired color on hover
-                                            }, "label": { color: "white" }, "button *": { color: "warning.main" }
-                                        }}
-                                        slotProps={{
-                                            textField: {
-                                                color: "warning"
-                                            }
-                                        }} />
+                            {currentDraft?.date_fin && dayjs(currentDraft.date_fin).isAfter(dayjs()) ? (
+                                <>
+                                    <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+                                        <Typography variant="h5" sx={{ color: 'white' }}> La draft est actuellement en cours.</Typography>
+                                        <Typography variant="h5" sx={{ color: 'white' }}>{dayjs(currentDraft?.date_debut)?.format("YYYY-MM-DD HH:mm")} - {dayjs(currentDraft?.date_fin)?.format("YYYY-MM-DD HH:mm")}</Typography>
+                                    </Box>
+                                </>
+                            ) : (
 
-                                </LocalizationProvider>
-                            </ThemeProvider>
-                            <Button
-                                variant="contained"
-                                color="warning"
-                                style={{ width: 'fit-content', marginLeft: '20px' }}
-                                onClick={() => createDraft(ligueId || '')}
-                            >
-                                <Typography variant="h5" sx={{ color: 'white' }}>Démarrer la draft</Typography>
-                            </Button>
+                                <>
+                                    <ThemeProvider theme={theme}>
+                                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="fr" >
+                                            <DateTimePicker
+                                                label="Date de la première draft"
+                                                value={value}
+                                                onChange={(newValue: Dayjs | null) => setValue(newValue)} selectedSections={undefined} onSelectedSectionsChange={undefined}
+                                                sx={{
+                                                    "input": { color: "white" }, "fieldSet": { borderColor: "white" }, "&:hover .MuiOutlinedInput-notchedOutline": {
+                                                        borderColor: "white", // Change this to your desired color on hover
+                                                    }, "label": { color: "white" }, "button *": { color: "warning.main" }
+                                                }}
+                                                slotProps={{
+                                                    textField: {
+                                                        color: "warning"
+                                                    }
+                                                }} />
+
+                                        </LocalizationProvider>
+                                    </ThemeProvider>
+                                    <Button
+                                        variant="contained"
+                                        color="warning"
+                                        style={{ width: 'fit-content', marginLeft: '20px' }}
+                                        onClick={() => createDraft(ligueId || '')}
+                                    >
+                                        <Typography variant="h5" sx={{ color: 'white' }}>Démarrer la draft</Typography>
+                                    </Button>
+                                </>
+                            )}
                         </Box>
                     </Grid>
                     <Grid item xs={12}>

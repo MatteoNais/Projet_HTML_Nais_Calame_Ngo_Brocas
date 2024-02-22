@@ -6,6 +6,8 @@ import { Link, useParams, } from "react-router-dom";
 import Joueur from "../objects/Joueur";
 import axiosInstance from "../api/axiosInstance";
 import { useAppSelector } from "../hooks/redux-hooks";
+import dayjs from "dayjs";
+import Draft from "../objects/Draft";
 
 interface Params {
     [ligueId: string]: string | undefined;
@@ -16,6 +18,7 @@ function MonEquipeLigue() {
     const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
     const { ligueId } = useParams<Params>();
     const { draftId } = useParams<Params>();
+    const [currentDraft, setCurrentDraft] = useState<Draft>();
 
     const [totalPoints, setTotalPoints] = useState<number>(0); // Nouvel état pour le total des points
     const handleScoreLoaded = useCallback((score: number) => {
@@ -24,6 +27,17 @@ function MonEquipeLigue() {
     const resetTotalPoints = useCallback(() => {
         setTotalPoints(0);
     }, []);
+
+    useEffect(() => {
+        axiosInstance.get(`/draft/ligue/${ligueId}/${draftId}`)
+            .then(response => {
+                setCurrentDraft(response.data[0].draft);
+                console.log(response);
+                console.log(dayjs());
+            })
+            .catch(error => console.error('Error:', error));
+    }, [ligueId, draftId]);
+
 
     useEffect(() => {
         console.log("Nouvel id de draft :", draftId);
@@ -75,9 +89,8 @@ function MonEquipeLigue() {
                             <Link to={`/ligue/${ligueId}/${basicUserInfo?.id}/${Number(draftId) - 1}`}>
                                 <Button variant="contained" disableElevation onClick={resetTotalPoints}> &larr; </Button>
                             </Link>
-                            <Typography variant="h5" sx={{ color: 'white' }}>dateDebutDraft </Typography>
-                            <Typography variant="h5" sx={{ color: 'white' }}> - </Typography>
-                            <Typography variant="h5" sx={{ color: 'white' }}>dateFinDraft</Typography>
+                            <Typography variant="h5" sx={{ color: 'white' }}>{dayjs(currentDraft?.date_debut)?.format("YYYY-MM-DD HH:mm")} - {dayjs(currentDraft?.date_fin)?.format("YYYY-MM-DD HH:mm")}</Typography>
+
                             <Link to={`/ligue/${ligueId}/${basicUserInfo?.id}/${Number(draftId) + 1}`}>
                                 <Button variant="contained" disableElevation onClick={resetTotalPoints}> &rarr;</Button>
                             </Link>
