@@ -331,7 +331,7 @@ function DraftLigue() {
                         </Typography>
                         {selected_player && (
                             <>
-                                <CarteJoueur key={selected_player.id} joueurId={selected_player.id as number} onScoreChange={(score) => console.log(score)} />
+                                <CarteJoueur key={selected_player.id} joueurId={selected_player.id as number} />
                                 <p> Id joueur : {selected_player.id}</p>
                                 <Button variant="contained" disableElevation onClick={() => draftPlayerClick(this_team as number, selected_player?.id as number)}>
                                     <b>Drafter le joueur</b>

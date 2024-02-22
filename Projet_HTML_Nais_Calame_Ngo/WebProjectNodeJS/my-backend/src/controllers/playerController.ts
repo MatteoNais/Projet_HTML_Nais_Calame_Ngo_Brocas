@@ -49,6 +49,7 @@ const getPlayers = async (req: Request, res: Response) => {
 const getPlayersbyIdUserAndIdLigue = async (req: Request, res: Response) => {
     const playerId = req.params.player_id.toString();
     const ligueId = req.params.ligue_id.toString();
+    const draftId = req.params.draft_id.toString();
 
     if (playerId === null || playerId === undefined) {
         return res.status(400).json({ message: "Invalid player ID" });
@@ -56,8 +57,11 @@ const getPlayersbyIdUserAndIdLigue = async (req: Request, res: Response) => {
     if (ligueId === null || ligueId === undefined) {
         return res.status(400).json({ message: "Invalid ligue ID" });
     }
+    if (draftId === null || draftId === undefined) {
+        return res.status(400).json({ message: "Invalid draft ID" });
+    }
 
-    const player = await Player.getPlayersInEquipeByUtilisateur(playerId, ligueId);
+    const player = await Player.getPlayersInEquipeByUtilisateur(playerId, ligueId, draftId);
 
     if (!player) {
 
