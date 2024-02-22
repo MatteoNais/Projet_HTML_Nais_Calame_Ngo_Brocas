@@ -1,5 +1,5 @@
 import configDB from '../connections/configDB';
-
+import User from './User';
 export interface IDraft {
     id?: number;
     type_draft: string;
@@ -86,11 +86,66 @@ class Draft {
         }
     }
 
+    static async createDraft(idLigue: string, date_debut: string): Promise<string> {
+        try {
+            const [rowsCurrentDraft] = await configDB.execute('SELECT id_draft, date_debut, date_fin FROM lien_draft_ligue WHERE id_ligue = ? ORDER BY id_draft DESC LIMIT 1;', [idLigue]);
+            console.log("current draft");
+            console.log(rowsCurrentDraft);
+            if (rowsCurrentDraft && rowsCurrentDraft.length > 0) {
+                console.log(rowsCurrentDraft[0].date_fin);
+                const dateFinDraft = new Date(rowsCurrentDraft[0].date_fin);
+                const dateDebutDraft = new Date(rowsCurrentDraft[0].date_debut);
+                const idLastDraft = rowsCurrentDraft[0].id_draft;
+                console.log(dateFinDraft);
+                if (dateFinDraft > new Date(date_debut) || dateDebutDraft > new Date(date_debut)) {
+                    return "chevauchement de drafts";
+                }
+                else if (dateFinDraft < dateDebutDraft) {
+                    return "Dates de drafts invalides";
+                }
+                else {
+                    console.log(idLastDraft);
+                    const [rows] = await configDB.execute('INSERT INTO lien_draft_ligue (id_ligue, id_draft, date_debut, date_fin) VALUES (?, ?, ?, DATE_ADD(?, INTERVAL 1 WEEK))', [idLigue, idLastDraft + 1, new Date(date_debut), new Date(date_debut)]);
+                    const [rowsIdUsers] = await configDB.execute('SELECT id FROM utilisateurs INNER JOIN lien_utilisateur_ligue ON utilisateurs.id = lien_utilisateur_ligue.utilisateur WHERE lien_utilisateur_ligue.ligue = ?', [idLigue]);
+                    if (rowsIdUsers && rowsIdUsers.length > 0) {
+                        for (const idUser of rowsIdUsers) {
+                            console.log('idUtilisateur');
+                            console.log(idUser.id);
+                            // Insérer dans la table 'equipe'
+                            const [rows2] = await configDB.execute('INSERT INTO equipe (ligue, utilisateur, nom, draft) VALUES (?, ?, ?, ?)', [idLigue, idUser.id, 'draft', idLastDraft + 1]);
+                        }
+                        return "draft +1 et inscrit";
+                    }
+                    return "draft +1 et pas inscrit";
+                }
+            }
+            else {
+                const [rows] = await configDB.execute('INSERT INTO lien_draft_ligue (id_ligue, id_draft, date_debut, date_fin) VALUES (?, 1, ?, DATE_ADD(?, INTERVAL 1 WEEK))', [idLigue, new Date(date_debut), new Date(date_debut)]);
+                const [rowsIdUsers] = await configDB.execute('SELECT id FROM utilisateurs INNER JOIN lien_utilisateur_ligue ON utilisateurs.id = lien_utilisateur_ligue.utilisateur WHERE lien_utilisateur_ligue.ligue = ?', [idLigue]);
+                if (rowsIdUsers && rowsIdUsers.length > 0) {
+                    for (const idUser of rowsIdUsers) {
+                        console.log('idUtilisateur');
+                        console.log(idUser.id);
+                        // Insérer dans la table 'equipe'
+                        const [rows2] = await configDB.execute('INSERT INTO equipe (ligue, utilisateur, nom, draft) VALUES (?, ?, ?, ?)', [idLigue, idUser.id, 'draft', 1]);
+                    }
+                    return "nouvelle draft et inscrit";
+                }
+
+                return "nouvelle draft pas inscrit";
+            }
+        }
+        catch (error) {
+            console.error('Error updating draft:', error);
+            return "error";
+        }
+    }
+
     static async findDraftedPlayers(): Promise<string[] | null> {
-        try {            
+        try {
             /*const [players] = await configDB.execute('SELECT * FROM lien_equipe_joueur', []);*/
             const [rows] = await configDB.execute('SELECT joueur_NBA FROM lien_equipe_joueur', []);
-            const players = rows.map((row: { joueur_NBA: any; }) => row.joueur_NBA); 
+            const players = rows.map((row: { joueur_NBA: any; }) => row.joueur_NBA);
             console.log(players);
             return players;
         }

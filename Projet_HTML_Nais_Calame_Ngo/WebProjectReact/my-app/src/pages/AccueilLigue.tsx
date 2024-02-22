@@ -8,16 +8,37 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import axiosInstance from '../api/axiosInstance';
+import { useParams } from 'react-router';
 
+interface Params {
+    [ligueId: string]: string | undefined;
+}
 function AccueilLigue() {
     const [value, setValue] = React.useState<Dayjs | null>(dayjs());
     const options = ['Bleu', 'Rouge', 'Vert', 'Jaune', 'Orange'];
+    const { ligueId } = useParams<Params>();
 
     const theme = createTheme({
         palette: {
             primary: { main: "#E36414" }
         }
     });
+
+    async function createDraft(id_ligue: string) {
+        console.log(value?.format("YYYY-MM-DD HH:mm:ss"));
+        try {
+            if (value) {
+                const formatteddate = value?.format("YYYY-MM-DD HH:mm:ss");
+                const data = { ligueId: id_ligue, date_debut: formatteddate };
+                const response = await axiosInstance.post(`/draft/create`, data);
+                console.log(response.data);
+            }
+
+        } catch (error) {
+            console.error("Error creating draft:", error);
+        }
+    }
 
     return (
         <div className="body">
@@ -55,7 +76,12 @@ function AccueilLigue() {
 
                                 </LocalizationProvider>
                             </ThemeProvider>
-                            <Button variant="contained" color="warning" style={{ width: 'fit-content', marginLeft: '20px' }}>
+                            <Button
+                                variant="contained"
+                                color="warning"
+                                style={{ width: 'fit-content', marginLeft: '20px' }}
+                                onClick={() => createDraft(ligueId || '')}
+                            >
                                 <Typography variant="h5" sx={{ color: 'white' }}>Démarrer la draft</Typography>
                             </Button>
                         </Box>
