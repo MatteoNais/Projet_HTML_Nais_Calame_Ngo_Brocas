@@ -170,7 +170,7 @@ function DraftLigue() {
 
     const returnPlayerState = (key: number) => {
         console.log(picks);
-        if (picks.includes(key.toString())) {
+        if (picks.map(String).includes(key.toString())) {
             console.log(key + " has already been drafted.");
             return "impossible";
         }
