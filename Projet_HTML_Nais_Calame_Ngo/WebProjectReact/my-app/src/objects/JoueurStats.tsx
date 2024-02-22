@@ -14,8 +14,7 @@ interface JoueurStats {
     FG_PCT: number;
     PFD: number;
     PF: number;
-    nom: string;
-    prenom: string;
+
 }
 
 export default JoueurStats;

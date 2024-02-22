@@ -17,16 +17,16 @@ lastN_stats = parsed_data['resultSets'][5]['rowSet'][0]
 # Extraire les statistiques spécifiques
 gp = lastN_stats[2]  # Indice correspondant à GP dans rowSet
 pts = lastN_stats[26]  # Indice correspondant à PTS dans rowSet
-ast = lastN_stats[18]  # Indice correspondant à AST dans rowSet
-blk = lastN_stats[21]  # Indice correspondant à BLK dans rowSet
-reb = lastN_stats[17]  # Indice correspondant à REB dans rowSet
-stl = lastN_stats[20]  # Indice correspondant à STL dans rowSet
-oreb = lastN_stats[15]  # Indice correspondant à OREB dans rowSet
-dreb = lastN_stats[16]  # Indice correspondant à DREB dans rowSet
-tov = lastN_stats[19]   # Indice correspondant à TOV dans rowSet
+ast = lastN_stats[19]  # Indice correspondant à AST dans rowSet
+blk = lastN_stats[22]  # Indice correspondant à BLK dans rowSet
+reb = lastN_stats[18]  # Indice correspondant à REB dans rowSet
+stl = lastN_stats[21]  # Indice correspondant à STL dans rowSet
+oreb = lastN_stats[16]  # Indice correspondant à OREB dans rowSet
+dreb = lastN_stats[17]  # Indice correspondant à DREB dans rowSet
+tov = lastN_stats[20]   # Indice correspondant à TOV dans rowSet
 plus_minus = lastN_stats[27]  # Indice correspondant à PLUS_MINUS dans rowSet
 fg_pct = lastN_stats[9]      # Indice correspondant à FG_PCT dans rowSet
-pfd = lastN_stats[23]         # Indice correspondant à PFD dans rowSet
+pfd = lastN_stats[25]         # Indice correspondant à PFD dans rowSet
 pf = lastN_stats[24]          # Indice correspondant à PF dans rowSet
 # Créer un dictionnaire avec les statistiques spécifiques
 specific_stats = {

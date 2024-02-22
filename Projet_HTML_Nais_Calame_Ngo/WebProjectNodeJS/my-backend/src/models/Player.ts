@@ -61,7 +61,7 @@ class Player {
         }
     }
 
-    static async getPlayersInEquipeByUtilisateur(playerId: string, ligueId: string): Promise<Player | null> {
+    static async getPlayersInEquipeByUtilisateur(playerId: string, ligueId: string, draftId: string): Promise<Player | null> {
         try {
             let query = `SELECT joueur_NBA.id, joueur_NBA.nom, joueur_NBA.prenom
             FROM
@@ -70,8 +70,9 @@ class Player {
                 JOIN equipe ON lien_equipe_joueur.equipe = equipe.id
             WHERE
                 equipe.utilisateur = ? 
-                AND equipe.ligue = ?`;
-            const [rows] = await configDB.execute(query, [playerId, ligueId]);
+                AND equipe.ligue = ?
+                AND equipe.draft = ?`;
+            const [rows] = await configDB.execute(query, [playerId, ligueId, draftId]);
             return rows.length ? new Player(rows) : null;
         } catch (error) {
             console.error('Error finding all players:', error);
@@ -149,7 +150,7 @@ class Player {
 
     static async getPlayerInfo(playerId: string): Promise<string | null> {
         try {
-            
+
             var spawn = require("child_process").spawn;
             var process = spawn('python', ["./src/api_NBA_python/GetPlayerInfo.py", playerId]);
 
@@ -197,7 +198,7 @@ class Player {
             if (exitCode) {
                 throw new Error(`subprocess error exit ${exitCode}, ${error}`);
             }
-            
+
             return JSON.parse(data);
         } catch (error) {
             console.error('Error requesting all players:', error);
