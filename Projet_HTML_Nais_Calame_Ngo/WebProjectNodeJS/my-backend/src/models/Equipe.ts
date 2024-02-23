@@ -29,7 +29,8 @@ class Equipe {
         try {
             let query = `SELECT * FROM equipe WHERE ligue = ?`;
             const [rows] = await configDB.execute(query, [ligueId]);
-            return rows.length ? new Equipe(rows[0]) : null;
+            //return rows.length ? new Equipe(rows[0]) : null;
+            return rows;
         } catch (error) {
             console.error('Error finding equipe by ligueID:', error);
             return null

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import './StylePages.css';
-import { Avatar, Button, Grid, List, ListItem, ListItemAvatar, ListItemText, Typography } from "@mui/material";
+import { Avatar, Box, Button, Grid, List, ListItem, ListItemAvatar, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import axiosInstance from "../api/axiosInstance";
 import teamNBA from "../objects/TeamNBA";
 import playerNBA from "../objects/playerNBA";
@@ -19,7 +19,7 @@ interface Params {
 function DraftLigue() {
     const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
     var [this_team, setThisTeam] = useState(Number);
-    const [users, setUsers] = useState<User[]>([]);
+    const [users, setUsers] = useState<teamNBA[]>([]);
     const [teams, setTeams] = useState<teamNBA[]>([]);
     var [players, setPlayers] = useState<playerNBA[]>([]);
     const [joueurs, setJoueurs] = useState<Joueur[]>();
@@ -29,6 +29,8 @@ function DraftLigue() {
     var [selected_player, setSelectedPlayer] = useState<playerNBA | null>(null);
     //var [drafted_players, setDrafted_players] = useState<string[]>([]);
     var [picks, setPicks] = useState<string[]>([]);
+    var [indice_tour, setIndice_tour] = useState<number>(1);
+    var [tour_players, setTour_players] = useState<Joueur[]>();
 
     var [all_drafted_players, setAllDraftedPlayers] = useState<Joueur[]>();
     //console.log(all_drafted_players);
@@ -62,7 +64,8 @@ function DraftLigue() {
         axiosInstance.get(`/equipe/byLigue/${ligueId}`) // Remplacez par l'URL de votre API
             .then(response => {
                 console.log(response.data);
-                setUsers(response.data.users);
+                setUsers(response.data);
+                console.log(users);
             })
             .catch(error => console.error('Error:', error));
     }, [ligueId]);
@@ -91,6 +94,18 @@ function DraftLigue() {
         }
     }, [picks]);
 
+    useEffect(() => {
+        const tourPlayers = [];
+        const startIndex = (indice_tour - 1) * users.length;
+            for (let i = startIndex; i < (startIndex + users.length); i++) {
+                //console.log(i);
+                if (all_drafted_players && all_drafted_players[i] != null) {
+                    tourPlayers.push(all_drafted_players[i]);
+                    //console.log(tourPlayers);
+                }
+            }
+            setTour_players(tourPlayers);
+    })
 
 
     async function getPlayerfromteam(equipe_id: number) {
@@ -110,7 +125,8 @@ function DraftLigue() {
             console.log(picksData);
     
             setPicks(picksData); // Assuming picksData is an array of strings
-            console.log(picks);
+            
+            //console.log(picks);
     
             all_drafted_players = await getDraftedPlayers(picksData);
             console.log(all_drafted_players);
@@ -243,6 +259,47 @@ function DraftLigue() {
         }
     };
 
+    const Dim_index_tour = () => {
+        // Tableau pour stocker les joueurs du tour actuel
+        const tourPlayers = [];
+
+        if (indice_tour > 1)
+        {
+            setIndice_tour(indice_tour - 1);
+            console.log(indice_tour);
+        
+            const startIndex = (indice_tour - 1) * users.length;
+            for (let i = startIndex; i < (startIndex + users.length); i++) {
+                //console.log(i);
+                if (all_drafted_players && all_drafted_players[i] != null) {
+                    tourPlayers.push(all_drafted_players[i]);
+                    //console.log(tourPlayers);
+                }
+            }
+            setTour_players(tourPlayers);
+        }
+    }
+
+    const Aug_index_tour = () => {
+        const tourPlayers = [];
+
+        if (indice_tour < 10)
+        {
+            setIndice_tour(indice_tour + 1);
+            console.log(indice_tour);
+            
+            const startIndex = (indice_tour - 1) * users.length;
+            for (let i = startIndex; i < startIndex + users.length; i++) {
+                //console.log(i);
+                if (all_drafted_players && all_drafted_players[i] != null) {
+                    tourPlayers.push(all_drafted_players[i]);
+                    //console.log(tourPlayers);
+                }
+            }
+            setTour_players(tourPlayers);
+        }
+    }
+
     return (
         <div className="body">
             <div className='App-body-ligue'>
@@ -272,12 +329,17 @@ function DraftLigue() {
 
                         <Grid item xs={12} bgcolor={"white"} color={"white"} sx={{ height: '50vh', display: 'flex', flexWrap: 'wrap', backgroundColor: "grey", border: "3px solid #ff6a00" }}>
                             <Grid item xs={12} md={12}>
+                                <Box display="flex" alignItems="center" justifyContent="center" sx={{ gap: '10px', marginTop: 3 }}>
                                 <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                                    Récapitulatif de cette draft
+                                Tour de draft
                                 </Typography>
+                                    <Button variant="contained" disableElevation onClick={Dim_index_tour}> &larr; </Button>
+                                    <Typography variant="h5" sx={{ color: 'white' }}> {indice_tour} </Typography>
+                                    <Button variant="contained" disableElevation onClick={Aug_index_tour}> &rarr;</Button>
+                                </Box>
                             </Grid>
                             {/* Vérifiez d'abord si joueurs est défini pour éviter les erreurs */}
-                            {all_drafted_players && all_drafted_players.map(joueur => (
+                            {/*all_drafted_players && all_drafted_players.map(joueur => (
                                 <Grid key={joueur.id} item xs={12} sm={6} md={4} lg={3} >
                                     <img
                                         src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${joueur.id}.png`}
@@ -286,7 +348,47 @@ function DraftLigue() {
                                     />
                                     <Typography sx={{ fontWeight: 'bold' }}> {joueur.prenom + " " + joueur.nom} </Typography>
                                 </Grid>
-                            ))}
+                            ))*/}
+
+                            <TableContainer component={Paper}>
+                                <Table>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Utilisateur</TableCell>
+                                            <TableCell>Choix</TableCell>
+                                            <TableCell>Joueur</TableCell>
+                                            <TableCell></TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {users.map((user, index) => (
+                                            <TableRow key={user.id}>
+                                                <TableCell><Typography sx={{ fontWeight: 'bold' }}> {user.nom} </Typography></TableCell>
+                                                {/* Add other user information here */}
+                                                <TableCell>{(indice_tour - 1) * users.length + index + 1}</TableCell>
+                                                <TableCell>{tour_players && tour_players[index] && (
+                                            <Typography> {tour_players[index].nom} {tour_players[index].prenom} </Typography>)} </TableCell>
+                                            <TableCell>{tour_players && tour_players[index] && (<ListItemAvatar>
+                                        <Avatar src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${tour_players[index].id}.png`} />
+                                    </ListItemAvatar>)}</TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        
+                            {/* {users && users.map((user, index) => (
+
+                                
+                                <Grid key={user.id} item xs={12} sm={6} md={4} lg={3}>
+                                    <div>
+                                        <Typography sx={{ fontWeight: 'bold' }}> {user.nom} </Typography>
+                                        {tour_players && tour_players[index] && (
+                                            <Typography> {tour_players[index].nom} </Typography>
+                                        )}
+                                    </div>
+                                </Grid>
+                            ))} */}
                         </Grid>
                     </Grid>
                     <Grid item xs={2} className="liste_equipeNBA">
