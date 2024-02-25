@@ -19,6 +19,7 @@ function MonEquipeLigue() {
     const { ligueId } = useParams<Params>();
     const { draftId } = useParams<Params>();
     const [currentDraft, setCurrentDraft] = useState<Draft>();
+    const [lastDraft, setLastDraft] = useState<Draft>();
 
     const [totalPoints, setTotalPoints] = useState<number>(0); // Nouvel état pour le total des points
     // On incrémente le compteut de score avec les scores de chaque joueur.
@@ -31,15 +32,24 @@ function MonEquipeLigue() {
     }, []);
     // get info de la draft actuellement visualisé, pour afficher les dates.
     useEffect(() => {
+        axiosInstance.get(`/draft/ligue/${ligueId}`)
+            .then(response => {
+                console.log(response.data);
+                setLastDraft(response.data);
+            })
+            .catch(error => console.error('Error:', error));
+    }, [ligueId]);
+
+    useEffect(() => {
         axiosInstance.get(`/draft/ligue/${ligueId}/${draftId}`)
             .then(response => {
                 setCurrentDraft(response.data[0].draft);
                 console.log("La reponse sur le site" + response);
                 console.log(dayjs());
+                console.log(dayjs(currentDraft?.date_debut)?.format("YYYY-MM-DD"));
             })
             .catch(error => console.error('Error:', error));
     }, [ligueId, draftId]);
-
     // Récupérer les id des joueurs et leurs noms et prénoms.
     useEffect(() => {
         console.log("Nouvel id de draft :", draftId);
@@ -63,7 +73,7 @@ function MonEquipeLigue() {
             resetTotalPoints();
         };
     }, [resetTotalPoints]);
-
+    console.log("la dernière draft : " + lastDraft?.id_draft);
     return (
         <div className="body">
             <div className='App-body-ligue'>
@@ -75,22 +85,25 @@ function MonEquipeLigue() {
                         {/* Terrain avec compo equipe */}
                         <div className="liste-cartes">
 
-                            {joueurs && joueurs.length > 0 && joueurs.map(joueur => (
-                                <CarteJoueur key={joueur.id} nom={joueur.nom} prenom={joueur.prenom} joueurId={joueur.id} onScoreLoaded={handleScoreLoaded}></CarteJoueur>
+                            {joueurs && joueurs.length > 0 && currentDraft?.date_debut && currentDraft?.date_fin && joueurs.map(joueur => (
+                                <CarteJoueur key={joueur.id} dateDebut={dayjs(currentDraft?.date_debut)?.format("YYYY-MM-DD")} dateFin={dayjs(currentDraft?.date_fin)?.format("YYYY-MM-DD")} nom={joueur.nom} prenom={joueur.prenom} joueurId={joueur.id} onScoreLoaded={handleScoreLoaded}></CarteJoueur>
                             ))}
                         </div>
                     </Grid>
                     <Grid item xs={4} sx={{ textAlign: 'center' }}>
                         <Typography variant="h4" sx={{ color: 'white' }}>Total : {totalPoints} points</Typography>
                         <Box display="flex" alignItems="center" justifyContent="center" sx={{ gap: '10px', marginTop: 3 }}>
-                            <Link to={`/ligue/${ligueId}/${basicUserInfo?.id}/${Number(draftId) - 1}`}>
-                                <Button variant="contained" disableElevation onClick={resetTotalPoints}> &larr; </Button>
-                            </Link>
+                            {Number(draftId) - 1 > 0 && (
+                                <Link to={`/ligue/${ligueId}/${basicUserInfo?.id}/${Number(draftId) - 1}`}>
+                                    <Button variant="contained" disableElevation onClick={resetTotalPoints}> &larr; </Button>
+                                </Link>
+                            )}
                             <Typography variant="h5" sx={{ color: 'white' }}>{dayjs(currentDraft?.date_debut)?.format("YYYY-MM-DD HH:mm")} - {dayjs(currentDraft?.date_fin)?.format("YYYY-MM-DD HH:mm")}</Typography>
-
-                            <Link to={`/ligue/${ligueId}/${basicUserInfo?.id}/${Number(draftId) + 1}`}>
-                                <Button variant="contained" disableElevation onClick={resetTotalPoints}> &rarr;</Button>
-                            </Link>
+                            {Number(draftId) + 1 <= (lastDraft?.id_draft ?? 0) &&
+                                <Link to={`/ligue/${ligueId}/${basicUserInfo?.id}/${Number(draftId) + 1}`}>
+                                    <Button variant="contained" disableElevation onClick={resetTotalPoints}> &rarr;</Button>
+                                </Link>
+                            }
                         </Box>
                     </Grid>
                 </Grid>

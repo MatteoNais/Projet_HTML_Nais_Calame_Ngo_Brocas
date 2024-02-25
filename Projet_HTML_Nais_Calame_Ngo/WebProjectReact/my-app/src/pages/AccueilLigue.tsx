@@ -57,6 +57,9 @@ function AccueilLigue() {
 
         } catch (error) {
             console.error("Error creating draft:", error);
+        } finally {
+            // Réactualiser la page
+            window.location.reload();
         }
     }
 

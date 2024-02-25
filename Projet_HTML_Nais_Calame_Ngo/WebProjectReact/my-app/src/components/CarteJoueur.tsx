@@ -9,6 +9,8 @@ interface CarteJoueurProps {
     nom?: string;
     prenom?: string;
     onScoreLoaded?: (score: number) => void;
+    dateDebut: string;
+    dateFin: string;
 }
 
 const CustomBadge = ({ content, children }: { content: any, children: any }) => {
@@ -45,14 +47,14 @@ const CustomBadge = ({ content, children }: { content: any, children: any }) => 
 };
 
 
-function CarteJoueur({ joueurId, nom, prenom, onScoreLoaded }: CarteJoueurProps) {
+function CarteJoueur({ joueurId, nom, prenom, dateDebut, dateFin, onScoreLoaded }: CarteJoueurProps) {
     //
     const [loading, setLoading] = useState(true);
     const [stats, setStats] = useState<JoueurStats>({ PTS: 0, AST: 0, REB: 0, OREB: 0, DREB: 0, BLK: 0, STL: 0, FG_PCT: 0, PFD: 0, TOV: 0, PF: 0, PLUS_MINUS: 0, GP: 0 });
     const [score, setScore] = useState<number>();
     useEffect(() => {
         setLoading(true); // Set loading to true before making the API call
-        axiosInstance.get(`/playersNBA/recentstats/${joueurId}`)
+        axiosInstance.get(`/playersNBA/recentstats/${joueurId}/${dateDebut}/${dateFin}`)
             .then(response => {
                 console.log(response.data);
                 setStats(response.data || { PTS: 0, AST: 0, OREB: 0, DREB: 0, BLK: 0, STL: 0, FG_PCT: 0, PFD: 0, TOV: 0, PF: 0, PLUS_MINUS: 0, GP: 0 });

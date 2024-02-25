@@ -106,10 +106,10 @@ class Player {
         }
     }
 
-    static async getScorePlayer(playerId: string): Promise<string | null> {
+    static async getScorePlayer(playerId: string, date_debut: string, date_fin: string): Promise<string | null> {
         try {
             var spawn = require("child_process").spawn;
-            var process = spawn('python', ["./src/api_NBA_python/GetScoreJoueur.py", playerId, '2024-02-10', '2024-02-17']);
+            var process = spawn('python', ["./src/api_NBA_python/GetScoreJoueur.py", playerId, date_debut, date_fin]);
 
             let data = "";
             for await (const chunk of process.stdout) {
@@ -139,10 +139,10 @@ class Player {
             return null;
         }
     }
-    static async getLast5Match(playerId: string): Promise<string | null> {
+    static async getLast5Match(playerId: string, date_debut: string, date_fin: string): Promise<string | null> {
         try {
             var spawn = require("child_process").spawn;
-            var process = spawn('python', ["./src/api_NBA_python/GetLastNGames.py", playerId, '2024-02-10', '2024-02-17']);
+            var process = spawn('python', ["./src/api_NBA_python/GetLastNGames.py", playerId, date_debut, date_fin]);
 
             let data = "";
             for await (const chunk of process.stdout) {
@@ -160,8 +160,8 @@ class Player {
                 throw new Error(`subprocess error exit ${exitCode}, ${error}`);
             }
 
-            let query = `SELECT nom, prenom FROM joueur_NBA WHERE id = ?`;
-            const [rows] = await configDB.execute(query, [playerId]);
+            // let query = `SELECT nom, prenom FROM joueur_NBA WHERE id = ?`;
+            // const [rows] = await configDB.execute(query, [playerId]);
 
             let lastConsoleLogData = JSON.parse(data);
             data = {

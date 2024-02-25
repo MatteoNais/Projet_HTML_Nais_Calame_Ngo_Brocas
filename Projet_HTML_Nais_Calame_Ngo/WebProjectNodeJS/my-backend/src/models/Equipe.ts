@@ -2,6 +2,8 @@ import configDB from '../connections/configDB';
 import Draft from './Draft';
 import Player from './Player';
 import User from './User';
+import dayjs from 'dayjs';
+
 export interface IEquipe {
     id?: number;
     ligue: number;
@@ -115,8 +117,8 @@ class Equipe {
 
     static async getScoreEquipe(idUser: string): Promise<number[] | null> {
         try {
-            let query = `SELECT score FROM equipe INNER JOIN lien_draft_ligue ON equipe.draft = lien_draft_ligue.id_draft WHERE equipe.utilisateur = ? AND lien_draft_ligue.date_fin < CURRENT_DATE `;
-            const [rows] = await configDB.execute(query, [idUser]);
+            let query = `SELECT score FROM equipe INNER JOIN lien_draft_ligue ON equipe.draft = lien_draft_ligue.id_draft WHERE equipe.utilisateur = ? AND lien_draft_ligue.date_fin < ?`;
+            const [rows] = await configDB.execute(query, [idUser, dayjs().format("YYYY-MM-DD HH:mm:ss")]);
             console.log(rows);
             return rows;
         }
@@ -143,7 +145,7 @@ class Equipe {
                             let totalscore = 0; // initialisation du score total à 0
                             if (players != null) {
                                 for (const player of players) { // pour tous les joueurs on calcule leur score total
-                                    const scoreData = await Player.getScorePlayer(player.getId().toString());
+                                    const scoreData = await Player.getScorePlayer(player.getId().toString(), dayjs(currentDraft?.date_debut).format('YYYY-MM-DD'), dayjs(currentDraft?.date_fin).format('YYYY-MM-DD'));
                                     console.log(scoreData);
                                     try {
                                         // Essayez de parser la chaîne JSON
