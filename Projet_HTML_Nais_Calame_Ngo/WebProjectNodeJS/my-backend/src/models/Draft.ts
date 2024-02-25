@@ -15,6 +15,15 @@ export interface IDraft {
     contrainte10: string;
 }
 
+export interface DraftRow {
+    id_relation: number;
+    id_draft: number;
+    id_ligue: number;
+    date_debut: Date;
+    date_fin: Date;
+    scoreUpdated: number;
+    // Ajoutez d'autres propriétés au besoin
+}
 
 class Draft {
     private draft: IDraft;
@@ -81,15 +90,40 @@ class Draft {
         return drafts;
     }
 
-    static async findCurrentDraft(idLigue: string): Promise<string | null> {
+    static async findCurrentDraft(idLigue: string): Promise<DraftRow | null> {
         try {
             const [rows] = await configDB.execute('SELECT * FROM lien_draft_ligue WHERE id_ligue = ? ORDER BY id_draft DESC LIMIT 1;', [idLigue]);
-            console.log(rows[0]);
-            return rows[0];
+            if (rows.length > 0) {
+                const draftRow: DraftRow = {
+                    id_relation: rows[0].id_relation,
+                    id_draft: rows[0].id_draft,
+                    id_ligue: rows[0].id_ligue,
+                    date_debut: new Date(rows[0].date_debut),
+                    date_fin: new Date(rows[0].date_fin),
+                    scoreUpdated: rows[0].scoreUpdated,
+                    // Ajoutez d'autres propriétés au besoin
+                    // Ajoutez d'autres propriétés au besoin
+                };
+
+                console.log(draftRow);
+                return draftRow;
+            } else {
+                console.log("No drafts found for the league.");
+                return null;
+            }
+        } catch (error) {
+            console.error('Error finding draft by league ID:', error);
+            return null;
         }
-        catch (error) {
-            console.error('Error finding draft by ligueID:', error);
-            return null
+    }
+
+    static async setUpdatedScore(idDraft: string): Promise<number> {
+        try {
+            const [rows] = await configDB.execute('UPDATE lien_draft_ligue SET scoreUpdated = 1 WHERE id_relation =? ;', [idDraft]);
+            return 1;
+        } catch (error) {
+            console.error('Error finding draft by league ID:', error);
+            return 0;
         }
     }
 

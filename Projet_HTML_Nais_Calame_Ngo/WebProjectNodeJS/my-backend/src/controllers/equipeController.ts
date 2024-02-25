@@ -49,6 +49,34 @@ const getEquipeByLigueAndUser = async (req: Request, res: Response) => {
     res.status(200).json(equipe);
 };
 
+const getEquipeByLigueAndUserAndDraft = async (req: Request, res: Response) => {
+    const ligueId = req.params.ligue_id.toString();
+    const userId = req.params.user_id.toString();
+    const draftId = req.params.draft_id.toString();
+
+    if (ligueId === null || ligueId === undefined || userId === null || userId === undefined) {
+        return res.status(400).json({ message: "Invalid equipe ID or user ID" });
+    }
+    if (draftId === null || draftId === undefined) {
+        return res.status(400).json({ message: "Invalid draft ID" });
+    }
+    const equipe = await Equipe.getEquipeByLigueAndUserAndDraft(ligueId, userId, draftId);
+
+    res.status(200).json(equipe);
+};
+
+const updateScoreEquipe = async (req: Request, res: Response) => {
+    console.log("rentre");
+    const ligueId = req.params.ligue_id.toString();
+
+    if (ligueId === null || ligueId === undefined) {
+        return res.status(400).json({ message: "Invalid equipe ID" });
+    }
+    const result = await Equipe.updateScoreEquipe(ligueId);
+
+    res.status(200).json(result);
+}
+
 const getEquipesByUtilisateur = async (req: Request, res: Response) => {
     const userId = req.params.utilisateur_id.toString();
 
@@ -111,4 +139,4 @@ const getHistorique = async (req: Request, res: Response) => {
 
 
 
-export { getEquipeById, getEquipesByUtilisateur, getEquipeByLigueAndUser, addJoueurNBA, removeJoueurNBA, replaceJoueurNBA, getHistorique, createEquipe, getEquipesByLigue };
+export { updateScoreEquipe, getEquipeById, getEquipesByUtilisateur, getEquipeByLigueAndUserAndDraft, getEquipeByLigueAndUser, addJoueurNBA, removeJoueurNBA, replaceJoueurNBA, getHistorique, createEquipe, getEquipesByLigue };

@@ -14,7 +14,7 @@ const importAllTeamsToBDD = async (req: Request, res: Response) => {
         const nom = team.full_name
         const abbreviation = team.abbreviation
         const ville = team.city
-        team = new Team({id,nom,abbreviation,ville})
+        team = new Team({ id, nom, abbreviation, ville })
         result_list.push(team)
         Team.save(team.team)
     }
@@ -28,7 +28,7 @@ const importAllTeamsToBDD = async (req: Request, res: Response) => {
 
 const getTeambyID = async (req: Request, res: Response) => {
     const teamId = req.params.team_id.toString();
-    
+
     if (teamId === null || teamId === undefined) {
         return res.status(400).json({ message: "Invalid Team ID" });
     }
@@ -44,7 +44,7 @@ const getTeambyID = async (req: Request, res: Response) => {
 
 const getAllTeams = async (req: Request, res: Response) => {
 
-    const teams = await Team.getAllTeams(); 
+    const teams = await Team.getAllTeams();
 
     if (!teams) {
         res.status(400);
@@ -65,4 +65,4 @@ const getTeamInfo = async (req: Request, res: Response) => {
     res.status(200).json(infos);
 };
 
-export { getTeambyID, importAllTeamsToBDD, getAllTeams, getTeamInfo};
+export { getTeambyID, importAllTeamsToBDD, getAllTeams, getTeamInfo };

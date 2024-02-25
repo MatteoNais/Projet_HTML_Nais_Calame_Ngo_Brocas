@@ -1,10 +1,23 @@
 import configDB from '../connections/configDB';
-
+import Draft from './Draft';
+import Player from './Player';
+import User from './User';
 export interface IEquipe {
     id?: number;
     ligue: number;
     utilisateur: number;
     nom: string;
+    score?: number;
+}
+
+export interface EquipeRow {
+    id: number;
+    ligue: number;
+    utilisateur: number;
+    nom: string;
+    score: number;
+    draft: number;
+    // Ajoutez d'autres propriétés au besoin
 }
 
 class Equipe {
@@ -47,11 +60,39 @@ class Equipe {
         }
     }
 
-    static async getEquipeByLigueAndUser(ligueId : string, userId: string) : Promise<Equipe | null> {
+    static async getEquipeByLigueAndUser(ligueId: string, userId: string): Promise<Equipe | null> {
         try {
             let query = `SELECT * FROM equipe WHERE ligue = ? AND utilisateur = ?`;
             const [rows] = await configDB.execute(query, [ligueId, userId]);
             return rows.length ? new Equipe(rows[0]) : null;
+        } catch (error) {
+            console.error('Error finding equipe by ligueID and userId:', error);
+            return null
+        }
+    }
+
+    static async getEquipeByLigueAndUserAndDraft(ligueId: string, userId: string, draftId: string): Promise<EquipeRow | null> {
+        try {
+            let query = `SELECT * FROM equipe WHERE ligue = ? AND utilisateur = ? AND draft = ?`;
+            const [rows] = await configDB.execute(query, [ligueId, userId, draftId]);
+
+            if (rows.length > 0) {
+                const equipeRow: EquipeRow = {
+                    id: rows[0].id,
+                    ligue: rows[0].ligue,
+                    utilisateur: rows[0].utilisateur,
+                    nom: rows[0].nom,
+                    score: rows[0].score,
+                    draft: rows[0].draft,
+
+                };
+
+                console.log(equipeRow);
+                return equipeRow;
+            } else {
+                console.log("Pas d'équipe de défiit pour l'user : " + userId);
+                return null;
+            }
         } catch (error) {
             console.error('Error finding equipe by ligueID and userId:', error);
             return null
@@ -71,6 +112,82 @@ class Equipe {
             return "error";
         }
     }
+
+    static async getScoreEquipe(idUser: string): Promise<number[] | null> {
+        try {
+            let query = `SELECT score FROM equipe INNER JOIN lien_draft_ligue ON equipe.draft = lien_draft_ligue.id_draft WHERE equipe.utilisateur = ? AND lien_draft_ligue.date_fin < CURRENT_DATE `;
+            const [rows] = await configDB.execute(query, [idUser]);
+            console.log(rows);
+            return rows;
+        }
+        catch (error) {
+            console.error('Error finding score by userID:', error);
+            return null;
+        }
+    }
+    static async updateScoreEquipe(idLigue: string): Promise<string> {
+        try {
+            const currentDraft = await Draft.findCurrentDraft(idLigue); // On récupère l'id de la draft en cours
+            console.log(currentDraft);
+            if (currentDraft && currentDraft.date_fin < new Date() && currentDraft.scoreUpdated == 0) { // Si la date de fin de la draft est passée on rentre dans le if
+                const users: User[] | null = await User.findUsersByLigueId(idLigue); // On récupère la liste des users présent dans la ligue
+                console.log(users)
+                if (users != null) {
+                    console.log("rentre if users");
+                    for (const user of users) { // parcourt les users
+                        const equipe = await Equipe.getEquipeByLigueAndUserAndDraft(idLigue, user?.getId().toString(), currentDraft.id_draft.toString()); // récupère l'équipe de la dernière draft
+                        console.log(equipe);
+                        if (equipe?.id != null) {
+                            console.log("rentre if equipes");
+                            const players = await Player.getPlayersByIdEquipe(equipe.id.toString()); // On récupère la liste des players nba de l'équipe
+                            let totalscore = 0; // initialisation du score total à 0
+                            if (players != null) {
+                                for (const player of players) { // pour tous les joueurs on calcule leur score total
+                                    const scoreData = await Player.getScorePlayer(player.getId().toString());
+                                    console.log(scoreData);
+                                    try {
+                                        // Essayez de parser la chaîne JSON
+                                        const parsedScore = (scoreData as any)?.score || 0; // On parse le json pour récupérer le score
+                                        console.log(parsedScore);
+                                        totalscore += parsedScore;
+                                    } catch (error) {
+                                        console.error('Error parsing score:', error);
+                                    }
+
+                                }
+                                console.log(Math.ceil(totalscore));
+                            }
+                            console.log(players);
+                            // Update du score des équipes.
+                            let query = `UPDATE equipe SET score = ? WHERE id = ?`;
+                            const [rows] = await configDB.execute(query, [Math.ceil(totalscore), equipe.id]);
+                            console.log(rows);
+                        } else {
+                            console.log("No equipe found for the user.");
+                        }
+                    }
+                    const updatedDraft = await Draft.setUpdatedScore(currentDraft.id_relation.toString());
+                    if (updatedDraft == 1) {
+                        return "success";
+                    }
+                    else {
+                        return "error_notify score updated";
+                    }
+                } else {
+                    console.log("No users found for the league.");
+                    return "no_users";
+                }
+            }
+            else {
+                return "la date de fin n'est pas encore passée ou le score a déjà été update";
+            }
+        }
+        catch (error) {
+            console.error('Error updating score in database', error);
+            return "error";
+        }
+    }
+
 
     static async addJoueurNBA(equipe_id: string, id_joueur: string): Promise<string> {
         try {
@@ -114,6 +231,7 @@ class Equipe {
             return "error";
         }
     }
+
 
     static async replaceJoueurNBA(equipe_id: string, id_nouveau: string, id_ancien: string): Promise<string> {
         try {

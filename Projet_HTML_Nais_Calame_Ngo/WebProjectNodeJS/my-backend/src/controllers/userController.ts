@@ -31,4 +31,18 @@ const getUsersByIdLigues = async (req: Request, res: Response) => {
     res.status(200).json(user);
 };
 
-export { getUser, getUsersByIdLigues };
+const findScoreOfUsersByLigueId = async (req: Request, res: Response) => {
+
+    const ligueId = req.params.id_ligue;
+    if (ligueId === null || ligueId === undefined) {
+        return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    const users = await User.findScoreOfUsersByLigueId(ligueId);
+
+    if (!users) {
+        res.status(400);
+    }
+    res.status(200).json(users);
+}
+export { getUser, getUsersByIdLigues, findScoreOfUsersByLigueId };

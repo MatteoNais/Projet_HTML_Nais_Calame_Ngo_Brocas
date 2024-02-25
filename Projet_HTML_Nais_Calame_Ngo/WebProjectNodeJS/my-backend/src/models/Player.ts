@@ -14,6 +14,14 @@ class Player {
         this.player = p;
     }
 
+    getId(): number {
+        if (this.player.id === undefined) {
+            // Gérer le cas où l'ID est indéfini
+            throw new Error("ID is undefined");
+        }
+        return this.player.id;
+    }
+
     static async save(player: IPlayer): Promise<number> {
         try {
             const [rows, fields] = await configDB.execute(
@@ -80,6 +88,57 @@ class Player {
         }
     }
 
+    static async getPlayersByIdEquipe(equipeId: string): Promise<Player[] | null> {
+        try {
+            let query = `SELECT joueur_NBA.id, joueur_NBA.nom, joueur_NBA.prenom
+            FROM
+                joueur_NBA
+                JOIN lien_equipe_joueur ON joueur_NBA.id = lien_equipe_joueur.joueur_NBA
+                JOIN equipe ON lien_equipe_joueur.equipe = equipe.id
+            WHERE
+                equipe.id = ?`;
+            const [rows] = await configDB.execute(query, [equipeId]);
+            return rows.map((playerData: any) => new Player(playerData));
+
+        } catch (error) {
+            console.error('Error finding all players:', error);
+            return null
+        }
+    }
+
+    static async getScorePlayer(playerId: string): Promise<string | null> {
+        try {
+            var spawn = require("child_process").spawn;
+            var process = spawn('python', ["./src/api_NBA_python/GetScoreJoueur.py", playerId, '2024-02-10', '2024-02-17']);
+
+            let data = "";
+            for await (const chunk of process.stdout) {
+                data += chunk;
+            }
+            let error = "";
+            for await (const chunk of process.stderr) {
+                error += chunk;
+            }
+            const exitCode = await new Promise((resolve, reject) => {
+                process.on('close', resolve);
+            });
+
+            if (exitCode) {
+                throw new Error(`subprocess error exit ${exitCode}, ${error}`);
+            }
+
+            let lastConsoleLogData = JSON.parse(data);
+            data = {
+                ...lastConsoleLogData
+            };
+            //console.log(data);
+            return data;
+
+        } catch (error) {
+            console.error('Error finding user stats by ID:', error);
+            return null;
+        }
+    }
     static async getLast5Match(playerId: string): Promise<string | null> {
         try {
             var spawn = require("child_process").spawn;
@@ -106,10 +165,10 @@ class Player {
 
             let lastConsoleLogData = JSON.parse(data);
             data = {
-                ...lastConsoleLogData,
-                nom: rows[0].nom,
-                prenom: rows[0].prenom
+                ...lastConsoleLogData
             };
+            console.log(data);
+
             return data;
 
         } catch (error) {

@@ -38,6 +38,13 @@ function AccueilLigue() {
             .catch(error => console.error('Error:', error));
     }, [ligueId]);
 
+    useEffect(() => {
+        axiosInstance.put(`/equipe/updateScore/${ligueId}`)
+            .then(response => {
+                console.log(" test put" + response.data);
+            })
+    }, []);
+
     async function createDraft(id_ligue: string) {
         console.log(value?.format("YYYY-MM-DD HH:mm:ss"));
         try {

@@ -70,6 +70,19 @@ const getPlayersbyIdUserAndIdLigue = async (req: Request, res: Response) => {
     res.status(200).json(player);
 };
 
+const getPlayersByIdEquipe = async (req: Request, res: Response) => {
+    const equipeId = req.params.equipe_id.toString();
+    if (equipeId === null || equipeId === undefined) {
+        return res.status(400).json({ message: "Invalid equipe ID" });
+    }
+    const player = await Player.getPlayersByIdEquipe(equipeId);
+    if (!player) {
+
+        res.status(400);
+    }
+    res.status(200).json(player);
+}
+
 const getRecentStats = async (req: Request, res: Response) => {
     const playerId = req.params.player_id.toString();
     if (playerId === null || playerId === undefined) {
@@ -84,6 +97,21 @@ const getRecentStats = async (req: Request, res: Response) => {
 
     res.status(200).json(playerstats);
 };
+
+const getScorePlayer = async (req: Request, res: Response) => {
+    const playerId = req.params.player_id.toString();
+    if (playerId === null || playerId === undefined) {
+        return res.status(400).json({ message: "Invalid player ID" });
+    }
+
+    const score = await Player.getScorePlayer(playerId);
+
+    if (!score) {
+        res.status(400);
+    }
+
+    res.status(200).json(score);
+}
 
 const getPlayerInfo = async (req: Request, res: Response) => {
     const playerId = req.params.player_id.toString();
@@ -147,4 +175,4 @@ const importAllPlayersToBDD = async (req: Request, res: Response) => {
 };
 
 
-export { getPlayerbyID, getRecentStats, importAllPlayersToBDD, getPlayerInfo, getPlayers, getPlayerbyIDTeam, getPlayerFantaisyProfileById, getPlayersbyIdUserAndIdLigue };
+export { getPlayerbyID, getRecentStats, importAllPlayersToBDD, getPlayerInfo, getPlayers, getPlayerbyIDTeam, getPlayerFantaisyProfileById, getPlayersbyIdUserAndIdLigue, getScorePlayer, getPlayersByIdEquipe };

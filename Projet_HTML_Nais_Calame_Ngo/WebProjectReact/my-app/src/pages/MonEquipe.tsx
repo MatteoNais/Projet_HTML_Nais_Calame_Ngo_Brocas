@@ -21,29 +21,31 @@ function MonEquipeLigue() {
     const [currentDraft, setCurrentDraft] = useState<Draft>();
 
     const [totalPoints, setTotalPoints] = useState<number>(0); // Nouvel état pour le total des points
+    // On incrémente le compteut de score avec les scores de chaque joueur.
     const handleScoreLoaded = useCallback((score: number) => {
         setTotalPoints(prevTotalScore => prevTotalScore + score);
     }, []);
+    // Quand on change de draft on reset le compteur de point.
     const resetTotalPoints = useCallback(() => {
         setTotalPoints(0);
     }, []);
-
+    // get info de la draft actuellement visualisé, pour afficher les dates.
     useEffect(() => {
         axiosInstance.get(`/draft/ligue/${ligueId}/${draftId}`)
             .then(response => {
                 setCurrentDraft(response.data[0].draft);
-                console.log(response);
+                console.log("La reponse sur le site" + response);
                 console.log(dayjs());
             })
             .catch(error => console.error('Error:', error));
     }, [ligueId, draftId]);
 
-
+    // Récupérer les id des joueurs et leurs noms et prénoms.
     useEffect(() => {
         console.log("Nouvel id de draft :", draftId);
         axiosInstance.get(`/playersNBA/team/${ligueId}/${basicUserInfo?.id}/${draftId}`)
             .then(response => {
-                console.log(response.data.player);
+                console.log(" joueurs" + response.data.player);
                 setJoueurs(response.data.player);
             })
             .catch(error => {
@@ -54,12 +56,7 @@ function MonEquipeLigue() {
             });
     }, [ligueId, basicUserInfo?.id, draftId]);
 
-    // useEffect(() => {
-    //     console.log("Joueurs mis à jour :", joueurs);
-    //     console.log(draftId);
-    // }, [joueurs, draftId]);
-
-    // Fonction appelée lorsque le composant est démonté (changement de page)
+    // Fonction appelée lorsque le composant est démonté (changement de page).
     useEffect(() => {
         return () => {
             // Réinitialiser le total des points lorsque le composant est démonté
