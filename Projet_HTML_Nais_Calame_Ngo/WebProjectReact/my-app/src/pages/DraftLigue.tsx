@@ -127,17 +127,11 @@ function DraftLigue() {
             console.log(picksData);
 
             setPicks(picksData); // Assuming picksData is an array of strings
-<<<<<<< HEAD
-            console.log(picks);
-
-=======
             
             //console.log(picks);
     
-=========
             console.log(picks);
 
->>>>>>>>> Temporary merge branch 2
             all_drafted_players = await getDraftedPlayers(picksData);
             console.log(all_drafted_players);
             /*setAllDraftedPlayers(draftedPlayers); // Assuming you have a setter function for all_drafted_players*/
