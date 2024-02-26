@@ -16,7 +16,14 @@ interface CarteJoueurProps {
 const CustomBadge = ({ content, children }: { content: any, children: any }) => {
     let number: string;
     if (content < 10) {
-        number = "0" + content.toString();
+        if (content < 0)
+        {
+            number = "00";
+        }
+        else
+        {
+            number = "0" + content.toString();
+        }
     } else {
         number = content.toString();
     }

@@ -1,4 +1,3 @@
-
 import reportWebVitals from './reportWebVitals';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -15,7 +14,9 @@ import ProtectedLayout from "./layouts/ProtectedLayout";
 import MesLigues from './pages/MesLigues';
 import AccueilLigue from './pages/AccueilLigue';
 import HeaderLigue from './pages/HeaderLigue';
-import DraftLigue from './pages/DraftLigue';
+//import DraftLigue from './pages/DraftLigue';
+// <Route path="draft" element={<DraftLigue />} />
+import Draft from './pages/Draft';
 import MonEquipeLigue from './pages/MonEquipe';
 import SelectionJoueur from './pages/SelectionJoueur'
 import SelectionInfo from './pages/SelectionInfo';
@@ -39,7 +40,7 @@ export default function App() {
                 </Route>
                 <Route path="/ligue/:ligueId/" element={<HeaderLigue />}>
                     <Route index element={<AccueilLigue />} />
-                    <Route path="draft" element={<DraftLigue />} />
+                    <Route path="draft" element={<Draft />} />
                     <Route path=":userId/:draftId" element={<MonEquipeLigue />} />
                 </Route>
 

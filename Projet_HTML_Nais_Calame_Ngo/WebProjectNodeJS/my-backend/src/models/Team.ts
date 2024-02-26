@@ -94,7 +94,7 @@ class Team {
 
     static async getAllTeams(): Promise<Team | null> {
         try {
-            let query = `SELECT * FROM equipe_NBA`;
+            let query = `SELECT * FROM equipe_NBA ORDER BY nom`;
             const [rows] = await configDB.execute(query,[]);
             return rows.length ? new Team(rows) : null;
         } catch (error) {

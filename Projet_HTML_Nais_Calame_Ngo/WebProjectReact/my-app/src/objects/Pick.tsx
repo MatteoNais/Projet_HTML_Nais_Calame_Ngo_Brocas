@@ -1,10 +1,11 @@
 import React from 'react';
 
-//NOT USED
 interface Pick {
     joueur_NBA: number;
+    nom: string;
+    prenom: string;
     equipe: number;
-    poste: number;
+    utilisateur: number;
 }
 
 export default Pick;

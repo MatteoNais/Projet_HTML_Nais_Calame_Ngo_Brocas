@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import './StylePages.css';
 import { Avatar, Box, Button, Grid, List, ListItem, ListItemAvatar, ListItemText, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import axiosInstance from "../api/axiosInstance";
 import teamNBA from "../objects/TeamNBA";
@@ -12,6 +11,7 @@ import './listeSelection.css';
 import './StylePages.css';
 import { useAppSelector } from "../hooks/redux-hooks";
 import dayjs from "dayjs";
+import Draft from "../objects/Draft";
 
 //import Pick from "../objects/Pick";
 
@@ -19,11 +19,15 @@ interface Params {
     [ligueId: string]: string | undefined;
 }
 function DraftLigue() {
+    /// Plus utilisé désormais
     const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
-    var [this_team, setThisTeam] = useState(Number);
-    const [users, setUsers] = useState<teamNBA[]>([]);
+
+    // Equipes et Joueurs NBA
     const [teams, setTeams] = useState<teamNBA[]>([]);
     var [players, setPlayers] = useState<playerNBA[]>([]);
+
+    const [this_team, setThisTeam] = useState(Number);
+    const [users, setUsers] = useState<teamNBA[]>([]);
     const [joueurs, setJoueurs] = useState<Joueur[]>();
     var [selectedTeamItem, setSelectedTeamItem] = useState(Number);
     var [selectedPlayerItem, setSelectedPlayerItem] = useState(Number);
@@ -33,34 +37,59 @@ function DraftLigue() {
     var [picks, setPicks] = useState<string[]>([]);
     var [indice_tour, setIndice_tour] = useState<number>(1);
     var [tour_players, setTour_players] = useState<Joueur[]>();
+    var [draft, setDraft] = useState<Draft>();
 
     var [all_drafted_players, setAllDraftedPlayers] = useState<Joueur[]>();
     //console.log(all_drafted_players);
     //console.log(ligueId);
     //console.log(basicUserInfo?.id);
+
+
+
+
     useEffect(() => {
-        axiosInstance.get(`/equipe/byLigueAndUser/${ligueId}/${basicUserInfo?.id}`) // Remplacez par l'URL de votre API
+        axiosInstance.get(`/draft/ligue/${ligueId}`)
             .then(response => {
                 console.log(response.data);
-                setThisTeam(response.data.equipe.id);
-                console.log(response.data.equipe);
-                console.log(response.data.equipe.id);
-                console.log(this_team);
+                setDraft(response.data);
+    
+                // Utiliser les valeurs mises à jour ici
+                
+                if (ligueId && basicUserInfo  && response.data) {
+                    console.log(ligueId + basicUserInfo?.id + response.data?.id_draft);
+                } else {
+                    if (ligueId) {
+                        console.log("ligue");
+                    }
+                    if (response.data) {
+                        console.log("draft");
+                    }
+                    if (basicUserInfo) {
+                        console.log("user");
+                    }
+                }
+    
+                // Effectuer la deuxième requête ici
+                return axiosInstance.get(`/playersNBA/team/${ligueId}/${basicUserInfo?.id}/${response.data?.id_draft}`);
             })
-            .catch(error => console.error('Error:', error));
-    }, [ligueId]);
-
-
-    useEffect(() => {
-        axiosInstance.get(`/playersNBA/team/${ligueId}/${basicUserInfo?.id}`)
             .then(response => {
-                //console.log(response.data.player);
+                console.log(response.data.player);
                 setJoueurs(response.data.player);
             })
             .catch(error => console.error('Error:', error));
-    }, [ligueId, basicUserInfo?.id, joueurs]);
+    }, [joueurs]);
 
-
+    useEffect(() => {
+        axiosInstance.get(`/equipe/byLigueAndUser/${ligueId}/${basicUserInfo?.id}`)
+            .then(response => {
+                console.log(response.data[0].id);
+                setThisTeam(response.data[0].id);
+                // console.log(response.data.id);
+                // console.log(response.data.id);
+                // console.log(this_team);
+            })
+            .catch(error => console.error('Error:', error));
+    }, []);
 
     useEffect(() => {
         axiosInstance.get(`/equipe/byLigue/${ligueId}`) // Remplacez par l'URL de votre API
@@ -70,7 +99,7 @@ function DraftLigue() {
                 console.log(users);
             })
             .catch(error => console.error('Error:', error));
-    }, [ligueId]);
+    }, []);
 
 
 
@@ -141,6 +170,7 @@ function DraftLigue() {
     }
 
     async function getPlayerCard(player_id: number) {
+        
         axiosInstance.get(`/playersNBA/${player_id}`) // Remplacez par l'URL de votre API
             .then(response => {
                 console.log(response.data);
@@ -170,6 +200,7 @@ function DraftLigue() {
 
     async function draftPlayer(team_id: number, player_id: number) {
         try {
+            if(this_team){
             console.log(team_id, player_id);
             const response = await axiosInstance.post(`/equipe/addJoueurNBA/${team_id}/${player_id}`, {
                 // team_id: team_id,
@@ -178,6 +209,8 @@ function DraftLigue() {
 
             console.log(response.data);
             setSelectedPlayer(response.data.player);
+        }
+
         } catch (error) {
             console.error('Error:', error);
         }

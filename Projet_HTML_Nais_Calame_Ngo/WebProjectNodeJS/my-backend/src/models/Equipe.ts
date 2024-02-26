@@ -52,6 +52,18 @@ class Equipe {
         }
     }
 
+    static async getEquipesByLigueAndByDraft(ligueId: string, draftId: string) {
+        try {
+            let query = `SELECT * FROM equipe WHERE ligue = ? AND draft = ?`;
+            const [rows] = await configDB.execute(query, [ligueId, draftId]);
+            //return rows.length ? new Equipe(rows[0]) : null;
+            return rows;
+        } catch (error) {
+            console.error('Error finding equipe by ligueID:', error);
+            return null
+        }
+    }
+
     static async getEquipesByUtilisateur(userId: string) {
         try {
             let query = `SELECT * FROM equipe WHERE utilisateur = ?`;
@@ -64,10 +76,16 @@ class Equipe {
     }
 
     static async getEquipeByLigueAndUser(ligueId: string, userId: string): Promise<Equipe | null> {
+        const currentDraft = await Draft.findCurrentDraft(ligueId); // On récupère l'id de la draft en cours
+        console.log("Draft : " + currentDraft?.id_draft.toString());
+        
         try {
-            let query = `SELECT * FROM equipe WHERE ligue = ? AND utilisateur = ?`;
-            const [rows] = await configDB.execute(query, [ligueId, userId]);
-            return rows.length ? new Equipe(rows[0]) : null;
+            let query = `SELECT * FROM equipe WHERE ligue = ? AND utilisateur = ? AND draft = ?`;
+            const [rows] = await configDB.execute(query, [ligueId, userId, currentDraft?.id_draft]);
+
+            //let query = `SELECT * FROM equipe WHERE ligue = ? AND utilisateur = ?`;
+            //const [rows] = await configDB.execute(query, [ligueId, userId]);
+            return rows;
         } catch (error) {
             console.error('Error finding equipe by ligueID and userId:', error);
             return null

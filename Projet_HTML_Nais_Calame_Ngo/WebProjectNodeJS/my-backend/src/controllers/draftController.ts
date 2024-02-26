@@ -37,6 +37,14 @@ const getDraftByIdAndLigue = async (req: Request, res: Response) => {
     res.status(200).json(draft);
 }
 
+const getPlayersDraftedByDraft = async (req: Request, res: Response) => {
+    console.log(req.params);
+    const draftId = req.params.id_draft;
+    const players_drafted = await Draft.findDraftedPlayersByDraft(draftId);
+    //const players_drafted = await Pick.findAllPicks();
+    res.status(200).json(players_drafted);
+}
+
 const getPlayersDrafted = async (req: Request, res: Response) => {
     console.log(req.params);
     const players_drafted = await Draft.findDraftedPlayers();
@@ -60,4 +68,4 @@ const createDraft = async (req: Request, res: Response) => {
     res.status(200).json(draft);
 }
 
-export { getDraftById, getCurrentDraft, getPlayersDrafted, createDraft, getDraftByIdAndLigue };
+export { getDraftById, getCurrentDraft, getPlayersDrafted, getPlayersDraftedByDraft, createDraft, getDraftByIdAndLigue };

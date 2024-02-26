@@ -60,7 +60,7 @@ class Player {
 
     static async findByIdTeam(teamID: string): Promise<Player | null> {
         try {
-            let query = `SELECT * FROM joueur_NBA WHERE equipeNBA_id = ?`;
+            let query = `SELECT * FROM joueur_NBA WHERE equipeNBA_id = ? ORDER BY nom, prenom`;
             const [rows] = await configDB.execute(query, [teamID]);
             return rows.length ? new Player(rows) : null;
         } catch (error) {
