@@ -15,7 +15,7 @@ function Ligues() {
     const [userId, setUserId] = useState(""); // Utilisez le hook useState
     const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
     const liguesState = useAppSelector((state) => state.ligueArray);
-
+    console.log(liguesState);
     useEffect(() => {
         if (basicUserInfo) {
             dispatch(getMyLigues(basicUserInfo.id));
@@ -74,12 +74,16 @@ function Ligues() {
                             alignItems: 'center',
                         }} > <b>Mes ligues : </b>
                             {liguesState.ligue != null ? (
-                                <ul>
+                                <ul style={{ listStyle: 'none', padding: 0 }}>
                                     {JSON.parse(JSON.stringify(liguesState.ligue)).map((ligueData: any, index: any) => (
-                                        <li key={index} style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
-                                            <Typography variant="h4" sx={{ color: 'orange', textAlign: 'left', marginRight: 10 }}>
+                                        <li key={index} style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <Typography variant="h4" sx={{ color: 'orange', textAlign: 'left', marginRight: "5vh" }}>
+                                                {ligueData.ligue.code_acces}
+                                            </Typography>
+                                            <Typography variant="h4" sx={{ color: 'orange', textAlign: 'left', marginRight: "5vh" }}>
                                                 {ligueData.ligue.nom}
                                             </Typography>
+
                                             <Link to={`/ligue/${ligueData.ligue.id}/`} key={ligueData.ligue.id}>
                                                 <Button variant="contained" disableElevation >
                                                     <b>&rarr;</b>

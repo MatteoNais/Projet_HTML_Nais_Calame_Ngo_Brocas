@@ -6,7 +6,7 @@ interface Draft {
     id_draft: number;
     id_ligue: number;
     date_debut: Date;
-    date_draft: Date;
+    date_fin: Date;
 }
 
 export default Draft;

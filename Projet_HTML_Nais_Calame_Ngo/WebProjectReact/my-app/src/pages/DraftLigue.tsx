@@ -11,6 +11,8 @@ import { useParams } from "react-router-dom";
 import './listeSelection.css';
 import './StylePages.css';
 import { useAppSelector } from "../hooks/redux-hooks";
+import dayjs from "dayjs";
+
 //import Pick from "../objects/Pick";
 
 interface Params {
@@ -123,11 +125,13 @@ function DraftLigue() {
             const response = await axiosInstance.get('/draft/players_drafted/');
             const picksData = response.data;
             console.log(picksData);
-    
+
             setPicks(picksData); // Assuming picksData is an array of strings
             
             //console.log(picks);
     
+            console.log(picks);
+
             all_drafted_players = await getDraftedPlayers(picksData);
             console.log(all_drafted_players);
             /*setAllDraftedPlayers(draftedPlayers); // Assuming you have a setter function for all_drafted_players*/
@@ -147,22 +151,22 @@ function DraftLigue() {
             .catch(error => console.error('Error:', error));
     }
 
-    
+
     async function getDraftedPlayers(players_id: string[]) {
         const playersPromises = players_id.map(player_id =>
             axiosInstance.get(`/playersNBA/${player_id}`)
-            .then(response => response.data.player)
-            .catch(error => {
-                console.error('Error fetching player:', error);
-                return null;
-            })
+                .then(response => response.data.player)
+                .catch(error => {
+                    console.error('Error fetching player:', error);
+                    return null;
+                })
         );
-    
+
         const players = await Promise.all(playersPromises);
         const filteredPlayers = players.filter(player => player !== null);
         return filteredPlayers;
     }
-    
+
 
     async function draftPlayer(team_id: number, player_id: number) {
         try {
@@ -190,8 +194,7 @@ function DraftLigue() {
             console.log(key + " has already been drafted.");
             return "impossible";
         }
-        else
-        {
+        else {
             console.log(key + " has not been drafted yet.");
             return "possible";
         }
@@ -236,7 +239,7 @@ function DraftLigue() {
     const joueurItemClick = (key: number) => {
         // if (returnPlayerState(key) == "possible")
         // {
-            
+
         // }; // indication visuelle sur le fiche 
         getPlayerCard(key);
         setSelectedPlayerItem(key);
@@ -245,7 +248,7 @@ function DraftLigue() {
 
     const draftPlayerClick = (teamkey: number, playerkey: number) => {
         if (returnPlayerState(playerkey) === "possible") {
-            console.log("You ("+ teamkey + ") have drafted " + playerkey);
+            console.log("You (" + teamkey + ") have drafted " + playerkey);
             draftPlayer(teamkey, playerkey)
                 .then(() => {
                     // Update picks after successfully drafting a player
@@ -308,7 +311,7 @@ function DraftLigue() {
                         {/* Ligne avec le type de draft et la recherche avancée et compteur */}
                     </Grid>
                     <Grid item xs={4} sx={{ marginLeft: 4, marginRight: 4 }}>
-                    <Grid item xs={12} bgcolor={"white"} color={"white"} sx={{ height: '50vh', display: 'flex', flexWrap: 'wrap', backgroundColor: "grey", border: "3px solid #ff6a00" }}>
+                        <Grid item xs={12} bgcolor={"white"} color={"white"} sx={{ height: '50vh', display: 'flex', flexWrap: 'wrap', backgroundColor: "grey", border: "3px solid #ff6a00" }}>
                             <Grid item xs={12} md={12}>
                                 <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                                     Récapitulatif de votre draft
@@ -433,7 +436,7 @@ function DraftLigue() {
                         </Typography>
                         {selected_player && (
                             <>
-                                <CarteJoueur key={selected_player.id} joueurId={selected_player.id as number} onScoreChange={(score) => console.log(score)} />
+                                <CarteJoueur key={selected_player.id} dateDebut={"2023-10-23"} dateFin={dayjs().format('YYYY-MM-DD')} joueurId={selected_player.id as number} />
                                 <p> Id joueur : {selected_player.id}</p>
                                 <Button variant="contained" disableElevation onClick={() => draftPlayerClick(this_team as number, selected_player?.id as number)}>
                                     <b>Drafter le joueur</b>

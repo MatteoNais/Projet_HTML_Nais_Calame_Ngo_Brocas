@@ -15,6 +15,7 @@ function HeaderLigue() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [currentDraft, setCurrentDraft] = useState<Draft>();
+
     const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
 
     useEffect(() => {

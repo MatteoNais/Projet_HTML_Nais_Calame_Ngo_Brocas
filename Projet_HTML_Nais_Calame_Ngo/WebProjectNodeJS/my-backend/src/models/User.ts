@@ -1,6 +1,6 @@
 import configDB from '../connections/configDB';
 import bcrypt from "bcryptjs";
-
+import Equipe from './Equipe';
 export interface IUser {
     id?: number;
     username: string;
@@ -9,6 +9,12 @@ export interface IUser {
     comparePassword?: (enteredPassword: string) => boolean;
 }
 
+interface UserWithScore {
+    username: string;
+    id: number;
+    score: number;
+    meanScore: number;
+}
 class User {
     private user: IUser;
 
@@ -42,14 +48,68 @@ class User {
         return rows.length ? new User(rows[0]) : null;
     }
 
-    static async findUsersByLigueId(idLigue: string): Promise<User | null> {
+    static async findUsersByLigueId(idLigue: string): Promise<User[] | null> {
         try {
             let query = `SELECT id, username FROM utilisateurs 
             INNER JOIN lien_utilisateur_ligue ON utilisateurs.id = lien_utilisateur_ligue.utilisateur 
             WHERE lien_utilisateur_ligue.ligue = ?`;
             const [rows] = await configDB.execute(query, [idLigue]);
-            return rows.length ? new User(rows) : null;
+            return rows.map((userData: any) => new User(userData));
         } catch (error) {
+            console.error('Error finding user by ID:', error);
+            return null;
+        }
+    }
+
+    static async findScoreOfUsersByLigueId(idLigue: string): Promise<UserWithScore[] | null> {
+        try {
+
+            const users = await this.findUsersByLigueId(idLigue);
+            if (!users) {
+                return null;
+            }
+            const usersWithScore: UserWithScore[] = [];
+            for (const user of users) {
+                let meanScore = 0;
+                let totalScore = 0;
+                const scores = await Equipe.getScoreEquipe(user.getId().toString());
+                console.log(scores);
+                if (scores) {
+                    for (const score of scores) {
+                        try {
+                            // Essayez de parser la chaîne JSON
+                            const parsedScore = (score as any)?.score || 0; // On parse le json pour récupérer le score
+                            console.log(parsedScore);
+                            totalScore += parsedScore;
+                            console.log("parsedScore : " + parsedScore);
+                        } catch (error) {
+                            console.error('Error parsing score:', error);
+                        }
+                    }
+                    meanScore = totalScore / scores.length;
+
+                    const userScore: UserWithScore = {
+                        username: user.getUsername(),
+                        id: user.getId(),
+                        score: totalScore,
+                        meanScore: Number((totalScore / scores.length).toFixed(2))
+                    };
+                    usersWithScore.push(userScore);
+                }
+                else {
+                    const userScore: UserWithScore = {
+                        username: user.getUsername(),
+                        id: user.getId(),
+                        score: 0,
+                        meanScore: 0
+                    };
+                    usersWithScore.push(userScore);
+                }
+            }
+            console.log(usersWithScore);
+            return usersWithScore;
+        }
+        catch (error) {
             console.error('Error finding user by ID:', error);
             return null;
         }

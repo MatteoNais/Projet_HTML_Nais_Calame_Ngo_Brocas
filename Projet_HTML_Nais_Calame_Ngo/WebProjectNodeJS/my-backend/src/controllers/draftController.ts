@@ -15,13 +15,27 @@ const getDraftById = async (req: Request, res: Response) => {
 
 const getCurrentDraft = async (req: Request, res: Response) => {
     console.log(req.params);
-    const ligueId = req.params.id.toString();
+    const ligueId = req.params.id;
     if (ligueId === null || ligueId === undefined) {
         return res.status(400).json({ message: "Invalid ligue ID" });
     }
     const draft = await Draft.findCurrentDraft(ligueId);
     res.status(200).json(draft);
 };
+
+const getDraftByIdAndLigue = async (req: Request, res: Response) => {
+    console.log(req.params);
+    const ligueId = req.params.id;
+    const draftId = req.params.id_draft;
+    if (ligueId === null || ligueId === undefined) {
+        return res.status(400).json({ message: "Invalid ligue ID" });
+    }
+    if (draftId === null || draftId === undefined) {
+        return res.status(400).json({ message: "Invalid draft ID" });
+    }
+    const draft = await Draft.findDraftByLigueIdAndDraftId(ligueId, draftId);
+    res.status(200).json(draft);
+}
 
 const getPlayersDrafted = async (req: Request, res: Response) => {
     console.log(req.params);
@@ -30,4 +44,20 @@ const getPlayersDrafted = async (req: Request, res: Response) => {
     res.status(200).json(players_drafted);
 }
 
-export { getDraftById, getCurrentDraft, getPlayersDrafted };
+const createDraft = async (req: Request, res: Response) => {
+    console.log(req.body);
+
+    const ligueId = req.body.ligueId;
+    const date_debut = req.body.date_debut;
+    console.log(date_debut);
+    if (ligueId === null || ligueId === undefined) {
+        return res.status(400).json({ message: "Invalid ligue ID" });
+    }
+    if (date_debut === null || date_debut === undefined) {
+        return res.status(400).json({ message: "Invalid date_debut" });
+    }
+    const draft = await Draft.createDraft(ligueId, date_debut);
+    res.status(200).json(draft);
+}
+
+export { getDraftById, getCurrentDraft, getPlayersDrafted, createDraft, getDraftByIdAndLigue };

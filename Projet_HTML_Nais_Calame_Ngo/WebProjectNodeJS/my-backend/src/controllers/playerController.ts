@@ -49,6 +49,7 @@ const getPlayers = async (req: Request, res: Response) => {
 const getPlayersbyIdUserAndIdLigue = async (req: Request, res: Response) => {
     const playerId = req.params.player_id.toString();
     const ligueId = req.params.ligue_id.toString();
+    const draftId = req.params.draft_id.toString();
 
     if (playerId === null || playerId === undefined) {
         return res.status(400).json({ message: "Invalid player ID" });
@@ -56,8 +57,11 @@ const getPlayersbyIdUserAndIdLigue = async (req: Request, res: Response) => {
     if (ligueId === null || ligueId === undefined) {
         return res.status(400).json({ message: "Invalid ligue ID" });
     }
+    if (draftId === null || draftId === undefined) {
+        return res.status(400).json({ message: "Invalid draft ID" });
+    }
 
-    const player = await Player.getPlayersInEquipeByUtilisateur(playerId, ligueId);
+    const player = await Player.getPlayersInEquipeByUtilisateur(playerId, ligueId, draftId);
 
     if (!player) {
 
@@ -66,13 +70,34 @@ const getPlayersbyIdUserAndIdLigue = async (req: Request, res: Response) => {
     res.status(200).json(player);
 };
 
+const getPlayersByIdEquipe = async (req: Request, res: Response) => {
+    const equipeId = req.params.equipe_id.toString();
+    if (equipeId === null || equipeId === undefined) {
+        return res.status(400).json({ message: "Invalid equipe ID" });
+    }
+    const player = await Player.getPlayersByIdEquipe(equipeId);
+    if (!player) {
+
+        res.status(400);
+    }
+    res.status(200).json(player);
+}
+
 const getRecentStats = async (req: Request, res: Response) => {
     const playerId = req.params.player_id.toString();
+    const dateDebut = req.params.date_debut.toString();
+    const dateFin = req.params.date_fin.toString();
+
     if (playerId === null || playerId === undefined) {
         return res.status(400).json({ message: "Invalid player ID" });
     }
-
-    const playerstats = await Player.getLast5Match(playerId);
+    if (dateDebut === null || dateDebut === undefined) {
+        return res.status(400).json({ message: "Invalid date_debut" });
+    }
+    if (dateFin === null || dateFin === undefined) {
+        return res.status(400).json({ message: "Invalid date_fin" });
+    }
+    const playerstats = await Player.getLast5Match(playerId, dateDebut, dateFin);
 
     if (!playerstats) {
         res.status(400);
@@ -80,6 +105,30 @@ const getRecentStats = async (req: Request, res: Response) => {
 
     res.status(200).json(playerstats);
 };
+
+const getScorePlayer = async (req: Request, res: Response) => {
+    const playerId = req.params.player_id.toString();
+    const dateDebut = req.params.date_debut.toString();
+    const dateFin = req.params.date_fin.toString();
+
+    if (playerId === null || playerId === undefined) {
+        return res.status(400).json({ message: "Invalid player ID" });
+    }
+    if (dateDebut === null || dateDebut === undefined) {
+        return res.status(400).json({ message: "Invalid date_debut" });
+    }
+    if (dateFin === null || dateFin === undefined) {
+        return res.status(400).json({ message: "Invalid date_fin" });
+    }
+
+    const score = await Player.getScorePlayer(playerId, dateDebut, dateFin);
+
+    if (!score) {
+        res.status(400);
+    }
+
+    res.status(200).json(score);
+}
 
 const getPlayerInfo = async (req: Request, res: Response) => {
     const playerId = req.params.player_id.toString();
@@ -143,4 +192,4 @@ const importAllPlayersToBDD = async (req: Request, res: Response) => {
 };
 
 
-export { getPlayerbyID, getRecentStats, importAllPlayersToBDD, getPlayerInfo, getPlayers, getPlayerbyIDTeam, getPlayerFantaisyProfileById, getPlayersbyIdUserAndIdLigue };
+export { getPlayerbyID, getRecentStats, importAllPlayersToBDD, getPlayerInfo, getPlayers, getPlayerbyIDTeam, getPlayerFantaisyProfileById, getPlayersbyIdUserAndIdLigue, getScorePlayer, getPlayersByIdEquipe };
