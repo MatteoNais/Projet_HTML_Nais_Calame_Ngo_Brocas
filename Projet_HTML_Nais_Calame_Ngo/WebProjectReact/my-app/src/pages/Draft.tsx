@@ -26,7 +26,7 @@ function Draft() {
     useEffect(() => {
         axiosInstance.get(`/draft/ligue/${ligueId}`)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 setDraft(response.data);
             })
             .catch(error => console.error('Error:', error));
@@ -38,7 +38,7 @@ function Draft() {
         {
             axiosInstance.get(`/equipe/byLigueAndUserAndDraft/${ligueId}/${basicUserInfo?.id}/${draft?.id_draft}`)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
 
                 setEquipeUtilisateur(response.data);
 
@@ -58,7 +58,7 @@ function Draft() {
         {
             axiosInstance.get(`/equipe/byLigueAndByDraft/${ligueId}/${draft?.id_draft}`)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 setEquipesDraft(response.data);
             })
             .catch(error => console.error('Error:', error));
@@ -77,7 +77,7 @@ function Draft() {
     useEffect(() => {
         axiosInstance.get(`/teamsNBA/all`)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 setTeams(response.data.team);
                 teamItemClick(response.data.team[0].id);
             })
@@ -87,7 +87,7 @@ function Draft() {
     async function getPlayerfromteam(equipe_id: number) {
         axiosInstance.get(`/playersNBA/team/${equipe_id}`)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 setPlayers(response.data.player);
                 joueurItemClick(response.data.player[0].id);
                 //console.log(picks);
@@ -98,7 +98,7 @@ function Draft() {
     async function getPlayerCard(player_id: number) {
         axiosInstance.get(`/playersNBA/${player_id}`)
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 setSelectedPlayer(response.data.player);
             })
             .catch(error => console.error('Error:', error));
@@ -115,6 +115,12 @@ function Draft() {
     }
 
     var [drafted_players, setDraftedPlayers] = useState<Pick[]>([]);
+    const filteredPlayers = drafted_players.filter(player => player.equipe === equipe_utilisateur?.id);
+
+
+    const show = () => {
+        console.log(drafted_players);
+    }
     
     async function getPicks() {
         if (draft)
@@ -122,15 +128,15 @@ function Draft() {
         axiosInstance.get(`/draft/players_drafted_by_draft/${draft?.id_draft}`)
         .then(response => {
             console.log(response.data);
-            setDraftedPlayers(response.data.player);
+            setDraftedPlayers(response.data);
         })
         .catch(error => console.error('Error:', error));
     }
     }
 
     const draftPlayerClick = (teamkey: number, playerkey: number) => {
-        returnPlayerState(playerkey);
-        //if (returnPlayerState(playerkey) === "possible") {
+        //returnPlayerState(playerkey);
+        if (returnPlayerState(playerkey) === "possible") {
             console.log("You (" + teamkey + ") have drafted " + playerkey);
             draftPlayer(teamkey, playerkey)
                 .then(() => {
@@ -140,21 +146,21 @@ function Draft() {
                 .catch(error => {
                     console.error('Error drafting player:', error);
                 });
-        /*} else {
+        } else {
             console.log("You could not draft " + playerkey);
-        }*/
+        }
     };
 
     const returnPlayerState = (key: number) => {
-        console.log(drafted_players);
-        /*if (drafted_players.map(String).includes(key.toString())) {
+        //console.log(drafted_players);
+        if (drafted_players.some(player => player.joueur_NBA === key)) {
             console.log(key + " has already been drafted.");
             return "impossible";
         }
         else {
             console.log(key + " has not been drafted yet.");
             return "possible";
-        }*/
+        }
     };
 
     async function draftPlayer(team_id: number, player_id: number) {
@@ -179,12 +185,12 @@ function Draft() {
     var [tour_players, setTour_players] = useState<Pick[]>();
 
 
-    useEffect(() => {
+    /*useEffect(() => {
         // Effect to fetch drafted players whenever picks change
         if (drafted_players && drafted_players.length > 0) {
             getPicks();
             }
-    }, [drafted_players]);
+    }, [drafted_players]);*/
 
     useEffect(() => {
         if (equipes_draft)
@@ -192,7 +198,7 @@ function Draft() {
             const tourPlayers = [];
             const startIndex = (indice_tour - 1) * equipes_draft.length;
             for (let i = startIndex; i < (startIndex + equipes_draft.length); i++) {
-                //console.log(i);
+                console.log(i);
                 if (drafted_players && drafted_players[i] != null) {
                     tourPlayers.push(drafted_players[i]);
                     //console.log(tourPlayers);
@@ -209,12 +215,14 @@ function Draft() {
 
         if (indice_tour > 1)
         {
-            setIndice_tour(indice_tour - 1);
+            const newIndiceTour = indice_tour - 1;
+            setIndice_tour(newIndiceTour);
+
             //console.log(indice_tour);
         
-            const startIndex = (indice_tour - 1) * equipes_draft.length;
+            const startIndex = (newIndiceTour - 1) * equipes_draft.length;
             for (let i = startIndex; i < (startIndex + equipes_draft.length); i++) {
-                //console.log(i);
+                console.log(i);
                 if (drafted_players && drafted_players[i] != null) {
                     tourPlayers.push(drafted_players[i]);
                     console.log(tourPlayers);
@@ -232,12 +240,14 @@ function Draft() {
 
         if (indice_tour < 10)
         {
-            setIndice_tour(indice_tour + 1);
+            const newIndiceTour = indice_tour + 1;
+            setIndice_tour(newIndiceTour);
+
             //console.log(indice_tour);
             
-            const startIndex = (indice_tour - 1) * equipes_draft.length;
+            const startIndex = (newIndiceTour - 1) * equipes_draft.length;
             for (let i = startIndex; i < startIndex + equipes_draft.length; i++) {
-                //console.log(i);
+                console.log(i);
                 if (drafted_players && drafted_players[i] != null) {
                     tourPlayers.push(drafted_players[i]);
                     console.log(tourPlayers);
@@ -262,18 +272,18 @@ function Draft() {
                                     Récapitulatif de votre draft
                                 </Typography>
                             </Grid>
-                            {/*
-                            {joueurs && joueurs.map(joueur => (
-                                <Grid key={joueur.id} item xs={12} sm={6} md={4} lg={3} >
+                            
+                            {filteredPlayers && filteredPlayers.map(joueur => (
+                                <Grid key={joueur.joueur_NBA} item xs={12} sm={6} md={4} lg={3} >
                                     <img
-                                        src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${joueur.id}.png`}
+                                        src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${joueur.joueur_NBA}.png`}
                                         alt="Image joueur"
                                         style={{ width: "80%", height: "auto" }}
                                     />
                                     <Typography sx={{ fontWeight: 'bold' }}> {joueur.prenom + " " + joueur.nom} </Typography>
                                 </Grid>
                             ))}
-                            */}
+                            
                         </Grid>
 
                         <Grid item xs={12} bgcolor={"white"} color={"white"} sx={{ height: '50vh', display: 'flex', flexWrap: 'wrap', backgroundColor: "grey", border: "3px solid #ff6a00" }}>
@@ -366,6 +376,9 @@ function Draft() {
                                 {<Button variant="contained" disableElevation onClick={() => draftPlayerClick(equipe_utilisateur?.id as number, selected_player?.id as number)}>
                                     <b>Drafter le joueur</b>
                             </Button>}
+                            {/*<Button variant="contained" disableElevation onClick={() => show()}>
+                                    <b>Montrer</b>
+                        </Button>*/}
                             </>
                         )}
                             {/*<List>
