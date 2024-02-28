@@ -13,8 +13,6 @@ import { useAppSelector } from "../hooks/redux-hooks";
 import { useParams } from "react-router-dom";
 import Pick from "../objects/Pick";
 
-import io from "socket.io-client";
-
 interface Params {
     [ligueId: string]: string | undefined;
 }
@@ -25,31 +23,32 @@ function Draft() {
     var [draft, setDraft] = useState<Draft_obj>();
     const [equipe_utilisateur, setEquipeUtilisateur] = useState<teamNBA>();
 
+    console.log(draft);
+
+    const [loading, setLoading] = useState(true);
+
     useEffect(() => {
         axiosInstance.get(`/draft/ligue/${ligueId}`)
             .then(response => {
-                //console.log(response.data);
                 setDraft(response.data);
+                setLoading(false); // Marquer le chargement comme terminé
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                setLoading(false); // Marquer le chargement comme terminé même en cas d'erreur
+            });
     }, [ligueId]);
 
     useEffect(() => {
-        //console.log("ByLigueAndUserAndData");
-        if (draft)
-        {
+        if (!loading && draft) { // Vérifier si le chargement est terminé et si draft est défini
             axiosInstance.get(`/equipe/byLigueAndUserAndDraft/${ligueId}/${basicUserInfo?.id}/${draft?.id_draft}`)
-            .then(response => {
-                //console.log(response.data);
-
-                setEquipeUtilisateur(response.data);
-
-                //Intermédiaire
-                getPicks();
-            })
-            .catch(error => console.error('Error:', error));
+                .then(response => {
+                    setEquipeUtilisateur(response.data);
+                    getPicks(); // Appeler getPicks() lorsque draft est défini
+                })
+                .catch(error => console.error('Error:', error));
         }
-    }, [ligueId, basicUserInfo, draft]);
+    }, [ligueId, basicUserInfo, draft, loading]);
 
 
     const [equipes_draft, setEquipesDraft] = useState<teamNBA[]>();
@@ -125,15 +124,23 @@ function Draft() {
     }*/
     
     async function getPicks() {
-        if (draft)
-        {
-        axiosInstance.get(`/draft/players_drafted_by_draft/${draft?.id_draft}`)
-        .then(response => {
-            console.log(response.data);
-            setDraftedPlayers(response.data);
-        })
-        .catch(error => console.error('Error:', error));
-    }
+        console.log("Updating...");
+        console.log(draft);
+        if (draft) {
+            axiosInstance.get(`/draft/players_drafted_by_draft/${draft?.id_draft}`)
+                .then(response => {
+                    //console.log(response.data);
+                    setDraftedPlayers(response.data);
+                    //console.log(response.data[response.data.length - 1]);
+                    //console.log(lastPlayer);
+                    const val = response.data[response.data.length - 1].joueur_NBA;
+                    if (val !== lastPlayer) {
+                        console.log(val);
+                        setLastPlayer(val as number);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
     }
 
     const draftPlayerClick = (teamkey: number, playerkey: number) => {
@@ -141,7 +148,6 @@ function Draft() {
         if (currentUserTurn() === true)
         {
             if (returnPlayerState(playerkey) === "possible") {
-                console.log("You (" + teamkey + ") have drafted " + playerkey);
                 draftPlayer(teamkey, playerkey)
                     .then(() => {
                         // Update picks after successfully drafting a player
@@ -202,7 +208,11 @@ function Draft() {
                 // team_id: team_id,
                 // player_id: player_id
             });
-
+            
+            openModal();
+            
+            //toast.success("You (" + team_id + ") have drafted " + player_id);
+            console.log("You (" + team_id + ") have drafted " + player_id);
             console.log(response.data);
             setSelectedPlayer(response.data.player);
         }
@@ -305,9 +315,60 @@ function Draft() {
         };
     }, []);*/
 
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            // Récupérer les mises à jour des sélections des autres utilisateurs
+            if (!loading && draft) {
+                console.log("Searching...");
+                getPicks();
+            }
+        }, 5000); // Par exemple, vérifier toutes les 5 secondes
+    
+        // Nettoyer l'intervalle lors du démontage du composant
+        return () => clearInterval(intervalId);
+    }, [loading, draft]);
+
+    const [showModal, setShowModal] = useState(false);
+
+
+    const openModal = () => {
+        setShowModal(true);
+    };
+    const closeModal = () => {
+        setShowModal(false);
+    };
+
+    const [lastPlayer, setLastPlayer] = useState<number>();
+
+    useEffect(() => {
+        if (lastPlayer !== undefined) {
+            openModal();
+        }
+    }, [lastPlayer]);
+
     return (
         <div className="body">
             <div className='App-body-ligue'>
+                {/* Modale */}
+            {/* Fenêtre modale */}
+            {showModal && (
+                <div className="modal-container">
+                    <div className="modal">
+                        {/* Contenu de la fenêtre modale */}
+                        <h2>Avec le {drafted_players.length}e choix de draft...</h2>
+                        <Table>
+                            <TableCell>{drafted_players[drafted_players.length - 1].utilisateur} a sélectionné {drafted_players[drafted_players.length - 1].prenom} {drafted_players[drafted_players.length - 1].nom}</TableCell>
+                            <TableCell>                    
+                                <Avatar src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${drafted_players[drafted_players.length - 1].joueur_NBA}.png`} />
+                            </TableCell>
+                        </Table>
+                    
+                        {/* Bouton pour fermer la fenêtre modale */}
+                        <button onClick={closeModal}>Fermer</button>
+                    </div>
+                </div>
+            )}
+        </div>
                 <Grid container spacing={2} sx={{ marginTop: '5vh', textAlign: 'center' }}>
                     <Grid item xs={12}>
                         {/* Ligne avec le type de draft et la recherche avancée et compteur */}
@@ -439,7 +500,6 @@ function Draft() {
                     </Grid>
                 </Grid>
             </div>
-        </div>
     );
 }
 export default Draft;
