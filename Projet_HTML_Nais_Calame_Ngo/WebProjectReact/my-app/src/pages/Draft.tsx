@@ -13,6 +13,8 @@ import { useAppSelector } from "../hooks/redux-hooks";
 import { useParams } from "react-router-dom";
 import Pick from "../objects/Pick";
 
+import io from "socket.io-client";
+
 interface Params {
     [ligueId: string]: string | undefined;
 }
@@ -118,9 +120,9 @@ function Draft() {
     const filteredPlayers = drafted_players.filter(player => player.equipe === equipe_utilisateur?.id);
 
 
-    const show = () => {
+    /*const show = () => {
         console.log(drafted_players);
-    }
+    }*/
     
     async function getPicks() {
         if (draft)
@@ -136,19 +138,27 @@ function Draft() {
 
     const draftPlayerClick = (teamkey: number, playerkey: number) => {
         //returnPlayerState(playerkey);
-        if (returnPlayerState(playerkey) === "possible") {
-            console.log("You (" + teamkey + ") have drafted " + playerkey);
-            draftPlayer(teamkey, playerkey)
-                .then(() => {
-                    // Update picks after successfully drafting a player
-                    getPicks();
-                })
-                .catch(error => {
-                    console.error('Error drafting player:', error);
-                });
+        if (currentUserTurn() === true)
+        {
+            if (returnPlayerState(playerkey) === "possible") {
+                console.log("You (" + teamkey + ") have drafted " + playerkey);
+                draftPlayer(teamkey, playerkey)
+                    .then(() => {
+                        // Update picks after successfully drafting a player
+                        getPicks();
+                        // Envoyer la sélection au serveur via WebSocket
+                        //socket.emit("draft", teamkey, playerkey);
+                    })
+                    .catch(error => {
+                        console.error('Error drafting player:', error);
+                    });
+            } else {
+                console.log("You could not draft " + playerkey);
+            }
         } else {
-            console.log("You could not draft " + playerkey);
+            console.log("It's not your turn to draft a player");
         }
+
     };
 
     const returnPlayerState = (key: number) => {
@@ -161,6 +171,27 @@ function Draft() {
             console.log(key + " has not been drafted yet.");
             return "possible";
         }
+    };
+
+    const checkUserDraft = () => {
+        if (drafted_players && equipes_draft) {
+            const totalPicks = drafted_players.length;
+            const teamsCount = equipes_draft.length;
+            //return Math.floor(totalPicks / teamsCount) + 1;
+            return totalPicks;
+        }
+        return 1;
+    };
+
+    const currentUserTurn = () => {
+        if (equipe_utilisateur && equipes_draft) {
+            const userIndex = equipes_draft.findIndex(equipe => equipe.id === equipe_utilisateur.id);
+            const currentTurn = checkUserDraft();
+            console.log(userIndex);
+            console.log(currentTurn % equipes_draft.length);
+            return userIndex === currentTurn % equipes_draft.length;
+        }
+        return false;
     };
 
     async function draftPlayer(team_id: number, player_id: number) {
@@ -198,7 +229,7 @@ function Draft() {
             const tourPlayers = [];
             const startIndex = (indice_tour - 1) * equipes_draft.length;
             for (let i = startIndex; i < (startIndex + equipes_draft.length); i++) {
-                console.log(i);
+                //console.log(i);
                 if (drafted_players && drafted_players[i] != null) {
                     tourPlayers.push(drafted_players[i]);
                     //console.log(tourPlayers);
@@ -222,7 +253,7 @@ function Draft() {
         
             const startIndex = (newIndiceTour - 1) * equipes_draft.length;
             for (let i = startIndex; i < (startIndex + equipes_draft.length); i++) {
-                console.log(i);
+                //console.log(i);
                 if (drafted_players && drafted_players[i] != null) {
                     tourPlayers.push(drafted_players[i]);
                     console.log(tourPlayers);
@@ -247,7 +278,7 @@ function Draft() {
             
             const startIndex = (newIndiceTour - 1) * equipes_draft.length;
             for (let i = startIndex; i < startIndex + equipes_draft.length; i++) {
-                console.log(i);
+                //console.log(i);
                 if (drafted_players && drafted_players[i] != null) {
                     tourPlayers.push(drafted_players[i]);
                     console.log(tourPlayers);
@@ -257,6 +288,22 @@ function Draft() {
         }
     }
     }
+
+    /*const socket = io("your-server-url"); //socket.emit("draft", teamkey, playerkey); dans draftPlayerClick
+    
+    useEffect(() => {
+        // Écouter les événements du serveur pour les sélections des autres utilisateurs
+        socket.on("selection", (selectedTeam: number, selectedPlayer: number) => {
+            // Mettre à jour l'état local pour refléter la sélection
+            console.log(`L'utilisateur ${selectedTeam} a sélectionné le joueur ${selectedPlayer}`);
+            // Mettez à jour l'état local en conséquence
+        });
+
+        // Nettoyer l'écouteur lors du démontage du composant
+        return () => {
+            socket.off("selection");
+        };
+    }, []);*/
 
     return (
         <div className="body">
