@@ -74,7 +74,6 @@ class Draft {
 
     static async findDraftById(id: number): Promise<Draft | null> {
         const [rows] = await configDB.execute('SELECT * FROM draft WHERE id =?', [id]);
-        //console.log(rows);
         return rows;
     }
 
@@ -86,8 +85,12 @@ class Draft {
 
     static async findDraftByLigueIdAndDraftId(id: string, id_draft: string): Promise<Draft | null> {
         const [rows] = await configDB.execute('SELECT * FROM lien_draft_ligue WHERE id_ligue = ? AND id_draft = ?;', [id, id_draft]);
-        //const drafts = rows.map((row: any) => new Draft(row));
-        //console.log("draft idligue iddraft", drafts);
+        const drafts = rows.map((row: any) => new Draft(row));
+        console.log("draft idligue iddraft", drafts);
+        return drafts;
+    }
+    static async findDraftByLigueIdAndDraftId2(id: string, id_draft: string): Promise<Draft | null> {
+        const [rows] = await configDB.execute('SELECT * FROM lien_draft_ligue WHERE id_ligue = ? AND id_draft = ?;', [id, id_draft]);
         return rows;
     }
 

@@ -504,7 +504,7 @@ function Draft() {
     async function Dim_index_draft() {
         if (type_draft && type_draft.id > 1) {
             try {
-                const response = await axiosInstance.get(`/draft/ligue/${ligueId}/${type_draft.id - 1}`);
+                const response = await axiosInstance.get(`/draft/ligue2/${ligueId}/${type_draft.id - 1}`);
                 console.log(response.data[0]);
                 setDraft(response.data[0]);
                 setLoading(false); // Marquer le chargement comme terminé

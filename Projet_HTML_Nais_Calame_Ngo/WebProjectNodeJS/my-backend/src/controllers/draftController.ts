@@ -37,6 +37,20 @@ const getDraftByIdAndLigue = async (req: Request, res: Response) => {
     res.status(200).json(draft);
 }
 
+const getDraftByIdAndLigue2 = async (req: Request, res: Response) => {
+    console.log(req.params);
+    const ligueId = req.params.id;
+    const draftId = req.params.id_draft;
+    if (ligueId === null || ligueId === undefined) {
+        return res.status(400).json({ message: "Invalid ligue ID" });
+    }
+    if (draftId === null || draftId === undefined) {
+        return res.status(400).json({ message: "Invalid draft ID" });
+    }
+    const draft = await Draft.findDraftByLigueIdAndDraftId2(ligueId, draftId);
+    res.status(200).json(draft);
+}
+
 const getPlayersDraftedByDraft = async (req: Request, res: Response) => {
     console.log(req.params);
     const draftId = req.params.id_draft;
@@ -68,4 +82,4 @@ const createDraft = async (req: Request, res: Response) => {
     res.status(200).json(draft);
 }
 
-export { getDraftById, getCurrentDraft, getPlayersDrafted, getPlayersDraftedByDraft, createDraft, getDraftByIdAndLigue };
+export { getDraftById, getCurrentDraft, getPlayersDrafted, getPlayersDraftedByDraft, createDraft, getDraftByIdAndLigue, getDraftByIdAndLigue2 };
