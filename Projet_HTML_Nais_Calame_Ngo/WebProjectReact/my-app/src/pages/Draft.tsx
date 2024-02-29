@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import teamNBA from "../objects/TeamNBA";
 import playerNBA from "../objects/playerNBA";
 import Draft_obj from "../objects/Draft";
+import DraftType from "../objects/DraftType";
 
 import { useAppSelector } from "../hooks/redux-hooks";
 import { useParams } from "react-router-dom";
@@ -21,9 +22,15 @@ function Draft() {
     const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
     const { ligueId } = useParams<Params>();
     var [draft, setDraft] = useState<Draft_obj>();
+    var [type_draft, setTypeDraft] = useState<DraftType>();
     const [equipe_utilisateur, setEquipeUtilisateur] = useState<teamNBA>();
 
     console.log(draft);
+    useEffect(() => {
+        // Effect qui s'exécute lorsque draft est modifié
+        console.log(draft?.id_draft);
+    }, [draft]);
+    //console.log(type_draft?.type_draft);
 
     const [loading, setLoading] = useState(true);
 
@@ -38,6 +45,17 @@ function Draft() {
                 setLoading(false); // Marquer le chargement comme terminé même en cas d'erreur
             });
     }, [ligueId]);
+
+    useEffect(() => {
+        axiosInstance.get(`/draft/id/${draft?.id_draft}`)
+            .then(response => {
+                console.log(response.data);
+                setTypeDraft(response.data[0]);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }, [draft]);
 
     useEffect(() => {
         if (!loading && draft) { // Vérifier si le chargement est terminé et si draft est défini
@@ -133,9 +151,14 @@ function Draft() {
                     setDraftedPlayers(response.data);
                     //console.log(response.data[response.data.length - 1]);
                     //console.log(lastPlayer);
-                    const val = response.data[response.data.length - 1].joueur_NBA;
+                    let val = 0;
+                    if (response.data.length != 0)
+                    {
+                        val = response.data[response.data.length - 1].joueur_NBA;
+
+                    }
                     if (val !== lastPlayer) {
-                        console.log(val);
+                        //console.log(val);
                         setLastPlayer(val as number);
                     }
                 })
@@ -145,25 +168,47 @@ function Draft() {
 
     const draftPlayerClick = (teamkey: number, playerkey: number) => {
         //returnPlayerState(playerkey);
-        if (currentUserTurn() === true)
+        if (equipes_draft)
         {
-            if (returnPlayerState(playerkey) === "possible") {
-                draftPlayer(teamkey, playerkey)
-                    .then(() => {
-                        // Update picks after successfully drafting a player
-                        getPicks();
-                        // Envoyer la sélection au serveur via WebSocket
-                        //socket.emit("draft", teamkey, playerkey);
-                    })
-                    .catch(error => {
-                        console.error('Error drafting player:', error);
-                    });
-            } else {
-                console.log("You could not draft " + playerkey);
+            if (drafted_players.length < equipes_draft?.length * 10)
+            {
+                if (filteredPlayers.length < 10)
+                {
+                    if (returnPlayerState(playerkey) === "possible") {
+                        if (currentUserTurn() === true)
+                        {
+                            draftPlayer(teamkey, playerkey)
+                                .then(() => {
+                                    // Update picks after successfully drafting a player
+                                    getPicks();
+                                    // Envoyer la sélection au serveur via WebSocket
+                                    //socket.emit("draft", teamkey, playerkey);
+                                })
+                                .catch(error => {
+                                    console.error('Error drafting player:', error);
+                                });
+                        } else {
+                        console.log("It's not your turn to draft a player");
+                        setInfo("Ce n'est pas à vous de sélectionner un nouveau joueur.");
+                        openModalInfo();
+                        }
+                    } else {
+                        console.log("You could not draft " + playerkey);
+                        setInfo("Ce joueur a déjà été sélectionné.");
+                        openModalInfo();
+                    }
+                } else {
+                    console.log("You could not draft " + playerkey);
+                    setInfo("Vous avez déjà sélectionné 10 joueurs.");
+                    openModalInfo();
+                }    
             }
-        } else {
-            console.log("It's not your turn to draft a player");
-        }
+            else {
+                console.log("You could not draft " + playerkey);
+                setInfo("La draft est finie.");
+                openModalInfo();
+            }
+        }   
 
     };
 
@@ -182,7 +227,7 @@ function Draft() {
     const checkUserDraft = () => {
         if (drafted_players && equipes_draft) {
             const totalPicks = drafted_players.length;
-            const teamsCount = equipes_draft.length;
+            //const teamsCount = equipes_draft.length;
             //return Math.floor(totalPicks / teamsCount) + 1;
             return totalPicks;
         }
@@ -193,8 +238,8 @@ function Draft() {
         if (equipe_utilisateur && equipes_draft) {
             const userIndex = equipes_draft.findIndex(equipe => equipe.id === equipe_utilisateur.id);
             const currentTurn = checkUserDraft();
-            console.log(userIndex);
-            console.log(currentTurn % equipes_draft.length);
+            //console.log(userIndex);
+            //console.log(currentTurn % equipes_draft.length);
             return userIndex === currentTurn % equipes_draft.length;
         }
         return false;
@@ -203,17 +248,14 @@ function Draft() {
     async function draftPlayer(team_id: number, player_id: number) {
         try {
             if(equipe_utilisateur){
-            console.log(team_id, player_id);
+            //console.log(team_id, player_id);
             const response = await axiosInstance.post(`/equipe/addJoueurNBA/${team_id}/${player_id}`, {
                 // team_id: team_id,
                 // player_id: player_id
             });
             
             openModal();
-            
-            //toast.success("You (" + team_id + ") have drafted " + player_id);
-            console.log("You (" + team_id + ") have drafted " + player_id);
-            console.log(response.data);
+
             setSelectedPlayer(response.data.player);
         }
 
@@ -224,14 +266,6 @@ function Draft() {
 
     var [indice_tour, setIndice_tour] = useState<number>(1);
     var [tour_players, setTour_players] = useState<Pick[]>();
-
-
-    /*useEffect(() => {
-        // Effect to fetch drafted players whenever picks change
-        if (drafted_players && drafted_players.length > 0) {
-            getPicks();
-            }
-    }, [drafted_players]);*/
 
     useEffect(() => {
         if (equipes_draft)
@@ -258,7 +292,7 @@ function Draft() {
         {
             const newIndiceTour = indice_tour - 1;
             setIndice_tour(newIndiceTour);
-
+            //Contrainte_tour_recap(newIndiceTour);
             //console.log(indice_tour);
         
             const startIndex = (newIndiceTour - 1) * equipes_draft.length;
@@ -283,7 +317,7 @@ function Draft() {
         {
             const newIndiceTour = indice_tour + 1;
             setIndice_tour(newIndiceTour);
-
+            //Contrainte_tour_recap(newIndiceTour);
             //console.log(indice_tour);
             
             const startIndex = (newIndiceTour - 1) * equipes_draft.length;
@@ -299,21 +333,52 @@ function Draft() {
     }
     }
 
-    /*const socket = io("your-server-url"); //socket.emit("draft", teamkey, playerkey); dans draftPlayerClick
-    
-    useEffect(() => {
-        // Écouter les événements du serveur pour les sélections des autres utilisateurs
-        socket.on("selection", (selectedTeam: number, selectedPlayer: number) => {
-            // Mettre à jour l'état local pour refléter la sélection
-            console.log(`L'utilisateur ${selectedTeam} a sélectionné le joueur ${selectedPlayer}`);
-            // Mettez à jour l'état local en conséquence
-        });
+    const [tourContrainte, settourContrainte] = useState<string>();
 
-        // Nettoyer l'écouteur lors du démontage du composant
-        return () => {
-            socket.off("selection");
-        };
-    }, []);*/
+    useEffect(() => {
+        Contrainte_tour_recap(indice_tour);
+    }, [type_draft, indice_tour]);
+
+    const Contrainte_tour_recap = (i : number) => {
+        if (type_draft)
+        {
+            //console.log(filteredPlayers.length);
+            switch (i)
+            {
+                case 1:
+                    settourContrainte(type_draft.contrainte1);
+                    break;
+                case 2:
+                    settourContrainte(type_draft.contrainte2);
+                    break;
+                case 3:
+                    settourContrainte(type_draft.contrainte3);
+                    break;
+                case 4:
+                    settourContrainte(type_draft.contrainte4);
+                    break;
+                case 5:
+                    settourContrainte(type_draft.contrainte5);
+                    break;
+                case 6:
+                    settourContrainte(type_draft.contrainte6);
+                    break;
+                case 7:
+                    settourContrainte(type_draft.contrainte7);
+                    break;
+                case 8:
+                    settourContrainte(type_draft.contrainte8);
+                    break;
+                case 9:
+                    settourContrainte(type_draft.contrainte9);
+                    break;
+                case 10:
+                    settourContrainte(type_draft.contrainte10);
+                    break;
+            }
+
+        }
+    }
 
     useEffect(() => {
         const intervalId = setInterval(() => {
@@ -329,6 +394,8 @@ function Draft() {
     }, [loading, draft]);
 
     const [showModal, setShowModal] = useState(false);
+    const [showModalInfo, setShowModalInfo] = useState(false);
+    const [Info, setInfo] = useState<string>();
 
 
     const openModal = () => {
@@ -336,6 +403,13 @@ function Draft() {
     };
     const closeModal = () => {
         setShowModal(false);
+    };
+
+    const openModalInfo = () => {
+        setShowModalInfo(true);
+    };
+    const closeModalInfo = () => {
+        setShowModalInfo(false);
     };
 
     const [lastPlayer, setLastPlayer] = useState<number>();
@@ -346,15 +420,121 @@ function Draft() {
         }
     }, [lastPlayer]);
 
+    const [stateDraft, setStateDraft] = useState<string>("Draft non commencée.");
+
+    useEffect(() => {
+        if (equipes_draft) 
+        { 
+            if (drafted_players.length === 0)
+            {
+                setStateDraft("Draft non commencée.");
+            }
+            if (drafted_players.length > 0 && drafted_players.length < equipes_draft?.length * 10)
+            {
+                setStateDraft("Draft en cours...");
+            }
+            else if (drafted_players.length === equipes_draft?.length * 10)
+            {
+                setStateDraft("Draft terminée.");
+            }
+        }
+    }, [draft, drafted_players.length])
+
+    const [currentContrainte, setcurrentContrainte] = useState<string>();
+    const [maxDraft, setmaxDraft] = useState<number>();
+    const [checkCondition, setcheckCondition] = useState<boolean>(false);
+
+    useEffect(() => {
+    if (draft)
+    {
+        if (!checkCondition)
+        {
+            setcheckCondition(true);
+            setmaxDraft(draft.id_draft);
+        } 
+    }
+    });
+
+
+    useEffect(() => {
+        if (filteredPlayers && type_draft)
+        {
+            console.log(filteredPlayers.length);
+            switch (filteredPlayers.length)
+            {
+                case 0:
+                    setcurrentContrainte(type_draft.contrainte1);
+                    break;
+                case 1:
+                    setcurrentContrainte(type_draft.contrainte2);
+                    break;
+                case 2:
+                    setcurrentContrainte(type_draft.contrainte3);
+                    break;
+                case 3:
+                    setcurrentContrainte(type_draft.contrainte4);
+                    break;
+                case 4:
+                    setcurrentContrainte(type_draft.contrainte5);
+                    break;
+                case 5:
+                    setcurrentContrainte(type_draft.contrainte6);
+                    break;
+                case 6:
+                    setcurrentContrainte(type_draft.contrainte7);
+                    break;
+                case 7:
+                    setcurrentContrainte(type_draft.contrainte8);
+                    break;
+                case 8:
+                    setcurrentContrainte(type_draft.contrainte9);
+                    break;
+                case 9:
+                    setcurrentContrainte(type_draft.contrainte10);
+                    break;
+                case 10:
+                    setcurrentContrainte(" ");
+                    break;
+            }
+
+        }
+    }, [type_draft, filteredPlayers]);
+
+
+    async function Dim_index_draft() {
+        if (type_draft && type_draft.id > 1) {
+            try {
+                const response = await axiosInstance.get(`/draft/ligue/${ligueId}/${type_draft.id - 1}`);
+                console.log(response.data[0]);
+                setDraft(response.data[0]);
+                setLoading(false); // Marquer le chargement comme terminé
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    }
+    
+    async function Aug_index_draft() {
+        console.log(type_draft);
+        if (type_draft && maxDraft && type_draft.id < maxDraft) {
+            console.log(maxDraft);
+            try {
+                const response = await axiosInstance.get(`/draft/ligue/${ligueId}/${type_draft.id + 1}`);
+                console.log(response.data[0]);
+                setDraft(response.data[0]);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    }
+
     return (
         <div className="body">
             <div className='App-body-ligue'>
-                {/* Modale */}
-            {/* Fenêtre modale */}
-            {showModal && (
+            {showModal && drafted_players.length != 0 && (
                 <div className="modal-container">
                     <div className="modal">
-                        {/* Contenu de la fenêtre modale */}
                         <h2>Avec le {drafted_players.length}e choix de draft...</h2>
                         <Table>
                             <TableCell>{drafted_players[drafted_players.length - 1].utilisateur} a sélectionné {drafted_players[drafted_players.length - 1].prenom} {drafted_players[drafted_players.length - 1].nom}</TableCell>
@@ -362,9 +542,16 @@ function Draft() {
                                 <Avatar src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${drafted_players[drafted_players.length - 1].joueur_NBA}.png`} />
                             </TableCell>
                         </Table>
-                    
-                        {/* Bouton pour fermer la fenêtre modale */}
                         <button onClick={closeModal}>Fermer</button>
+                    </div>
+                </div>
+            )}
+
+            {showModalInfo && (
+                <div className="modal-container">
+                    <div className="modal">
+                        <h2>{Info}</h2>
+                        <button onClick={closeModalInfo}>Fermer</button>
                     </div>
                 </div>
             )}
@@ -372,6 +559,19 @@ function Draft() {
                 <Grid container spacing={2} sx={{ marginTop: '5vh', textAlign: 'center' }}>
                     <Grid item xs={12}>
                         {/* Ligne avec le type de draft et la recherche avancée et compteur */}
+                        <Table>
+                        <TableCell><Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                            <Button variant="contained" disableElevation onClick={Dim_index_draft}> &larr; </Button>
+                            <Typography variant="h5" sx={{ color: 'white' }}> Draft {type_draft?.id} : {type_draft?.type_draft}  </Typography>
+                            <Button variant="contained" disableElevation onClick={Aug_index_draft}> &rarr;</Button>
+                        </Typography></TableCell>
+                        <TableCell><Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                            Contrainte sur le tour en cours : {currentContrainte}
+                        </Typography></TableCell>
+                        <TableCell><Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                            {stateDraft}
+                        </Typography></TableCell>
+                    </Table>  
                     </Grid>
                     <Grid item xs={4} sx={{ marginLeft: 4, marginRight: 4 }}>
                         <Grid item xs={12} bgcolor={"white"} color={"white"} sx={{ height: '50vh', display: 'flex', flexWrap: 'wrap', backgroundColor: "grey", border: "3px solid #ff6a00" }}>
@@ -400,13 +600,10 @@ function Draft() {
                                 <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                                 Tour de draft
                                 </Typography>
-                                {
-                                    <>
-                                    <Button variant="contained" disableElevation onClick={Dim_index_tour}> &larr; </Button>
-                                    <Typography variant="h5" sx={{ color: 'white' }}> {indice_tour} </Typography>
-                                    <Button variant="contained" disableElevation onClick={Aug_index_tour}> &rarr;</Button>
-                                    </>
-                                }
+                                <Button variant="contained" disableElevation onClick={Dim_index_tour}> &larr; </Button>
+                                <Typography variant="h5" sx={{ color: 'white' }}> {indice_tour} </Typography>
+                                <Button variant="contained" disableElevation onClick={Aug_index_tour}> &rarr;</Button>
+                                <Typography variant="h5" sx={{ color: 'white' }}> Contrainte : {tourContrainte} </Typography>
                                 </Box>
                             </Grid>
                             

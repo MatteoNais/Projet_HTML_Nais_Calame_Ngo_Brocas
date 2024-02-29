@@ -4,7 +4,7 @@ import Pick from "../models/Pick";
 
 const getDraftById = async (req: Request, res: Response) => {
     console.log(req.params);
-    const draftId = parseInt(req.query.draftId as string);
+    const draftId = parseInt(req.params.id as string);
     if (draftId === null || draftId === undefined) {
         return res.status(400).json({ message: "Invalid draft ID" });
     }
