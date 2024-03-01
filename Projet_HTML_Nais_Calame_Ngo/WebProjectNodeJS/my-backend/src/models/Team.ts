@@ -61,7 +61,7 @@ class Team {
             return data;
         } catch (error) {
             console.error('Error requesting all Teams:', error);
-            return JSON.parse("request failed");
+            return JSON.stringify({ error: "request failed" });
         }
     }
 
@@ -85,12 +85,40 @@ class Team {
             if( exitCode) {
                 throw new Error( `subprocess error exit ${exitCode}, ${error}`);
             }
-            return JSON.parse(data);
+            return data
         } catch (error) {
             console.error('Error requesting all Teams:', error);
-            return JSON.parse("request failed");
+            return JSON.stringify({ error: "request failed" });
         }
     }
+
+    static async getAllTeamInfo(): Promise<string> {
+        try {
+            var spawn = require("child_process").spawn;
+            var process = spawn('python',["./src/api_NBA_python/GetAllTeamInfo.py"] ); 
+            
+            let data = "";
+            for await (const chunk of process.stdout) {
+                data += chunk;
+            }
+            let error = "";
+            for await (const chunk of process.stderr) {
+                error += chunk;
+            }
+            
+            const exitCode = await new Promise( (resolve, reject) => {
+                process.on('close', resolve);
+            });
+            if( exitCode) {
+                throw new Error( `subprocess error exit ${exitCode}, ${error}`);
+            }
+            return data;
+        } catch (error) {
+            console.error('Error requesting all Teams info:', error);
+            return JSON.stringify({ error: "request failed" });
+        }
+    }
+
 
     static async getAllTeams(): Promise<Team | null> {
         try {

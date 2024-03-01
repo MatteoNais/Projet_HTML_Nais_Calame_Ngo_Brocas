@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-interface playerNBA {
+interface playerNBAInfo {
     id: number;
     equipeNBA_id: number;
     nom: string;
@@ -9,8 +9,13 @@ interface playerNBA {
     height: string;
     weight: string;
     position: string;
+    age: string;
     country: string;
     experience: number;
+    PTS: number;
+    AST: number;
+    REB: number;
+    PIE: number;
 }
 
-export default playerNBA;
+export default playerNBAInfo;

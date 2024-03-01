@@ -8,7 +8,7 @@ export interface IPlayer {
 }
 
 class Player {
-    private player: IPlayer;
+    player: IPlayer;
 
     constructor(p: IPlayer) {
         this.player = p;
@@ -50,14 +50,20 @@ class Player {
         }
     }
 
-    static async findByIdTeam(teamID: string): Promise<Player | null> {
+    static async findByIdTeam(teamID: string): Promise<Player[]> {
         try {
             let query = `SELECT * FROM joueur_NBA WHERE equipeNBA_id = ?`;
             const [rows] = await configDB.execute(query, [teamID]);
-            return rows.length ? new Player(rows) : null;
+
+            var player_list = new Array<Player>();
+            for (let index = 0; index < rows.length; index++) {
+                player_list.push(new Player(rows[index]))
+            }
+            return player_list;
+
         } catch (error) {
             console.error('Error finding all players:', error);
-            return null
+            return []
         }
     }
 
@@ -138,7 +144,6 @@ class Player {
             if (exitCode) {
                 throw new Error(`subprocess error exit ${exitCode}, ${error}`);
             }
-
             return JSON.parse(data);
         }
         catch (error) {
@@ -147,9 +152,9 @@ class Player {
         }
     }
 
-    static async getPlayerInfo(playerId: string): Promise<string | null> {
+    static async getPlayerInfo(playerId: string): Promise<string> {
         try {
-            
+
             var spawn = require("child_process").spawn;
             var process = spawn('python', ["./src/api_NBA_python/GetPlayerInfo.py", playerId]);
 
@@ -168,12 +173,11 @@ class Player {
             if (exitCode) {
                 throw new Error(`subprocess error exit ${exitCode}, ${error}`);
             }
-
-            return JSON.parse(data);
+            return data;
         }
         catch (error) {
             console.error('Error finding user stats by ID:', error);
-            return null;
+            return "Error finding user stats by ID: " + playerId;
         }
     }
 
@@ -197,7 +201,6 @@ class Player {
             if (exitCode) {
                 throw new Error(`subprocess error exit ${exitCode}, ${error}`);
             }
-            
             return JSON.parse(data);
         } catch (error) {
             console.error('Error requesting all players:', error);
