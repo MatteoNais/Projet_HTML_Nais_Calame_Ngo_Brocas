@@ -5,7 +5,7 @@ export interface ITeam {
     nom: string;
     abbreviation: string;
     ville: string;
-    }
+}
 
 class Team {
     private team: ITeam;
@@ -19,7 +19,7 @@ class Team {
             const [rows, fields] = await configDB.execute(
                 'INSERT INTO equipe_NBA (id, nom, abbreviation, ville) VALUES (?,?,?,?);',
                 [team.id, team.nom, team.abbreviation, team.ville]
-            );       
+            );
             return 1;
         } catch (error) {
             console.error('Error inserting Team in database', error);
@@ -41,8 +41,8 @@ class Team {
     static async getAllTeamsNBA(): Promise<string> {
         try {
             var spawn = require("child_process").spawn;
-            var process = spawn('python',["./src/api_NBA_python/GetAllTeams.py"] ); 
-            
+            var process = spawn('python', ["./src/api_NBA_python/GetAllTeams.py"]);
+
             let data = "";
             for await (const chunk of process.stdout) {
                 data += chunk;
@@ -51,12 +51,12 @@ class Team {
             for await (const chunk of process.stderr) {
                 error += chunk;
             }
-            
-            const exitCode = await new Promise( (resolve, reject) => {
+
+            const exitCode = await new Promise((resolve, reject) => {
                 process.on('close', resolve);
             });
-            if( exitCode) {
-                throw new Error( `subprocess error exit ${exitCode}, ${error}`);
+            if (exitCode) {
+                throw new Error(`subprocess error exit ${exitCode}, ${error}`);
             }
             return data;
         } catch (error) {
@@ -65,11 +65,11 @@ class Team {
         }
     }
 
-    static async getTeamInfo(teamId: string): Promise<string> {
+    static async getAllTeamInfo(): Promise<string> {
         try {
             var spawn = require("child_process").spawn;
-            var process = spawn('python',["./src/api_NBA_python/GetTeamInfo.py", teamId] ); 
-            
+            var process = spawn('python', ["./src/api_NBA_python/GetAllTeamInfo.py"]);
+
             let data = "";
             for await (const chunk of process.stdout) {
                 data += chunk;
@@ -78,14 +78,68 @@ class Team {
             for await (const chunk of process.stderr) {
                 error += chunk;
             }
-            
-            const exitCode = await new Promise( (resolve, reject) => {
+
+            const exitCode = await new Promise((resolve, reject) => {
                 process.on('close', resolve);
             });
-            if( exitCode) {
-                throw new Error( `subprocess error exit ${exitCode}, ${error}`);
+            if (exitCode) {
+                throw new Error(`subprocess error exit ${exitCode}, ${error}`);
+            }
+            return data;
+        } catch (error) {
+            console.error('Error requesting all Teams info:', error);
+            return JSON.stringify({ error: "request failed" });
+        }
+    }
+
+    static async getTeamInfo(teamId: string): Promise<string> {
+        try {
+            var spawn = require("child_process").spawn;
+            var process = spawn('python', ["./src/api_NBA_python/GetTeamInfo.py", teamId]);
+
+            let data = "";
+            for await (const chunk of process.stdout) {
+                data += chunk;
+            }
+            let error = "";
+            for await (const chunk of process.stderr) {
+                error += chunk;
+            }
+
+            const exitCode = await new Promise((resolve, reject) => {
+                process.on('close', resolve);
+            });
+            if (exitCode) {
+                throw new Error(`subprocess error exit ${exitCode}, ${error}`);
             }
             return JSON.parse(data);
+        } catch (error) {
+            console.error('Error requesting all Teams:', error);
+            return JSON.parse("request failed");
+        }
+    }
+
+    static async getTeamInfo2(teamId: string): Promise<string> {
+        try {
+            var spawn = require("child_process").spawn;
+            var process = spawn('python', ["./src/api_NBA_python/GetTeamInfo.py", teamId]);
+
+            let data = "";
+            for await (const chunk of process.stdout) {
+                data += chunk;
+            }
+            let error = "";
+            for await (const chunk of process.stderr) {
+                error += chunk;
+            }
+
+            const exitCode = await new Promise((resolve, reject) => {
+                process.on('close', resolve);
+            });
+            if (exitCode) {
+                throw new Error(`subprocess error exit ${exitCode}, ${error}`);
+            }
+            return data;
         } catch (error) {
             console.error('Error requesting all Teams:', error);
             return JSON.parse("request failed");
@@ -95,7 +149,7 @@ class Team {
     static async getAllTeams(): Promise<Team | null> {
         try {
             let query = `SELECT * FROM equipe_NBA ORDER BY nom`;
-            const [rows] = await configDB.execute(query,[]);
+            const [rows] = await configDB.execute(query, []);
             return rows.length ? new Team(rows) : null;
         } catch (error) {
             console.error('Error finding Teams', error);

@@ -8,7 +8,7 @@ export interface IPlayer {
 }
 
 class Player {
-    private player: IPlayer;
+    public player: IPlayer;
 
     constructor(p: IPlayer) {
         this.player = p;
@@ -63,6 +63,23 @@ class Player {
             let query = `SELECT * FROM joueur_NBA WHERE equipeNBA_id = ? ORDER BY nom, prenom`;
             const [rows] = await configDB.execute(query, [teamID]);
             return rows.length ? new Player(rows) : null;
+        } catch (error) {
+            console.error('Error finding all players:', error);
+            return null
+        }
+    }
+
+    static async findByIdTeam2(teamID: string): Promise<Player[] | null> {
+        try {
+            let query = `SELECT * FROM joueur_NBA WHERE equipeNBA_id = ? ORDER BY nom, prenom`;
+            const [rows] = await configDB.execute(query, [teamID]);
+            
+            var player_list = new Array<Player>();
+            for (let index = 0; index < rows.length; index++) {
+                player_list.push(new Player(rows[index]))
+            }
+            return player_list;
+
         } catch (error) {
             console.error('Error finding all players:', error);
             return null
@@ -234,6 +251,36 @@ class Player {
         catch (error) {
             console.error('Error finding user stats by ID:', error);
             return null;
+        }
+    }
+
+    static async getPlayerInfo2(playerId: string): Promise<string> {
+        try {
+
+            var spawn = require("child_process").spawn;
+            var process = spawn('python', ["./src/api_NBA_python/GetPlayerInfo.py", playerId]);
+
+            let data = "";
+            for await (const chunk of process.stdout) {
+                data += chunk;
+            }
+            let error = "";
+            for await (const chunk of process.stderr) {
+                error += chunk;
+            }
+            const exitCode = await new Promise((resolve, reject) => {
+                process.on('close', resolve);
+            });
+
+            if (exitCode) {
+                throw new Error(`subprocess error exit ${exitCode}, ${error}`);
+            }
+
+            return data
+        }
+        catch (error) {
+            console.error('Error finding user stats by ID:', error);
+            return "error";
         }
     }
 
