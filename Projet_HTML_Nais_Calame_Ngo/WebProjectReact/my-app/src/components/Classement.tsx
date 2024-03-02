@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import '../pages/StylePages.css'
-import { useParams } from 'react-router-dom';
-import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Link, useParams } from 'react-router-dom';
+import { Button, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import axiosInstance from "../api/axiosInstance";
 import UserClassement from '../objects/UserClassement';
 
 interface Params {
     [ligueId: string]: string | undefined;
 }
-function Classement() {
+
+interface CurrentDraft {
+    idDraft: number
+}
+function Classement({ idDraft }: CurrentDraft) {
     const { ligueId } = useParams<Params>();
     const [users, setUsers] = useState<UserClassement[]>();
 
@@ -45,6 +49,7 @@ function Classement() {
                                         <TableCell>Username</TableCell>
                                         <TableCell>Général</TableCell>
                                         <TableCell>Moyenne</TableCell>
+                                        <TableCell>Voir Equipe</TableCell>
 
                                         {/* Add other table headers here */}
                                     </TableRow>
@@ -56,6 +61,9 @@ function Classement() {
                                             {/* Add other user information here */}
                                             <TableCell>{user.score}</TableCell>
                                             <TableCell>{user.meanScore}</TableCell>
+                                            <TableCell><Link to={`/ligue/${ligueId}/${user.id}/${idDraft}`}>
+                                                <Button variant="contained" disableElevation> &rarr;</Button>
+                                            </Link></TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
