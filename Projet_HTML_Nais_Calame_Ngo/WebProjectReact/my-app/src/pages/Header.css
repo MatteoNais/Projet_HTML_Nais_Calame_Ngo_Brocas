@@ -16,7 +16,7 @@
     font-size: calc(10px + 2vmin);
     height: 10vh;
     position: sticky;
-    top: 0;
+    top: 0
 }
 
 .grid-container {
@@ -27,6 +27,7 @@
     height: 7vh;
     background: #ff6a00;
     clip-path: polygon(4% 0, 96% 0, 94% 100%, 6% 100%);
+    z-index: 10
 }
 
 .grid-item {
