@@ -59,13 +59,35 @@ function AccueilLigue() {
             console.error("Error creating draft:", error);
         } finally {
             // Réactualiser la page
-            window.location.reload();
+            // window.location.reload();
+            openModal();
         }
     }
+
+    const [showModal, setShowModal] = useState(false);
+
+    const openModal = () => {
+        setShowModal(true);
+    };
+    const closeModal = () => {
+        setShowModal(false);
+    };
 
     return (
         <div className="body">
             <div className='App-body-ligue'>
+                {showModal && (
+                    <div className="modal-container">
+                        <div className="modal">
+                            {/* Contenu de la fenêtre modale */}
+                            <h2> La draft a bien été créé </h2>
+                            {/* Bouton pour fermer la fenêtre modale */}
+                            <button onClick={closeModal}>Fermer</button>
+                            <Button variant="contained" disableElevation onClick={closeModal}> Fermer</Button>
+
+                        </div>
+                    </div>
+                )}
                 <Grid container spacing={3} sx={{ marginTop: '2vh' }}>
                     <Grid item xs={6}>
                         {/* Colonne de gauche */}
@@ -78,7 +100,7 @@ function AccueilLigue() {
                     </Grid>
                     <Grid item xs={6}>
                         {/* Classement des joueurs avec recap des points */}
-                        <Classement></Classement>
+                        {currentDraft?.id_draft && <Classement idDraft={currentDraft.id_draft} />}
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginLeft: '10px', marginRight: '10px' }}>
                             {currentDraft?.date_fin && dayjs(currentDraft.date_fin).isAfter(dayjs()) ? (
                                 <>

@@ -18,6 +18,7 @@ function MonEquipeLigue() {
     const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
     const { ligueId } = useParams<Params>();
     const { draftId } = useParams<Params>();
+    const { userId } = useParams<Params>();
     const [currentDraft, setCurrentDraft] = useState<Draft>();
     const [lastDraft, setLastDraft] = useState<Draft>();
 
@@ -53,7 +54,7 @@ function MonEquipeLigue() {
     // Récupérer les id des joueurs et leurs noms et prénoms.
     useEffect(() => {
         console.log("Nouvel id de draft :", draftId);
-        axiosInstance.get(`/playersNBA/team/${ligueId}/${basicUserInfo?.id}/${draftId}`)
+        axiosInstance.get(`/playersNBA/team/${ligueId}/${userId}/${draftId}`)
             .then(response => {
                 console.log(" joueurs" + response.data.player);
                 setJoueurs(response.data.player);
@@ -64,7 +65,7 @@ function MonEquipeLigue() {
                 }
                 console.error('Error:', error);
             });
-    }, [ligueId, basicUserInfo?.id, draftId]);
+    }, [ligueId, userId, draftId]);
 
     // Fonction appelée lorsque le composant est démonté (changement de page).
     useEffect(() => {
@@ -94,13 +95,13 @@ function MonEquipeLigue() {
                         <Typography variant="h4" sx={{ color: 'white' }}>Total : {totalPoints} points</Typography>
                         <Box display="flex" alignItems="center" justifyContent="center" sx={{ gap: '10px', marginTop: 3 }}>
                             {Number(draftId) - 1 > 0 && (
-                                <Link to={`/ligue/${ligueId}/${basicUserInfo?.id}/${Number(draftId) - 1}`}>
+                                <Link to={`/ligue/${ligueId}/${userId}/${Number(draftId) - 1}`}>
                                     <Button variant="contained" disableElevation onClick={resetTotalPoints}> &larr; </Button>
                                 </Link>
                             )}
                             <Typography variant="h5" sx={{ color: 'white' }}>{dayjs(currentDraft?.date_debut)?.format("YYYY-MM-DD HH:mm")} - {dayjs(currentDraft?.date_fin)?.format("YYYY-MM-DD HH:mm")}</Typography>
                             {Number(draftId) + 1 <= (lastDraft?.id_draft ?? 0) &&
-                                <Link to={`/ligue/${ligueId}/${basicUserInfo?.id}/${Number(draftId) + 1}`}>
+                                <Link to={`/ligue/${ligueId}/${userId}/${Number(draftId) + 1}`}>
                                     <Button variant="contained" disableElevation onClick={resetTotalPoints}> &rarr;</Button>
                                 </Link>
                             }

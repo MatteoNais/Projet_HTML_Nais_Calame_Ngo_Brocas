@@ -73,18 +73,17 @@ function Draft() {
 
     useEffect(() => {
         //console.log("ByLigueAndData");
-        if (draft)
-        {
+        if (draft) {
             axiosInstance.get(`/equipe/byLigueAndByDraft/${ligueId}/${draft?.id_draft}`)
-            .then(response => {
-                //console.log(response.data);
-                setEquipesDraft(response.data);
-            })
-            .catch(error => console.error('Error:', error));
+                .then(response => {
+                    //console.log(response.data);
+                    setEquipesDraft(response.data);
+                })
+                .catch(error => console.error('Error:', error));
         }
     }, [ligueId, draft]);
-    
-    
+
+
     const [teams, setTeams] = useState<teamNBA[]>([]);
     var [selectedTeamItem, setSelectedTeamItem] = useState(Number);
     var [selectedPlayerItem, setSelectedPlayerItem] = useState(Number);
@@ -121,7 +120,7 @@ function Draft() {
                 setSelectedPlayer(response.data.player);
             })
             .catch(error => console.error('Error:', error));
-    }   
+    }
 
     const teamItemClick = (key: number) => {
         getPlayerfromteam(key);
@@ -140,7 +139,7 @@ function Draft() {
     /*const show = () => {
         console.log(drafted_players);
     }*/
-    
+
     async function getPicks() {
         console.log("Updating...");
         console.log(draft);
@@ -152,8 +151,7 @@ function Draft() {
                     //console.log(response.data[response.data.length - 1]);
                     //console.log(lastPlayer);
                     let val = 0;
-                    if (response.data.length != 0)
-                    {
+                    if (response.data.length != 0) {
                         val = response.data[response.data.length - 1].joueur_NBA;
 
                     }
@@ -168,15 +166,11 @@ function Draft() {
 
     const draftPlayerClick = (teamkey: number, playerkey: number) => {
         //returnPlayerState(playerkey);
-        if (equipes_draft)
-        {
-            if (drafted_players.length < equipes_draft?.length * 10)
-            {
-                if (filteredPlayers.length < 10)
-                {
+        if (equipes_draft) {
+            if (drafted_players.length < equipes_draft?.length * 10) {
+                if (filteredPlayers.length < 10) {
                     if (returnPlayerState(playerkey) === "possible") {
-                        if (currentUserTurn() === true)
-                        {
+                        if (currentUserTurn() === true) {
                             draftPlayer(teamkey, playerkey)
                                 .then(() => {
                                     // Update picks after successfully drafting a player
@@ -188,9 +182,9 @@ function Draft() {
                                     console.error('Error drafting player:', error);
                                 });
                         } else {
-                        console.log("It's not your turn to draft a player");
-                        setInfo("Ce n'est pas à vous de sélectionner un nouveau joueur.");
-                        openModalInfo();
+                            console.log("It's not your turn to draft a player");
+                            setInfo("Ce n'est pas à vous de sélectionner un nouveau joueur.");
+                            openModalInfo();
                         }
                     } else {
                         console.log("You could not draft " + playerkey);
@@ -201,14 +195,14 @@ function Draft() {
                     console.log("You could not draft " + playerkey);
                     setInfo("Vous avez déjà sélectionné 10 joueurs.");
                     openModalInfo();
-                }    
+                }
             }
             else {
                 console.log("You could not draft " + playerkey);
                 setInfo("La draft est finie.");
                 openModalInfo();
             }
-        }   
+        }
 
     };
 
@@ -247,17 +241,17 @@ function Draft() {
 
     async function draftPlayer(team_id: number, player_id: number) {
         try {
-            if(equipe_utilisateur){
-            //console.log(team_id, player_id);
-            const response = await axiosInstance.post(`/equipe/addJoueurNBA/${team_id}/${player_id}`, {
-                // team_id: team_id,
-                // player_id: player_id
-            });
-            
-            openModal();
+            if (equipe_utilisateur) {
+                //console.log(team_id, player_id);
+                const response = await axiosInstance.post(`/equipe/addJoueurNBA/${team_id}/${player_id}`, {
+                    // team_id: team_id,
+                    // player_id: player_id
+                });
 
-            setSelectedPlayer(response.data.player);
-        }
+                openModal();
+
+                setSelectedPlayer(response.data.player);
+            }
 
         } catch (error) {
             console.error('Error:', error);
@@ -268,8 +262,7 @@ function Draft() {
     var [tour_players, setTour_players] = useState<Pick[]>();
 
     useEffect(() => {
-        if (equipes_draft)
-        {
+        if (equipes_draft) {
             const tourPlayers = [];
             const startIndex = (indice_tour - 1) * equipes_draft.length;
             for (let i = startIndex; i < (startIndex + equipes_draft.length); i++) {
@@ -285,52 +278,49 @@ function Draft() {
 
     const Dim_index_tour = () => {
         if (equipes_draft) {
-        // Tableau pour stocker les joueurs du tour actuel
-        const tourPlayers = [];
+            // Tableau pour stocker les joueurs du tour actuel
+            const tourPlayers = [];
 
-        if (indice_tour > 1)
-        {
-            const newIndiceTour = indice_tour - 1;
-            setIndice_tour(newIndiceTour);
-            //Contrainte_tour_recap(newIndiceTour);
-            //console.log(indice_tour);
-        
-            const startIndex = (newIndiceTour - 1) * equipes_draft.length;
-            for (let i = startIndex; i < (startIndex + equipes_draft.length); i++) {
-                //console.log(i);
-                if (drafted_players && drafted_players[i] != null) {
-                    tourPlayers.push(drafted_players[i]);
-                    console.log(tourPlayers);
+            if (indice_tour > 1) {
+                const newIndiceTour = indice_tour - 1;
+                setIndice_tour(newIndiceTour);
+                //Contrainte_tour_recap(newIndiceTour);
+                //console.log(indice_tour);
+
+                const startIndex = (newIndiceTour - 1) * equipes_draft.length;
+                for (let i = startIndex; i < (startIndex + equipes_draft.length); i++) {
+                    //console.log(i);
+                    if (drafted_players && drafted_players[i] != null) {
+                        tourPlayers.push(drafted_players[i]);
+                        console.log(tourPlayers);
+                    }
                 }
+                setTour_players(tourPlayers);
             }
-            setTour_players(tourPlayers);
-        }
         }
     }
 
     const Aug_index_tour = () => {
-        if (equipes_draft)
-        {
-        const tourPlayers = [];
+        if (equipes_draft) {
+            const tourPlayers = [];
 
-        if (indice_tour < 10)
-        {
-            const newIndiceTour = indice_tour + 1;
-            setIndice_tour(newIndiceTour);
-            //Contrainte_tour_recap(newIndiceTour);
-            //console.log(indice_tour);
-            
-            const startIndex = (newIndiceTour - 1) * equipes_draft.length;
-            for (let i = startIndex; i < startIndex + equipes_draft.length; i++) {
-                //console.log(i);
-                if (drafted_players && drafted_players[i] != null) {
-                    tourPlayers.push(drafted_players[i]);
-                    console.log(tourPlayers);
+            if (indice_tour < 10) {
+                const newIndiceTour = indice_tour + 1;
+                setIndice_tour(newIndiceTour);
+                //Contrainte_tour_recap(newIndiceTour);
+                //console.log(indice_tour);
+
+                const startIndex = (newIndiceTour - 1) * equipes_draft.length;
+                for (let i = startIndex; i < startIndex + equipes_draft.length; i++) {
+                    //console.log(i);
+                    if (drafted_players && drafted_players[i] != null) {
+                        tourPlayers.push(drafted_players[i]);
+                        console.log(tourPlayers);
+                    }
                 }
+                setTour_players(tourPlayers);
             }
-            setTour_players(tourPlayers);
         }
-    }
     }
 
     const [tourContrainte, settourContrainte] = useState<string>();
@@ -339,12 +329,10 @@ function Draft() {
         Contrainte_tour_recap(indice_tour);
     }, [type_draft, indice_tour]);
 
-    const Contrainte_tour_recap = (i : number) => {
-        if (type_draft)
-        {
+    const Contrainte_tour_recap = (i: number) => {
+        if (type_draft) {
             //console.log(filteredPlayers.length);
-            switch (i)
-            {
+            switch (i) {
                 case 1:
                     settourContrainte(type_draft.contrainte1);
                     break;
@@ -388,7 +376,7 @@ function Draft() {
                 getPicks();
             }
         }, 5000); // Par exemple, vérifier toutes les 5 secondes
-    
+
         // Nettoyer l'intervalle lors du démontage du composant
         return () => clearInterval(intervalId);
     }, [loading, draft]);
@@ -423,18 +411,14 @@ function Draft() {
     const [stateDraft, setStateDraft] = useState<string>("Draft non commencée.");
 
     useEffect(() => {
-        if (equipes_draft) 
-        { 
-            if (drafted_players.length === 0)
-            {
+        if (equipes_draft) {
+            if (drafted_players.length === 0) {
                 setStateDraft("Draft non commencée.");
             }
-            if (drafted_players.length > 0 && drafted_players.length < equipes_draft?.length * 10)
-            {
+            if (drafted_players.length > 0 && drafted_players.length < equipes_draft?.length * 10) {
                 setStateDraft("Draft en cours...");
             }
-            else if (drafted_players.length === equipes_draft?.length * 10)
-            {
+            else if (drafted_players.length === equipes_draft?.length * 10) {
                 setStateDraft("Draft terminée.");
             }
         }
@@ -445,23 +429,19 @@ function Draft() {
     const [checkCondition, setcheckCondition] = useState<boolean>(false);
 
     useEffect(() => {
-    if (draft)
-    {
-        if (!checkCondition)
-        {
-            setcheckCondition(true);
-            setmaxDraft(draft.id_draft);
-        } 
-    }
+        if (draft) {
+            if (!checkCondition) {
+                setcheckCondition(true);
+                setmaxDraft(draft.id_draft);
+            }
+        }
     });
 
 
     useEffect(() => {
-        if (filteredPlayers && type_draft)
-        {
+        if (filteredPlayers && type_draft) {
             console.log(filteredPlayers.length);
-            switch (filteredPlayers.length)
-            {
+            switch (filteredPlayers.length) {
                 case 0:
                     setcurrentContrainte(type_draft.contrainte1);
                     break;
@@ -513,7 +493,7 @@ function Draft() {
             }
         }
     }
-    
+
     async function Aug_index_draft() {
         console.log(type_draft);
         if (type_draft && maxDraft && type_draft.id < maxDraft) {
@@ -532,34 +512,34 @@ function Draft() {
     return (
         <div className="body">
             <div className='App-body-ligue'>
-            {showModal && drafted_players.length != 0 && (
-                <div className="modal-container">
-                    <div className="modal">
-                        <h2>Avec le {drafted_players.length}e choix de draft...</h2>
-                        <Table>
-                            <TableCell>{drafted_players[drafted_players.length - 1].utilisateur} a sélectionné {drafted_players[drafted_players.length - 1].prenom} {drafted_players[drafted_players.length - 1].nom}</TableCell>
-                            <TableCell>                    
-                                <Avatar src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${drafted_players[drafted_players.length - 1].joueur_NBA}.png`} />
-                            </TableCell>
-                        </Table>
-                        <button onClick={closeModal}>Fermer</button>
+                {showModal && drafted_players.length != 0 && (
+                    <div className="modal-container">
+                        <div className="modal">
+                            <h2>Avec le {drafted_players.length}e choix de draft...</h2>
+                            <Table>
+                                <TableCell>{drafted_players[drafted_players.length - 1].utilisateur} a sélectionné {drafted_players[drafted_players.length - 1].prenom} {drafted_players[drafted_players.length - 1].nom}</TableCell>
+                                <TableCell>
+                                    <Avatar src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${drafted_players[drafted_players.length - 1].joueur_NBA}.png`} />
+                                </TableCell>
+                            </Table>
+                            <button onClick={closeModal}>Fermer</button>
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            {showModalInfo && (
-                <div className="modal-container">
-                    <div className="modal">
-                        <h2>{Info}</h2>
-                        <button onClick={closeModalInfo}>Fermer</button>
+                {showModalInfo && (
+                    <div className="modal-container">
+                        <div className="modal">
+                            <h2>{Info}</h2>
+                            <button onClick={closeModalInfo}>Fermer</button>
+                        </div>
                     </div>
-                </div>
-            )}
-        </div>
-                <Grid container spacing={2} sx={{ marginTop: '5vh', textAlign: 'center' }}>
-                    <Grid item xs={12}>
-                        {/* Ligne avec le type de draft et la recherche avancée et compteur */}
-                        <Table>
+                )}
+            </div>
+            <Grid container spacing={2} sx={{ marginTop: '5vh', textAlign: 'center' }}>
+                <Grid item xs={12}>
+                    {/* Ligne avec le type de draft et la recherche avancée et compteur */}
+                    <Table>
                         <TableCell><Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                             <Button variant="contained" disableElevation onClick={Dim_index_draft}> &larr; </Button>
                             <Typography variant="h5" sx={{ color: 'white' }}> Draft {type_draft?.id} : {type_draft?.type_draft}  </Typography>
@@ -571,122 +551,122 @@ function Draft() {
                         <TableCell><Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                             {stateDraft}
                         </Typography></TableCell>
-                    </Table>  
-                    </Grid>
-                    <Grid item xs={4} sx={{ marginLeft: 4, marginRight: 4 }}>
-                        <Grid item xs={12} bgcolor={"white"} color={"white"} sx={{ height: '50vh', display: 'flex', flexWrap: 'wrap', backgroundColor: "grey", border: "3px solid #ff6a00" }}>
-                            <Grid item xs={12} md={12}>
-                                <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                                    Récapitulatif de votre draft
-                                </Typography>
-                            </Grid>
-                            
-                            {filteredPlayers && filteredPlayers.map(joueur => (
-                                <Grid key={joueur.joueur_NBA} item xs={12} sm={6} md={4} lg={3} >
-                                    <img
-                                        src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${joueur.joueur_NBA}.png`}
-                                        alt="Image joueur"
-                                        style={{ width: "80%", height: "auto" }}
-                                    />
-                                    <Typography sx={{ fontWeight: 'bold' }}> {joueur.prenom + " " + joueur.nom} </Typography>
-                                </Grid>
-                            ))}
-                            
+                    </Table>
+                </Grid>
+                <Grid item xs={4} sx={{ marginLeft: 4, marginRight: 4 }}>
+                    <Grid item xs={12} bgcolor={"white"} color={"white"} sx={{ height: '50vh', display: 'flex', flexWrap: 'wrap', backgroundColor: "grey", border: "3px solid #ff6a00" }}>
+                        <Grid item xs={12} md={12}>
+                            <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                                Récapitulatif de votre draft
+                            </Typography>
                         </Grid>
 
-                        <Grid item xs={12} bgcolor={"white"} color={"white"} sx={{ height: '50vh', display: 'flex', flexWrap: 'wrap', backgroundColor: "grey", border: "3px solid #ff6a00" }}>
-                            <Grid item xs={12} md={12}>
-                                <Box display="flex" alignItems="center" justifyContent="center" sx={{ gap: '10px', marginTop: 3 }}>
+                        {filteredPlayers && filteredPlayers.map(joueur => (
+                            <Grid key={joueur.joueur_NBA} item xs={12} sm={6} md={4} lg={3} >
+                                <img
+                                    src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${joueur.joueur_NBA}.png`}
+                                    alt="Image joueur"
+                                    style={{ width: "80%", height: "auto" }}
+                                />
+                                <Typography sx={{ fontWeight: 'bold' }}> {joueur.prenom + " " + joueur.nom} </Typography>
+                            </Grid>
+                        ))}
+
+                    </Grid>
+
+                    <Grid item xs={12} bgcolor={"white"} color={"white"} sx={{ height: '50vh', display: 'flex', flexWrap: 'wrap', backgroundColor: "grey", border: "3px solid #ff6a00" }}>
+                        <Grid item xs={12} md={12}>
+                            <Box display="flex" alignItems="center" justifyContent="center" sx={{ gap: '10px', marginTop: 3 }}>
                                 <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                                Tour de draft
+                                    Tour de draft
                                 </Typography>
                                 <Button variant="contained" disableElevation onClick={Dim_index_tour}> &larr; </Button>
                                 <Typography variant="h5" sx={{ color: 'white' }}> {indice_tour} </Typography>
                                 <Button variant="contained" disableElevation onClick={Aug_index_tour}> &rarr;</Button>
                                 <Typography variant="h5" sx={{ color: 'white' }}> Contrainte : {tourContrainte} </Typography>
-                                </Box>
-                            </Grid>
-                            
-                            <TableContainer component={Paper}>
-                                <Table>
-                                    <TableHead>
-                                        <TableRow>
-                                            <TableCell>Utilisateur</TableCell>
-                                            <TableCell>Choix</TableCell>
-                                            <TableCell>Joueur</TableCell>
-                                            <TableCell></TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {equipes_draft && equipes_draft.map((equipe, index) => (
-                                            <TableRow key={equipe.id}>
-                                                <TableCell><Typography sx={{ fontWeight: 'bold' }}> {equipe.nom} </Typography></TableCell>
-                                                <TableCell>{(indice_tour - 1) * equipes_draft.length + index + 1}</TableCell>
-                                                <TableCell>{tour_players && tour_players[index] && (
-                                            <Typography> {tour_players[index].nom} {tour_players[index].prenom} </Typography>)} </TableCell>
-                                            <TableCell>{tour_players && tour_players[index] && (<ListItemAvatar>
-                                        <Avatar src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${tour_players[index].joueur_NBA}.png`} />
-                                    </ListItemAvatar>)}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                            </Box>
                         </Grid>
+
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Utilisateur</TableCell>
+                                        <TableCell>Choix</TableCell>
+                                        <TableCell>Joueur</TableCell>
+                                        <TableCell></TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {equipes_draft && equipes_draft.map((equipe, index) => (
+                                        <TableRow key={equipe.id}>
+                                            <TableCell><Typography sx={{ fontWeight: 'bold' }}> {equipe.nom} </Typography></TableCell>
+                                            <TableCell>{(indice_tour - 1) * equipes_draft.length + index + 1}</TableCell>
+                                            <TableCell>{tour_players && tour_players[index] && (
+                                                <Typography> {tour_players[index].nom} {tour_players[index].prenom} </Typography>)} </TableCell>
+                                            <TableCell>{tour_players && tour_players[index] && (<ListItemAvatar>
+                                                <Avatar src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${tour_players[index].joueur_NBA}.png`} />
+                                            </ListItemAvatar>)}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     </Grid>
-                    <Grid item xs={2} className="liste_equipeNBA">
-                        <Typography variant="h6">
-                            Equipe
-                        </Typography>
-                        <List className="list">
-                            {teams.map(team => (
-                                <ListItem key={team.id}
-                                    className="listItem"
-                                    style={{ backgroundColor: selectedTeamItem === team.id ? 'lightgrey' : 'grey' }}
-                                    onClick={() => teamItemClick(team.id)}>
-                                    <ListItemAvatar>
-                                        <Avatar alt={`${team.nom}`} src={` https://cdn.nba.com/logos/nba/${team.id}/global/L/logo.svg `} />
-                                    </ListItemAvatar>
-                                    <ListItemText primary={`${team.nom}`} />
-                                </ListItem>
-                            ))}                    {/* Selection des equipes */}
-                        </List>
-                    </Grid>
-                    <Grid item xs={2} className="liste_joueurNBA">
-                        <Typography variant="h6">
-                            Joueurs
-                        </Typography>
-                        <List className="list">
-                            {players.map(player => (
-                                <ListItem key={player.id}
-                                    className="listItem"
-                                    style={{ backgroundColor: selectedPlayerItem === player.id ? 'lightgrey' : 'grey' }}
-                                    onClick={() => joueurItemClick(player.id)}>
-                                    <ListItemAvatar>
-                                        <Avatar alt={`${player.prenom + " " + player.nom}`} src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${player.id}.png`} />
-                                    </ListItemAvatar>
-                                    <ListItemText primary={`${player.prenom + " " + player.nom}`} />
-                                </ListItem>
-                            ))}                    {/* Liste des joueurs */}
-                        </List>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Typography variant="h6">
-                            Carte joueur :
-                        </Typography>
-                        {selected_player && (
-                            <>
-                                <CarteJoueur key={selected_player.id} nom={selected_player.nom} prenom={selected_player.prenom} dateDebut={"2023-10-23"} dateFin={dayjs().format('YYYY-MM-DD')} joueurId={selected_player.id as number} />
-                                <p> Id joueur : {selected_player.id}</p>
-                                {<Button variant="contained" disableElevation onClick={() => draftPlayerClick(equipe_utilisateur?.id as number, selected_player?.id as number)}>
-                                    <b>Drafter le joueur</b>
+                </Grid>
+                <Grid item xs={2} className="liste_equipeNBA">
+                    <Typography variant="h6">
+                        Equipe
+                    </Typography>
+                    <List className="list">
+                        {teams.map(team => (
+                            <ListItem key={team.id}
+                                className="listItem"
+                                style={{ backgroundColor: selectedTeamItem === team.id ? 'lightgrey' : 'grey' }}
+                                onClick={() => teamItemClick(team.id)}>
+                                <ListItemAvatar>
+                                    <Avatar alt={`${team.nom}`} src={` https://cdn.nba.com/logos/nba/${team.id}/global/L/logo.svg `} />
+                                </ListItemAvatar>
+                                <ListItemText primary={`${team.nom}`} />
+                            </ListItem>
+                        ))}                    {/* Selection des equipes */}
+                    </List>
+                </Grid>
+                <Grid item xs={2} className="liste_joueurNBA">
+                    <Typography variant="h6">
+                        Joueurs
+                    </Typography>
+                    <List className="list">
+                        {players.map(player => (
+                            <ListItem key={player.id}
+                                className="listItem"
+                                style={{ backgroundColor: selectedPlayerItem === player.id ? 'lightgrey' : 'grey' }}
+                                onClick={() => joueurItemClick(player.id)}>
+                                <ListItemAvatar>
+                                    <Avatar alt={`${player.prenom + " " + player.nom}`} src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${player.id}.png`} />
+                                </ListItemAvatar>
+                                <ListItemText primary={`${player.prenom + " " + player.nom}`} />
+                            </ListItem>
+                        ))}                    {/* Liste des joueurs */}
+                    </List>
+                </Grid>
+                <Grid item xs={2}>
+                    <Typography variant="h6">
+                        Carte joueur :
+                    </Typography>
+                    {selected_player && (
+                        <>
+                            <CarteJoueur key={selected_player.id} nom={selected_player.nom} prenom={selected_player.prenom} dateDebut={"2023-10-23"} dateFin={dayjs().format('YYYY-MM-DD')} joueurId={selected_player.id as number} />
+                            <p> Id joueur : {selected_player.id}</p>
+                            {<Button variant="contained" disableElevation onClick={() => draftPlayerClick(equipe_utilisateur?.id as number, selected_player?.id as number)}>
+                                <b>Drafter le joueur</b>
                             </Button>}
                             {/*<Button variant="contained" disableElevation onClick={() => show()}>
                                     <b>Montrer</b>
                         </Button>*/}
-                            </>
-                        )}
-                            {/*<List>
+                        </>
+                    )}
+                    {/*<List>
                             {equipes_draft && equipes_draft.map((equipe, index) => (
                                 <ListItem key={index}>
                                     <ListItemText primary={equipe.id} />
@@ -694,9 +674,9 @@ function Draft() {
                             ))}
                             {equipe_utilisateur?.id}
                             </List>*/}
-                    </Grid>
                 </Grid>
-            </div>
+            </Grid>
+        </div>
     );
 }
 export default Draft;

@@ -78,7 +78,7 @@ class Equipe {
     static async getEquipeByLigueAndUser(ligueId: string, userId: string): Promise<Equipe | null> {
         const currentDraft = await Draft.findCurrentDraft(ligueId); // On récupère l'id de la draft en cours
         console.log("Draft : " + currentDraft?.id_draft.toString());
-        
+
         try {
             let query = `SELECT * FROM equipe WHERE ligue = ? AND utilisateur = ? AND draft = ?`;
             const [rows] = await configDB.execute(query, [ligueId, userId, currentDraft?.id_draft]);
@@ -134,10 +134,10 @@ class Equipe {
         }
     }
 
-    static async getScoreEquipe(idUser: string): Promise<number[] | null> {
+    static async getScoreEquipe(idUser: string, idLigue: string): Promise<number[] | null> {
         try {
-            let query = `SELECT score FROM equipe INNER JOIN lien_draft_ligue ON equipe.draft = lien_draft_ligue.id_draft WHERE equipe.utilisateur = ? AND lien_draft_ligue.date_fin < ?`;
-            const [rows] = await configDB.execute(query, [idUser, dayjs().format("YYYY-MM-DD HH:mm:ss")]);
+            let query = `SELECT score FROM equipe INNER JOIN lien_draft_ligue ON equipe.draft = lien_draft_ligue.id_draft WHERE equipe.utilisateur = ? AND equipe.ligue = ? AND lien_draft_ligue.date_fin < ?`;
+            const [rows] = await configDB.execute(query, [idUser, idLigue, dayjs().format("YYYY-MM-DD HH:mm:ss")]);
             console.log(rows);
             return rows;
         }
