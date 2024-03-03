@@ -70,7 +70,7 @@ function Draft() {
 
 
     const [equipes_draft, setEquipesDraft] = useState<teamNBA[]>();
-    const [selecting_teamIndex, setSelectingTeamIndex] = useState<number>();
+    //const [selecting_teamIndex, setSelectingTeamIndex] = useState<number>();
     const [selecting_teamsName, setSelectingTeamsName] = useState<string[]>();
 
     useEffect(() => {
@@ -92,15 +92,17 @@ function Draft() {
                 console.log(equipes_draft);
                 for (const team of equipes_draft) {
                     try {
-                        const response = await axiosInstance.get(`/users/${team.utilisateur as number}`);
+                        const response = await axiosInstance.get(`/users/id/${team.utilisateur as number}`);
                         console.log(response.data);
-                        teamNames.push(response.data.username);
+                        console.log(response.data.user.username);
+                        teamNames.push(response.data.user.username);
                         /*console.log(team.id);
                         console.log(response.data.username);*/
                     } catch (error) {
                         console.error('Error fetching team name:', error);
                     }
                 }
+                console.log(teamNames);
                 setSelectingTeamsName(teamNames);
             };
             fetchTeamNames();
@@ -257,7 +259,7 @@ function Draft() {
             const userIndex = equipes_draft.findIndex(equipe => equipe.id === equipe_utilisateur.id);
             const currentTurn = checkUserDraft();
             //console.log(userIndex);
-            setSelectingTeamIndex(currentTurn % equipes_draft.length);
+            //setSelectingTeamIndex(currentTurn % equipes_draft.length);
             console.log(equipes_draft[currentTurn % equipes_draft.length].id);
             return userIndex === currentTurn % equipes_draft.length;
         }
@@ -521,10 +523,10 @@ function Draft() {
 
     async function Aug_index_draft() {
         console.log(type_draft);
+        console.log(maxDraft);
         if (type_draft && maxDraft && type_draft.id < maxDraft) {
-            console.log(maxDraft);
             try {
-                const response = await axiosInstance.get(`/draft/ligue/${ligueId}/${type_draft.id + 1}`);
+                const response = await axiosInstance.get(`/draft/ligue2/${ligueId}/${type_draft.id + 1}`);
                 console.log(response.data[0]);
                 setDraft(response.data[0]);
                 setLoading(false);
@@ -534,6 +536,12 @@ function Draft() {
         }
     }
 
+/*console.log(selecting_teamsName);
+console.log(drafted_players.length);
+console.log(drafted_players);
+console.log(equipes_draft?.length);
+console.log(equipes_draft && drafted_players.length % equipes_draft?.length)*/
+
     return (
         <div className="body">
             <div className='App-body-ligue'>
@@ -542,7 +550,7 @@ function Draft() {
                         <div className="modal">
                             <h2>Avec le {drafted_players.length}e choix de draft...</h2>
                             <Table>
-                                <TableCell>{drafted_players[drafted_players.length - 1].utilisateur} a sélectionné {drafted_players[drafted_players.length - 1].prenom} {drafted_players[drafted_players.length - 1].nom}</TableCell>
+                            <TableCell>{selecting_teamsName && equipes_draft && (`${selecting_teamsName[(drafted_players.length - 1) % equipes_draft.length]} a sélectionné ${drafted_players[drafted_players.length - 1].prenom} ${drafted_players[drafted_players.length - 1].nom}`)} </TableCell>
                                 <TableCell>
                                     <Avatar src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${drafted_players[drafted_players.length - 1].joueur_NBA}.png`} />
                                 </TableCell>
