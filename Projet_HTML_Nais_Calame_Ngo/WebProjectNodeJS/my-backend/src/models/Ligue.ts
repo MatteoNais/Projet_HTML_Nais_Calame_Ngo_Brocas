@@ -21,9 +21,11 @@ class Ligue {
         return this.ligue.nom;
     }
 
-    static async findById(id: number): Promise<Ligue | null> {
+    static async findById(id: string): Promise<Ligue | null> {
         const [rows] = await configDB.execute('SELECT * FROM ligues WHERE id =?', [id]);
-        return rows.length ? new Ligue(rows[0]) : null;
+        console.log('test ligue');
+        const ligue = rows[0];
+        return ligue;
     }
 
     static async findLiguesByUserId(id: string): Promise<Ligue | null> {

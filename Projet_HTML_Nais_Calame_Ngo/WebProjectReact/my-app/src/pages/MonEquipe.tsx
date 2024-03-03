@@ -8,6 +8,7 @@ import axiosInstance from "../api/axiosInstance";
 import { useAppSelector } from "../hooks/redux-hooks";
 import dayjs from "dayjs";
 import Draft from "../objects/Draft";
+import User from "../objects/User";
 
 interface Params {
     [ligueId: string]: string | undefined;
@@ -21,6 +22,7 @@ function MonEquipeLigue() {
     const { userId } = useParams<Params>();
     const [currentDraft, setCurrentDraft] = useState<Draft>();
     const [lastDraft, setLastDraft] = useState<Draft>();
+    const [user, setUser] = useState<User>();
 
     const [totalPoints, setTotalPoints] = useState<number>(0); // Nouvel état pour le total des points
     // On incrémente le compteut de score avec les scores de chaque joueur.
@@ -40,6 +42,16 @@ function MonEquipeLigue() {
             })
             .catch(error => console.error('Error:', error));
     }, [ligueId]);
+
+    useEffect(() => {
+        axiosInstance.get(`/users/id/${userId}`)
+            .then(response => {
+                console.log("user", response.data);
+                console.log(userId);
+                setUser(response.data.user);
+            })
+            .catch(error => console.error('Error:', error));
+    }, [userId]);
 
     useEffect(() => {
         axiosInstance.get(`/draft/ligue/${ligueId}/${draftId}`)
@@ -78,36 +90,61 @@ function MonEquipeLigue() {
     return (
         <div className="body">
             <div className='App-body-ligue'>
-                <Grid container spacing={2} sx={{ marginTop: '10vh', display: 'flex', flexWrap: 'wrap' }}>
-                    <Grid item xs={12} sx={{ marginLeft: 4, marginRight: 4 }}>
-                        {/* Ligne avec le nom equipe les dates des equipes et le total des points */}
-                    </Grid>
-                    <Grid item xs={8} sx={{}}>
-                        {/* Terrain avec compo equipe */}
-                        <div className="liste-cartes">
+                {lastDraft?.id_draft ? (
+                    <Grid container spacing={2} sx={{ marginTop: '10vh', display: 'flex', flexWrap: 'wrap' }}>
+                        <Grid item xs={12} sx={{ marginLeft: 4, marginRight: 4 }}>
+                            {/* Ligne avec le nom equipe les dates des equipes et le total des points */}
+                            <Typography variant="h4" textAlign='center' color={'white'}>Equipe de {user?.username} lors de la draft n°{draftId}</Typography>
+                        </Grid>
+                        <Grid item xs={8} sx={{}}>
+                            {/* Terrain avec compo equipe */}
+                            <div className="liste-cartes">
 
-                            {joueurs && joueurs.length > 0 && currentDraft?.date_debut && currentDraft?.date_fin && joueurs.map(joueur => (
-                                <CarteJoueur key={joueur.id} dateDebut={dayjs(currentDraft?.date_debut)?.format("YYYY-MM-DD")} dateFin={dayjs(currentDraft?.date_fin)?.format("YYYY-MM-DD")} nom={joueur.nom} prenom={joueur.prenom} joueurId={joueur.id} onScoreLoaded={handleScoreLoaded}></CarteJoueur>
-                            ))}
-                        </div>
+                                {joueurs && joueurs.length > 0 && currentDraft?.date_debut && currentDraft?.date_fin && joueurs.map(joueur => (
+                                    <CarteJoueur key={joueur.id} dateDebut={dayjs(currentDraft?.date_debut)?.format("YYYY-MM-DD")} dateFin={dayjs(currentDraft?.date_fin)?.format("YYYY-MM-DD")} nom={joueur.nom} prenom={joueur.prenom} joueurId={joueur.id} onScoreLoaded={handleScoreLoaded}></CarteJoueur>
+                                ))}
+                            </div>
+                        </Grid>
+                        <Grid item xs={4} sx={{ textAlign: 'center' }}>
+                            <Typography variant="h4" sx={{ color: 'white' }}>Total : {totalPoints} points</Typography>
+                            <Box display="flex" alignItems="center" justifyContent="center" sx={{
+                                backgroundColor: 'grey',
+                                border: '2px solid #ff6a00',
+                                padding: '10px',
+                                marginRight: 3,
+                                marginTop: 3,
+                                gap: '10px',
+                            }}>
+                                {Number(draftId) - 1 > 0 && (
+                                    <Link to={`/ligue/${ligueId}/${userId}/${Number(draftId) - 1}`}>
+                                        <Button variant="contained" disableElevation onClick={resetTotalPoints}> &larr; </Button>
+                                    </Link>
+                                )}
+                                <Typography variant="h5" sx={{ color: 'white' }}>{dayjs(currentDraft?.date_debut)?.format("YYYY-MM-DD HH:mm")} - {dayjs(currentDraft?.date_fin)?.format("YYYY-MM-DD HH:mm")}</Typography>
+                                {Number(draftId) + 1 <= (lastDraft?.id_draft ?? 0) &&
+                                    <Link to={`/ligue/${ligueId}/${userId}/${Number(draftId) + 1}`}>
+                                        <Button variant="contained" disableElevation onClick={resetTotalPoints}> &rarr;</Button>
+                                    </Link>
+                                }
+                            </Box>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={4} sx={{ textAlign: 'center' }}>
-                        <Typography variant="h4" sx={{ color: 'white' }}>Total : {totalPoints} points</Typography>
-                        <Box display="flex" alignItems="center" justifyContent="center" sx={{ gap: '10px', marginTop: 3 }}>
-                            {Number(draftId) - 1 > 0 && (
-                                <Link to={`/ligue/${ligueId}/${userId}/${Number(draftId) - 1}`}>
-                                    <Button variant="contained" disableElevation onClick={resetTotalPoints}> &larr; </Button>
-                                </Link>
-                            )}
-                            <Typography variant="h5" sx={{ color: 'white' }}>{dayjs(currentDraft?.date_debut)?.format("YYYY-MM-DD HH:mm")} - {dayjs(currentDraft?.date_fin)?.format("YYYY-MM-DD HH:mm")}</Typography>
-                            {Number(draftId) + 1 <= (lastDraft?.id_draft ?? 0) &&
-                                <Link to={`/ligue/${ligueId}/${userId}/${Number(draftId) + 1}`}>
-                                    <Button variant="contained" disableElevation onClick={resetTotalPoints}> &rarr;</Button>
-                                </Link>
-                            }
+                ) : (
+                    <Grid container spacing={2} sx={{ marginTop: '10vh', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
+                        <Box
+                            sx={{
+                                backgroundColor: 'grey',
+                                border: '2px solid orange',
+                                padding: '10px',
+                                margin: '10px',
+                            }}
+                        >
+                            <Typography variant="h5" sx={{ color: 'white', textAlign: 'center' }}>
+                                Aucune draft n'a été créée pour l'instant
+                            </Typography>
                         </Box>
                     </Grid>
-                </Grid>
+                )}
             </div>
         </div >
     );

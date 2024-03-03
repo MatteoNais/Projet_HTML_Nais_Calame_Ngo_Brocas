@@ -82,13 +82,12 @@ function AccueilLigue() {
                             {/* Contenu de la fenêtre modale */}
                             <h2> La draft a bien été créé </h2>
                             {/* Bouton pour fermer la fenêtre modale */}
-                            <button onClick={closeModal}>Fermer</button>
                             <Button variant="contained" disableElevation onClick={closeModal}> Fermer</Button>
 
                         </div>
                     </div>
                 )}
-                <Grid container spacing={3} sx={{ marginTop: '2vh' }}>
+                <Grid container spacing={3} sx={{ marginTop: '10vh' }}>
                     <Grid item xs={6}>
                         {/* Colonne de gauche */}
                         <Grid item xs={12}>
@@ -100,11 +99,16 @@ function AccueilLigue() {
                     </Grid>
                     <Grid item xs={6}>
                         {/* Classement des joueurs avec recap des points */}
-                        {currentDraft?.id_draft && <Classement idDraft={currentDraft.id_draft} />}
+                        {currentDraft?.id_draft ? (<Classement idDraft={currentDraft?.id_draft} />) : (<Classement idDraft={0} />)}
                         <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'row', marginLeft: '10px', marginRight: '10px' }}>
                             {currentDraft?.date_fin && dayjs(currentDraft.date_fin).isAfter(dayjs()) ? (
                                 <>
-                                    <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+
+                                    <Box style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }} sx={{
+                                        backgroundColor: 'grey',
+                                        border: '2px solid #ff6a00',
+                                        padding: '10px',
+                                    }}>
                                         <Typography variant="h5" sx={{ color: 'white' }}> La draft est actuellement en cours.</Typography>
                                         <Typography variant="h5" sx={{ color: 'white' }}>{dayjs(currentDraft?.date_debut)?.format("YYYY-MM-DD HH:mm")} - {dayjs(currentDraft?.date_fin)?.format("YYYY-MM-DD HH:mm")}</Typography>
                                     </Box>
