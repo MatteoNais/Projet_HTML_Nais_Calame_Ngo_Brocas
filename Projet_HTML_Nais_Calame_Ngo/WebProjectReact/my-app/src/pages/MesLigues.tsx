@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import { TextField, Button, FormGroup, Typography } from '@mui/material';
+import { TextField, Button, FormGroup, Typography, Snackbar, SnackbarContent } from '@mui/material';
 import './Main.css'
 import { create, getMyLigues, inscriptionLigue } from "../slices/ligueSlice";
 import { useAppDispatch, useAppSelector } from "../hooks/redux-hooks";
@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 
 function Ligues() {
     const dispatch = useAppDispatch();
+    const [openSnackBar, setOpenSnackBar] = React.useState(false);
     const [nom, setNom] = useState("");
     const [code_access, setCodeAcces] = useState("");
     const [userId, setUserId] = useState(""); // Utilisez le hook useState
@@ -23,6 +24,14 @@ function Ligues() {
         }
 
     }, [basicUserInfo, dispatch]);
+
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenSnackBar(false);
+    };
 
     const handleCreateLigue = async () => {
         if (nom && userId) {
@@ -77,9 +86,31 @@ function Ligues() {
                                 <ul style={{ listStyle: 'none', padding: 0 }}>
                                     {JSON.parse(JSON.stringify(liguesState.ligue)).map((ligueData: any, index: any) => (
                                         <li key={index} style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Typography variant="h4" sx={{ color: 'orange', textAlign: 'left', marginRight: "5vh" }}>
+                                            <Button onClick={() => {
+                                                navigator.clipboard.writeText(ligueData.ligue.code_acces);
+                                                setOpenSnackBar(true);
+                                            }}
+                                                variant="contained" sx={{ color: 'white', textAlign: 'left', marginRight: "5vh" }}>
                                                 {ligueData.ligue.code_acces}
-                                            </Typography>
+                                            </Button>
+                                            <Snackbar
+                                                open={openSnackBar}
+                                                autoHideDuration={2000}
+                                                onClose={handleClose}
+                                                message="Code d'accès copié avec succès."
+                                                key="bottom center"
+                                                sx={{ textAlign: 'center' }}
+
+                                            >
+                                                <SnackbarContent style={{
+                                                    backgroundColor: '#0077b6',
+                                                    color: 'white',
+                                                    padding: '10px',
+                                                    borderRadius: '10px',
+                                                }}
+                                                    message={<span id="client-snackbar">Code d'accès copié dans le presse papier.</span>}
+                                                />
+                                            </Snackbar>
                                             <Typography variant="h4" sx={{ color: 'orange', textAlign: 'left', marginRight: "5vh" }}>
                                                 {ligueData.ligue.nom}
                                             </Typography>

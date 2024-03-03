@@ -11,10 +11,16 @@ interface Params {
     [ligueId: string]: string | undefined;
 }
 
+interface Ligue {
+    id: string;
+    nom: string;
+}
+
 function HeaderLigue() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [currentDraft, setCurrentDraft] = useState<Draft>();
+    const [currentLigue, setCurrentLigue] = useState<Ligue>();
 
     const basicUserInfo = useAppSelector((state) => state.auth.basicUserInfo);
 
@@ -44,6 +50,18 @@ function HeaderLigue() {
             })
             .catch(error => console.error('Error:', error));
     }, [ligueId]);
+
+    useEffect(() => {
+        axiosInstance.get(`/ligues/id/${ligueId}`)
+            .then(response => {
+                console.log(response.data);
+                setCurrentLigue(response.data);
+                console.log(currentLigue?.nom);
+
+            })
+            .catch(error => console.error('Error:', error));
+    }, [ligueId]);
+
 
     return (
         <>
@@ -76,8 +94,8 @@ function HeaderLigue() {
             </div >
             <Grid container className="grid-container" justifyContent="center" alignItems="center">
                 <Grid item className="grid-item">
-                    <Box sx={{ display: 'flex', gap: '5vh', flexWrap: 'wrap', justifyContent: 'space-between', paddingLeft: '10vh', paddingRight: '10vh' }}>
-                        {/* <Typography variant="h4" sx={{ color: 'white' }}>{ligueId}</Typography> */}
+                    <Box sx={{ position: 'fixed', display: 'flex', gap: '5vh', flexWrap: 'wrap', justifyContent: 'space-between', paddingLeft: '10vh', paddingRight: '10vh' }}>
+                        <Typography variant="h4" sx={{ color: 'white' }}>{currentLigue?.nom}</Typography>
                         <Link to={`/ligue/${ligueId}/`} style={{ textDecoration: 'none' }}>
                             <Typography variant="h4" sx={{ color: 'white' }}>Accueil</Typography>
                         </Link>

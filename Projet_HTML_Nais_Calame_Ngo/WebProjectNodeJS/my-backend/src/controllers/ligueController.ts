@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import Ligue, { ILigue } from "../models/Ligue";
 
 const getLigueById = async (req: Request, res: Response) => {
-    const ligueId = parseInt(req.query.ligueId as string);
+    const ligueId = req.params.id as string; // Ensure ligueId is of type string
+    console.log("ligueId : ", ligueId);
     if (ligueId === null || ligueId === undefined) {
         return res.status(400).json({ message: "Invalid user ID" });
     }
