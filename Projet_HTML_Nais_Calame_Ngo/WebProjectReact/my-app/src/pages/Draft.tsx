@@ -522,7 +522,7 @@ function Draft() {
                                     <Avatar src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${drafted_players[drafted_players.length - 1].joueur_NBA}.png`} />
                                 </TableCell>
                             </Table>
-                            <button onClick={closeModal}>Fermer</button>
+                            <Button variant="contained" disableElevation onClick={closeModal}>Fermer</Button>
                         </div>
                     </div>
                 )}
@@ -531,7 +531,7 @@ function Draft() {
                     <div className="modal-container">
                         <div className="modal">
                             <h2>{Info}</h2>
-                            <button onClick={closeModalInfo}>Fermer</button>
+                            <Button variant="contained" disableElevation onClick={closeModalInfo}>Fermer</Button>
                         </div>
                     </div>
                 )}

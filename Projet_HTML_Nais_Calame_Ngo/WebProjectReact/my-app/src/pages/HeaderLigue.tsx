@@ -94,7 +94,7 @@ function HeaderLigue() {
             </div >
             <Grid container className="grid-container" justifyContent="center" alignItems="center">
                 <Grid item className="grid-item">
-                    <Box sx={{ position: 'fixed', display: 'flex', gap: '5vh', flexWrap: 'wrap', justifyContent: 'space-between', paddingLeft: '10vh', paddingRight: '10vh' }}>
+                    <Box sx={{ display: 'flex', gap: '5vh', flexWrap: 'wrap', justifyContent: 'space-between', paddingLeft: '10vh', paddingRight: '10vh' }}>
                         <Typography variant="h4" sx={{ color: 'white' }}>{currentLigue?.nom}</Typography>
                         <Link to={`/ligue/${ligueId}/`} style={{ textDecoration: 'none' }}>
                             <Typography variant="h4" sx={{ color: 'white' }}>Accueil</Typography>

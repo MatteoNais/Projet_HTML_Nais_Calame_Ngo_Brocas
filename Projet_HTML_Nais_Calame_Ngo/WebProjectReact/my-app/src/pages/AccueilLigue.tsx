@@ -82,7 +82,6 @@ function AccueilLigue() {
                             {/* Contenu de la fenêtre modale */}
                             <h2> La draft a bien été créé </h2>
                             {/* Bouton pour fermer la fenêtre modale */}
-                            <button onClick={closeModal}>Fermer</button>
                             <Button variant="contained" disableElevation onClick={closeModal}> Fermer</Button>
 
                         </div>
