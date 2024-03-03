@@ -70,6 +70,8 @@ function Draft() {
 
 
     const [equipes_draft, setEquipesDraft] = useState<teamNBA[]>();
+    const [selecting_teamIndex, setSelectingTeamIndex] = useState<number>();
+    const [selecting_teamsName, setSelectingTeamsName] = useState<string[]>();
 
     useEffect(() => {
         //console.log("ByLigueAndData");
@@ -83,6 +85,28 @@ function Draft() {
         }
     }, [ligueId, draft]);
 
+    useEffect(() => {
+        if (equipes_draft) {
+            const fetchTeamNames = async () => {
+                const teamNames = [];
+                console.log(equipes_draft);
+                for (const team of equipes_draft) {
+                    try {
+                        const response = await axiosInstance.get(`/users/${team.utilisateur as number}`);
+                        console.log(response.data);
+                        teamNames.push(response.data.username);
+                        /*console.log(team.id);
+                        console.log(response.data.username);*/
+                    } catch (error) {
+                        console.error('Error fetching team name:', error);
+                    }
+                }
+                setSelectingTeamsName(teamNames);
+            };
+            fetchTeamNames();
+        }
+    }, [equipes_draft]);
+    
 
     const [teams, setTeams] = useState<teamNBA[]>([]);
     var [selectedTeamItem, setSelectedTeamItem] = useState(Number);
@@ -233,7 +257,8 @@ function Draft() {
             const userIndex = equipes_draft.findIndex(equipe => equipe.id === equipe_utilisateur.id);
             const currentTurn = checkUserDraft();
             //console.log(userIndex);
-            //console.log(currentTurn % equipes_draft.length);
+            setSelectingTeamIndex(currentTurn % equipes_draft.length);
+            console.log(equipes_draft[currentTurn % equipes_draft.length].id);
             return userIndex === currentTurn % equipes_draft.length;
         }
         return false;
@@ -598,9 +623,9 @@ function Draft() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {equipes_draft && equipes_draft.map((equipe, index) => (
+                                    {equipes_draft && selecting_teamsName && equipes_draft.map((equipe, index) => (
                                         <TableRow key={equipe.id}>
-                                            <TableCell><Typography sx={{ fontWeight: 'bold' }}> {equipe.nom} </Typography></TableCell>
+                                            <TableCell><Typography sx={{ fontWeight: 'bold' }}> {selecting_teamsName[index]} </Typography></TableCell>
                                             <TableCell>{(indice_tour - 1) * equipes_draft.length + index + 1}</TableCell>
                                             <TableCell>{tour_players && tour_players[index] && (
                                                 <Typography> {tour_players[index].nom} {tour_players[index].prenom} </Typography>)} </TableCell>
