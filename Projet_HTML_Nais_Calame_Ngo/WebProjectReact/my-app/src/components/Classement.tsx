@@ -35,13 +35,13 @@ function Classement({ idDraft }: CurrentDraft) {
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Paper elevation={2} sx={{
-                        my: 8,
+                        marginBottom: 8,
                         mx: 4,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}>
-                        <h2 style={{ color: 'white', backgroundColor: 'orange', width: '100%', textAlign: 'center' }}>Classement Ligue</h2>
+                        <h2 style={{ color: 'white', backgroundColor: '#ff6a00', width: '100%', textAlign: 'center' }}>Classement Ligue</h2>
                         <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>

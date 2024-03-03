@@ -17,6 +17,22 @@ const getUser = async (req: Request, res: Response) => {
     res.status(200).json(user);
 };
 
+const getUserById = async (req: Request, res: Response) => {
+    const userId = req.params?.id;
+
+    if (userId === null || userId === undefined) {
+        return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    const user = await User.findById(userId, "username");
+
+    if (!user) {
+        res.status(400);
+    }
+
+    res.status(200).json(user);
+};
+
 const getUsersByIdLigues = async (req: Request, res: Response) => {
     const ligueId = req.params.id_ligue;
     if (ligueId === null || ligueId === undefined) {
@@ -45,4 +61,4 @@ const findScoreOfUsersByLigueId = async (req: Request, res: Response) => {
     }
     res.status(200).json(users);
 }
-export { getUser, getUsersByIdLigues, findScoreOfUsersByLigueId };
+export { getUser, getUsersByIdLigues, findScoreOfUsersByLigueId, getUserById };
