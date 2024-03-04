@@ -28,7 +28,7 @@ function Draft() {
     console.log(draft);
     useEffect(() => {
         // Effect qui s'exécute lorsque draft est modifié
-        console.log(draft?.id_draft);
+        console.log(draft?.id_relation);
     }, [draft]);
     //console.log(type_draft?.type_draft);
 
@@ -174,7 +174,7 @@ function Draft() {
             axiosInstance.get(`/draft/players_drafted_by_draft/${draft?.id_relation}`)
                 .then(response => {
                     console.log(response.data);
-                    //setDraftedPlayers(response.data);
+                    setDraftedPlayers(response.data);
                     //console.log(response.data[response.data.length - 1]);
                     //console.log(lastPlayer);
                     let val = 0;
@@ -460,7 +460,7 @@ function Draft() {
         if (draft) {
             if (!checkCondition) {
                 setcheckCondition(true);
-                setmaxDraft(draft.id_draft);
+                setmaxDraft(draft.id_relation);
             }
         }
     });
