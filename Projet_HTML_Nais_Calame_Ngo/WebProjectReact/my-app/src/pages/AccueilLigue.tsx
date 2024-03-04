@@ -59,7 +59,7 @@ function AccueilLigue() {
             console.error("Error creating draft:", error);
         } finally {
             // Réactualiser la page
-            // window.location.reload();
+            window.location.reload();
             openModal();
         }
     }
