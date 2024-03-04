@@ -41,7 +41,7 @@ function Classement({ idDraft }: CurrentDraft) {
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}>
-                        <h2 style={{ color: 'white', backgroundColor: '#ff6a00', width: '100%', textAlign: 'center' }}>Classement Ligue</h2>
+                        <h2 style={{ color: 'white', backgroundColor: '#ff6a00', width: '100%', textAlign: 'center' }}>Score Ligue</h2>
                         <TableContainer component={Paper}>
                             <Table>
                                 <TableHead>

@@ -136,7 +136,7 @@ class Equipe {
 
     static async getScoreEquipe(idUser: string, idLigue: string): Promise<number[] | null> {
         try {
-            let query = `SELECT score FROM equipe INNER JOIN lien_draft_ligue ON equipe.draft = lien_draft_ligue.id_draft WHERE equipe.utilisateur = ? AND equipe.ligue = ? AND lien_draft_ligue.date_fin < ?`;
+            let query = `SELECT score FROM equipe INNER JOIN lien_draft_ligue ON equipe.draft_relation = lien_draft_ligue.id_relation WHERE equipe.utilisateur = ? AND equipe.ligue = ? AND lien_draft_ligue.date_fin < ?`;
             const [rows] = await configDB.execute(query, [idUser, idLigue, dayjs().format("YYYY-MM-DD HH:mm:ss")]);
             console.log(rows);
             return rows;

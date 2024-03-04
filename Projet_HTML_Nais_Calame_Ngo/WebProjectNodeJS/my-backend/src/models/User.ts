@@ -73,7 +73,7 @@ class User {
                 let meanScore = 0;
                 let totalScore = 0;
                 const scores = await Equipe.getScoreEquipe(user.getId().toString(), idLigue);
-                console.log(scores);
+                console.log("score equipe", scores);
                 if (scores) {
                     for (const score of scores) {
                         try {
