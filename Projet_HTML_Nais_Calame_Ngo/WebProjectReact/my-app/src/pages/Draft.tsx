@@ -291,10 +291,11 @@ function Draft() {
 
     useEffect(() => {
         if (equipes_draft) {
+            console.log(drafted_players);
             const tourPlayers = [];
             const startIndex = (indice_tour - 1) * equipes_draft.length;
             for (let i = startIndex; i < (startIndex + equipes_draft.length); i++) {
-                //console.log(i);
+                //console.log(drafted_players[i]);
                 if (drafted_players && drafted_players[i] != null) {
                     tourPlayers.push(drafted_players[i]);
                     //console.log(tourPlayers);
