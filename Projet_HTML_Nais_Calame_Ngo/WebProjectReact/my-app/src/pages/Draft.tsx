@@ -460,7 +460,7 @@ function Draft() {
         if (draft) {
             if (!checkCondition) {
                 setcheckCondition(true);
-                setmaxDraft(draft.id_relation);
+                setmaxDraft(draft.id_draft);
             }
         }
     });
@@ -575,9 +575,7 @@ console.log(equipes_draft && drafted_players.length % equipes_draft?.length)*/
                     {/* Ligne avec le type de draft et la recherche avancée et compteur */}
                     <Table>
                         <TableCell><Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-                            <Button variant="contained" disableElevation onClick={Dim_index_draft}> &larr; </Button>
-                            <Typography variant="h5" sx={{ color: 'white' }}> Draft {type_draft?.id} : {type_draft?.type_draft}  </Typography>
-                            <Button variant="contained" disableElevation onClick={Aug_index_draft}> &rarr;</Button>
+                            <Typography variant="h5" sx={{ color: 'white' }}>   <Button variant="contained" disableElevation onClick={Dim_index_draft}> &larr; </Button>  Draft {type_draft?.id} : {type_draft?.type_draft} <Button variant="contained" disableElevation onClick={Aug_index_draft}> &rarr;</Button>   </Typography>
                         </Typography></TableCell>
                         <TableCell><Typography variant="h5" sx={{ fontWeight: 'bold' }}>
                             Contrainte sur le tour en cours : {currentContrainte}
