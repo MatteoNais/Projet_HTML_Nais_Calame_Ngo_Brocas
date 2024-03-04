@@ -170,10 +170,11 @@ function Draft() {
         console.log("Updating...");
         console.log(draft);
         if (draft) {
-            axiosInstance.get(`/draft/players_drafted_by_draft/${draft?.id_draft}`)
+            console.log(draft?.id_relation);
+            axiosInstance.get(`/draft/players_drafted_by_draft/${draft?.id_relation}`)
                 .then(response => {
-                    //console.log(response.data);
-                    setDraftedPlayers(response.data);
+                    console.log(response.data);
+                    //setDraftedPlayers(response.data);
                     //console.log(response.data[response.data.length - 1]);
                     //console.log(lastPlayer);
                     let val = 0;
@@ -636,7 +637,7 @@ console.log(equipes_draft && drafted_players.length % equipes_draft?.length)*/
                                             <TableCell><Typography sx={{ fontWeight: 'bold' }}> {selecting_teamsName[index]} </Typography></TableCell>
                                             <TableCell>{(indice_tour - 1) * equipes_draft.length + index + 1}</TableCell>
                                             <TableCell>{tour_players && tour_players[index] && (
-                                                <Typography> {tour_players[index].nom} {tour_players[index].prenom} </Typography>)} </TableCell>
+                                                <Typography> {tour_players[index].prenom} {tour_players[index].nom} </Typography>)} </TableCell>
                                             <TableCell>{tour_players && tour_players[index] && (<ListItemAvatar>
                                                 <Avatar src={`https://cdn.nba.com/headshots/nba/latest/1040x760/${tour_players[index].joueur_NBA}.png`} />
                                             </ListItemAvatar>)}</TableCell>

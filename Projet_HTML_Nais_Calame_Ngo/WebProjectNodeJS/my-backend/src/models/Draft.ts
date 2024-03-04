@@ -191,10 +191,10 @@ class Draft {
     static async findDraftedPlayersByDraft(idDraft: string): Promise<string[] | null> {
         try {
             /*const [players] = await configDB.execute('SELECT * FROM lien_equipe_joueur', []);*/
-            const [rows] = await configDB.execute('SELECT lien_equipe_joueur.joueur_NBA, joueur_NBA.nom, joueur_NBA.prenom, lien_equipe_joueur.equipe, equipe.utilisateur FROM joueur_NBA INNER JOIN lien_equipe_joueur ON joueur_NBA.id = lien_equipe_joueur.joueur_NBA INNER JOIN equipe ON equipe.id = lien_equipe_joueur.equipe WHERE equipe.draft = ?', [idDraft]);
-            /*const players = rows.map((row: { joueur_NBA: any; }) => row.joueur_NBA);
-             console.log(players);
-             return players;*/
+            const [rows] = await configDB.execute('SELECT lien_equipe_joueur.joueur_NBA, joueur_NBA.nom, joueur_NBA.prenom, lien_equipe_joueur.equipe, equipe.utilisateur FROM joueur_NBA INNER JOIN lien_equipe_joueur ON joueur_NBA.id = lien_equipe_joueur.joueur_NBA INNER JOIN equipe ON equipe.id = lien_equipe_joueur.equipe WHERE equipe.draft_relation = ?', [idDraft]);
+           /*const players = rows.map((row: { joueur_NBA: any; }) => row.joueur_NBA);
+            console.log(players);
+            return players;*/
 
             return rows;
         }
