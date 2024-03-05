@@ -13,6 +13,7 @@ import playerRouter from "./routes/playerRouter";
 import teamRouter from "./routes/teamRouter";
 import equipeRouter from "./routes/equipeRouter";
 import draftRouter from "./routes/draftRouter";
+import matchRouter from "./routes/matchRouter";
 import helmet from "helmet";
 import Equipe from './models/Equipe';
 
@@ -57,6 +58,7 @@ app.use("/playersNBA", playerRouter);
 app.use("/teamsNBA", teamRouter);
 app.use("/equipe", equipeRouter);
 app.use("/draft", draftRouter);
+app.use("/match",matchRouter); // Nam router for match
 app.use(errorHandler);
 
 configDB.connectUserDB();

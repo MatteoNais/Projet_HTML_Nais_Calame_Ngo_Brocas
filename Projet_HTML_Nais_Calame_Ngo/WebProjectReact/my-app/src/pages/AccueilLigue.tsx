@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Grid, ThemeProvider, Typography, createTheme } from '@mui/material';
 import Classement from '../components/Classement';
+import MatchNBA from '../components/MatchNBA';
 import './StylePages.css';
 import TextField from '@mui/material/TextField';
 import dayjs, { Dayjs } from 'dayjs';
@@ -74,6 +75,7 @@ function AccueilLigue() {
                         </Grid>
                         <Grid item xs={12}>
                             {/* Resultat des match NBA */}
+                            <MatchNBA></MatchNBA>
                         </Grid>
                     </Grid>
                     <Grid item xs={6}>
